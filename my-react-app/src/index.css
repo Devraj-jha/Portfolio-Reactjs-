@@ -97,3 +97,61 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+/* src/App.css */
+.app {
+  min-height: 100vh;
+  background: var(--bg-primary);
+  position: relative;
+  transition: background-color 0.5s ease;
+}
+
+.main-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 100px 40px 40px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Ensure content is readable over video */
+.main-content > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Smooth transitions for theme changes */
+* {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+/* Performance optimizations */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .main-content {
+    padding: 90px 20px 20px;
+  }
+}
+
+/* Scale in animation for modals */
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.scale-in {
+  animation: scale-in 0.3s ease-out;
+}

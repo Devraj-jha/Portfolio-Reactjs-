@@ -4,7 +4,7 @@ import Header from './components/Header/Header'
 import SocialButtons from './components/SocialButtons/SocialButtons'
 import ContactModal from './components/ContactModal/ContactModal'
 import Terminal from './components/Terminal/Terminal'
-import LeafBackground from './components/LeafBackground/LeafBackground'
+import VideoBackground from './components/VideoBackground/VideoBackground'
 import HiddenGame from './components/HiddenGame/HiddenGame'
 import Home from './sections/Home/Home'
 import Blog from './sections/Blog/Blog'
@@ -98,7 +98,7 @@ function App() {
   help       - Show this help message
   echo [text]- Echo back the text
 
-💡 Pro Tip: The Progress and Projects sections are coming soon with amazing features!`
+💡 Pro Tip: Click the "DJ" logo to open the terminal!`
       case 'techstack':
         return `🚀 My Tech Stack:
 
@@ -131,7 +131,7 @@ Tools:
 
   return (
     <div className="app" data-theme={theme}>
-      <LeafBackground />
+      <VideoBackground />
       
       <Header 
         activeSection={activeSection} 

@@ -432,3 +432,238 @@
 }
 
 /* ... rest of the previous styles ... */
+/* src/components/Header/Header.css - Updated Click Prompt Section */
+/* ... previous styles remain the same ... */
+
+.nav-brand {
+  position: relative;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  padding-bottom: 25px; /* Space for click prompt */
+}
+
+.nav-brand:hover {
+  transform: scale(1.05);
+}
+
+.click-prompt {
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+}
+
+.prompt-content {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: promptBounce 2s ease-in-out infinite;
+}
+
+.prompt-text {
+  background: var(--accent-primary);
+  color: var(--pure-white);
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border: 2px solid var(--pure-white);
+}
+
+.prompt-arrow {
+  color: var(--accent-primary);
+  font-size: 1.2rem;
+  margin-top: -2px;
+  animation: arrowBlink 1.5s ease-in-out infinite;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.pulse-ring-1,
+.pulse-ring-2 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 60px;
+  height: 60px;
+  border: 2px solid var(--accent-primary);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.pulse-ring-1 {
+  animation: pulse 2s ease-out infinite;
+}
+
+.pulse-ring-2 {
+  animation: pulse 2s ease-out 0.5s infinite;
+}
+
+.sparkle-1,
+.sparkle-2 {
+  position: absolute;
+  font-size: 0.8rem;
+  animation: sparkleFloat 3s ease-in-out infinite;
+}
+
+.sparkle-1 {
+  top: -10px;
+  left: 10px;
+  animation-delay: 0s;
+}
+
+.sparkle-2 {
+  top: -5px;
+  right: 5px;
+  animation-delay: 1.5s;
+}
+
+@keyframes promptBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes arrowBlink {
+  0%, 100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.6;
+    transform: translateY(2px);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.3);
+    opacity: 0;
+  }
+}
+
+@keyframes sparkleFloat {
+  0%, 100% {
+    opacity: 0;
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    opacity: 1;
+    transform: translateY(-5px) rotate(90deg);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateY(-10px) rotate(180deg);
+  }
+  75% {
+    opacity: 0.5;
+    transform: translateY(-5px) rotate(270deg);
+  }
+}
+
+/* ... rest of the previous styles remain the same ... */
+/* src/components/Header/Header.css - Updated Simple Click Prompt */
+/* ... previous styles remain the same ... */
+
+.nav-brand {
+  position: relative;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  padding-bottom: 20px; /* Space for click prompt */
+}
+
+.nav-brand:hover {
+  transform: scale(1.05);
+}
+
+/* Simple Click Prompt */
+.click-prompt-simple {
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  padding: 4px 10px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px var(--shadow-color);
+  animation: promptSlideUp 0.5s ease-out, promptPulse 2s ease-in-out infinite;
+}
+
+.prompt-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--accent-primary);
+  border-radius: 50%;
+  animation: dotBlink 1.5s ease-in-out infinite;
+}
+
+.prompt-text {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+@keyframes promptSlideUp {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes promptPulse {
+  0%, 100% {
+    box-shadow: 0 2px 8px var(--shadow-color);
+  }
+  50% {
+    box-shadow: 0 2px 12px var(--shadow-color), 0 0 0 2px rgba(var(--accent-primary-rgb), 0.1);
+  }
+}
+
+@keyframes dotBlink {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.8);
+  }
+}
+
+/* Remove old click prompt styles */
+.click-prompt,
+.prompt-content,
+.prompt-arrow,
+.pulse-ring-1,
+.pulse-ring-2,
+.sparkle-1,
+.sparkle-2 {
+  display: none;
+}
+
+/* ... rest of the previous styles remain the same ... */

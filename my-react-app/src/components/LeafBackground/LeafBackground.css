@@ -8,32 +8,35 @@
   pointer-events: none;
   z-index: -1;
   overflow: hidden;
+  background: transparent;
 }
 
 .leaf {
   position: absolute;
-  top: -50px;
+  top: -60px;
   opacity: 0;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
   display: flex;
   align-items: center;
   justify-content: center;
+  animation-timing-function: ease-in-out;
+  will-change: transform, opacity;
 }
 
-.leaf img {
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+.leaf-shape {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  transition: all 0.3s ease;
 }
 
-/* Fall left animation */
+/* Fall left animation with swing */
 .fallLeft {
-  animation: leafFallLeft linear forwards;
+  animation: leafFallLeft linear forwards, leafSwing 3s ease-in-out infinite;
 }
 
-/* Fall right animation */
+/* Fall right animation with swing */
 .fallRight {
-  animation: leafFallRight linear forwards;
+  animation: leafFallRight linear forwards, leafSwing 4s ease-in-out infinite;
 }
 
 @keyframes leafFallLeft {
@@ -42,13 +45,13 @@
     opacity: 0;
   }
   10% {
-    opacity: 0.7;
+    opacity: var(--opacity, 0.8);
   }
   90% {
-    opacity: 0.7;
+    opacity: var(--opacity, 0.8);
   }
   100% {
-    transform: translateY(100vh) translateX(-100px) rotate(360deg);
+    transform: translateY(120vh) translateX(-80px) rotate(180deg);
     opacity: 0;
   }
 }
@@ -59,31 +62,59 @@
     opacity: 0;
   }
   10% {
-    opacity: 0.7;
+    opacity: var(--opacity, 0.8);
   }
   90% {
-    opacity: 0.7;
+    opacity: var(--opacity, 0.8);
   }
   100% {
-    transform: translateY(100vh) translateX(100px) rotate(-360deg);
+    transform: translateY(120vh) translateX(80px) rotate(-180deg);
     opacity: 0;
   }
 }
 
+@keyframes leafSwing {
+  0%, 100% {
+    transform: rotate(var(--rotation, 0deg)) translateX(0);
+  }
+  25% {
+    transform: rotate(calc(var(--rotation, 0deg) + 2deg)) translateX(2px);
+  }
+  50% {
+    transform: rotate(calc(var(--rotation, 0deg) - 1deg)) translateX(-1px);
+  }
+  75% {
+    transform: rotate(calc(var(--rotation, 0deg) + 1deg)) translateX(1px);
+  }
+}
+
 /* Different leaf styles */
-.leaf-0 {
-  /* Cherry blossom - smaller, faster */
-  animation-duration: calc(var(--duration, 8s) * 0.8);
+.leaf-cherry {
+  --opacity: 0.8;
+  filter: hue-rotate(0deg) brightness(1.1);
 }
 
-.leaf-1 {
-  /* Maple leaf - medium speed */
-  animation-duration: calc(var(--duration, 8s) * 1);
+.leaf-maple {
+  --opacity: 0.7;
+  filter: hue-rotate(30deg) brightness(1.05);
 }
 
-.leaf-2 {
-  /* Simple leaf - slower, more floating */
-  animation-duration: calc(var(--duration, 8s) * 1.2);
+.leaf-simple {
+  --opacity: 0.6;
+  filter: hue-rotate(120deg) brightness(1);
+}
+
+/* Theme adjustments */
+[data-theme="dark"] .leaf-cherry {
+  filter: hue-rotate(350deg) brightness(0.9) saturate(1.3);
+}
+
+[data-theme="dark"] .leaf-maple {
+  filter: hue-rotate(20deg) brightness(0.8) saturate(1.2);
+}
+
+[data-theme="dark"] .leaf-simple {
+  filter: hue-rotate(110deg) brightness(0.7) saturate(1.1);
 }
 
 /* Reduce motion support */
@@ -91,5 +122,12 @@
   .leaf {
     animation: none;
     opacity: 0;
+  }
+}
+
+/* Mobile optimization */
+@media (max-width: 768px) {
+  .leaf {
+    animation-duration: calc(var(--duration, 12s) * 0.7) !important;
   }
 }

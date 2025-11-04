@@ -1,4 +1,4 @@
-// src/components/Header/Header.jsx - Updated to accept theme props
+// src/components/Header/Header.jsx
 import { useState, useEffect, useRef } from 'react'
 import './Header.css'
 
@@ -8,6 +8,7 @@ const Header = ({ activeSection, setActiveSection, onTerminalClick, theme, toggl
   const [isPlaying, setIsPlaying] = useState(false)
   const [showClickPrompt, setShowClickPrompt] = useState(true)
   const audioRef = useRef(null)
+  const clickTimeoutRef = useRef(null)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,12 +19,16 @@ const Header = ({ activeSection, setActiveSection, onTerminalClick, theme, toggl
   }, [])
 
   useEffect(() => {
-    // Hide click prompt after 5 seconds
-    const timer = setTimeout(() => {
+    // Hide click prompt after 6 seconds
+    clickTimeoutRef.current = setTimeout(() => {
       setShowClickPrompt(false)
-    }, 5000)
+    }, 6000)
     
-    return () => clearTimeout(timer)
+    return () => {
+      if (clickTimeoutRef.current) {
+        clearTimeout(clickTimeoutRef.current)
+      }
+    }
   }, [])
 
   const toggleMusic = () => {
@@ -42,6 +47,9 @@ const Header = ({ activeSection, setActiveSection, onTerminalClick, theme, toggl
 
   const handleBrandClick = () => {
     setShowClickPrompt(false)
+    if (clickTimeoutRef.current) {
+      clearTimeout(clickTimeoutRef.current)
+    }
     onTerminalClick()
   }
 
@@ -70,10 +78,11 @@ const Header = ({ activeSection, setActiveSection, onTerminalClick, theme, toggl
         <div className="nav-brand" onClick={handleBrandClick}>
           <span className="brand-text hero-gradient">DJ</span>
           <div className="brand-underline"></div>
+          
           {showClickPrompt && (
-            <div className="click-prompt">
-              <span>Click me!</span>
-              <div className="pulse-ring"></div>
+            <div className="click-prompt-simple">
+              <div className="prompt-dot"></div>
+              <span className="prompt-text">Terminal</span>
             </div>
           )}
         </div>
