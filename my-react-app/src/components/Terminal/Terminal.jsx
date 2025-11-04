@@ -2,47 +2,96 @@
 import { useState, useEffect, useRef } from 'react';
 import './Terminal.css';
 
-const Terminal = () => {
+const Terminal = ({ isOpen, onClose, onCommand }) => {
   const [commands, setCommands] = useState([]);
   const [input, setInput] = useState('');
   const terminalRef = useRef(null);
 
   const techStack = [
-    { name: 'React', level: 'Expert' },
-    { name: 'TypeScript', level: 'Advanced' },
-    { name: 'Node.js', level: 'Expert' },
-    { name: 'Python', level: 'Advanced' },
-    { name: 'AWS', level: 'Intermediate' },
-    { name: 'Docker', level: 'Advanced' },
-    { name: 'MongoDB', level: 'Expert' },
-    { name: 'GraphQL', level: 'Intermediate' }
+    { name: 'React', level: 'Expert', category: 'Frontend' },
+    { name: 'TypeScript', level: 'Advanced', category: 'Language' },
+    { name: 'Node.js', level: 'Expert', category: 'Backend' },
+    { name: 'Python', level: 'Advanced', category: 'Language' },
+    { name: 'AWS', level: 'Intermediate', category: 'Cloud' },
+    { name: 'Docker', level: 'Advanced', category: 'DevOps' },
+    { name: 'MongoDB', level: 'Expert', category: 'Database' },
+    { name: 'GraphQL', level: 'Intermediate', category: 'API' },
+    { name: 'PostgreSQL', level: 'Advanced', category: 'Database' },
+    { name: 'Redis', level: 'Intermediate', category: 'Cache' }
   ];
 
   const executeCommand = (cmd) => {
-    const newCommands = [...commands];
+    const newCommands = [...commands, { type: 'input', content: cmd }];
+    
+    let output = '';
     
     switch (cmd.toLowerCase()) {
       case 'techstack':
-        newCommands.push({ type: 'output', content: '🚀 My Tech Stack:', isCommand: false });
+        output = '🚀 My Tech Stack:\n\n';
+        const categories = {};
         techStack.forEach(tech => {
-          newCommands.push({ 
-            type: 'output', 
-            content: `   ${tech.name.padEnd(12)} - ${tech.level}`,
-            isCommand: false 
+          if (!categories[tech.category]) categories[tech.category] = [];
+          categories[tech.category].push(tech);
+        });
+        
+        Object.keys(categories).forEach(category => {
+          output += `📂 ${category}:\n`;
+          categories[category].forEach(tech => {
+            output += `   ${tech.name.padEnd(15)} - ${tech.level}\n`;
           });
+          output += '\n';
         });
         break;
+        
       case 'clear':
         setCommands([]);
         return;
-      case 'help':
-        newCommands.push({ type: 'output', content: 'Available commands:', isCommand: false });
-        newCommands.push({ type: 'output', content: '  techstack - Display my technology stack', isCommand: false });
-        newCommands.push({ type: 'output', content: '  clear     - Clear terminal', isCommand: false });
-        newCommands.push({ type: 'output', content: '  help      - Show this help message', isCommand: false });
+        
+      case 'game':
+        output = '🎮 Launching hidden game... Type "start" to begin!';
         break;
+        
+      case 'start':
+        output = '🎯 Game started! Use commands: "left", "right", "up", "down" to move. Type "exit" to quit.';
+        break;
+        
+      case 'help':
+        output = `Available commands:
+
+🌐 Navigation:
+  home       - Navigate to Home section
+  blog       - Navigate to Blog section  
+  progress   - Navigate to Progress section
+  projects   - Navigate to Projects section
+
+💻 Technical:
+  techstack  - Show my technology stack
+  game       - Launch hidden game 🎮
+
+🛠️ Utility:
+  clear      - Clear terminal
+  help       - Show this help message
+  echo [text]- Echo back the text
+
+💡 Tip: Try the 'game' command for a surprise!`;
+        break;
+        
       default:
-        newCommands.push({ type: 'output', content: `Command not found: ${cmd}`, isCommand: false });
+        if (cmd.startsWith('echo ')) {
+          output = cmd.slice(5);
+        } else {
+          // Check if it's a navigation command
+          const navResult = onCommand(cmd);
+          if (navResult && navResult !== 'clear') {
+            output = navResult;
+          } else if (!navResult) {
+            output = `Command not found: ${cmd}. Type 'help' for available commands.`;
+          }
+        }
+    }
+    
+    if (output && output !== 'clear') {
+      newCommands.push({ type: 'output', content: output });
     }
     
     setCommands(newCommands);
@@ -52,8 +101,6 @@ const Terminal = () => {
     e.preventDefault();
     if (!input.trim()) return;
 
-    const newCommands = [...commands, { type: 'input', content: input }];
-    setCommands(newCommands);
     executeCommand(input);
     setInput('');
   };
@@ -65,46 +112,72 @@ const Terminal = () => {
   }, [commands]);
 
   useEffect(() => {
-    // Initial welcome message
-    setCommands([
-      { type: 'output', content: 'Welcome to my terminal! Type "help" for available commands.', isCommand: false }
-    ]);
-  }, []);
+    if (isOpen) {
+      setCommands([
+        { type: 'output', content: '🌟 Welcome to DJ\'s Terminal!' },
+        { type: 'output', content: 'Type "help" to see available commands.' },
+        { type: 'output', content: '💡 Pro tip: Try the "game" command for a surprise!' }
+      ]);
+    }
+  }, [isOpen]);
+
+  if (!isOpen) return null;
 
   return (
-    <div className="terminal">
-      <div className="terminal-header">
-        <div className="terminal-controls">
-          <div className="control close"></div>
-          <div className="control minimize"></div>
-          <div className="control maximize"></div>
-        </div>
-        <div className="terminal-title">bash — Terminal</div>
-      </div>
-      
-      <div className="terminal-body" ref={terminalRef}>
-        {commands.map((command, index) => (
-          <div key={index} className={`terminal-line ${command.type}`}>
-            {command.type === 'input' && (
-              <span className="prompt">visitor@portfolio:~$ </span>
-            )}
-            <span className={`content ${command.isCommand ? 'command' : ''}`}>
-              {command.content}
-            </span>
+    <div className="terminal-overlay" onClick={onClose}>
+      <div className="terminal-container scale-in" onClick={(e) => e.stopPropagation()}>
+        <div className="terminal-header">
+          <div className="terminal-controls">
+            <div className="control close" onClick={onClose}></div>
+            <div className="control minimize"></div>
+            <div className="control maximize"></div>
           </div>
-        ))}
+          <div className="terminal-title">terminal — bash — 80×24</div>
+        </div>
         
-        <form onSubmit={handleSubmit} className="terminal-input-line">
-          <span className="prompt">visitor@portfolio:~$ </span>
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            className="terminal-input"
-            autoFocus
-            spellCheck="false"
-          />
-        </form>
+        <div className="terminal-body" ref={terminalRef}>
+          <div className="welcome-message">
+            <div className="ascii-art">
+              {`
+   ██████╗ ██╗   ██╗
+  ██╔════╝ ██║   ██║
+  ██║  ███╗██║   ██║
+  ██║   ██║██║   ██║
+  ╚██████╔╝╚██████╔╝
+   ╚═════╝  ╚═════╝ 
+              `}
+            </div>
+            <div className="welcome-text">
+              Welcome to DJ's Interactive Terminal
+            </div>
+          </div>
+
+          {commands.map((command, index) => (
+            <div key={index} className={`terminal-line ${command.type}`}>
+              {command.type === 'input' && (
+                <span className="prompt">visitor@portfolio:~$ </span>
+              )}
+              <span className={`content ${command.type === 'output' ? 'output' : ''}`}>
+                {command.content.split('\n').map((line, i) => (
+                  <div key={i}>{line}</div>
+                ))}
+              </span>
+            </div>
+          ))}
+          
+          <form onSubmit={handleSubmit} className="terminal-input-line">
+            <span className="prompt">visitor@portfolio:~$ </span>
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              className="terminal-input"
+              autoFocus
+              spellCheck="false"
+              placeholder="Type a command..."
+            />
+          </form>
+        </div>
       </div>
     </div>
   );

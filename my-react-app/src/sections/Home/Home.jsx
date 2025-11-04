@@ -1,76 +1,29 @@
 // src/sections/Home/Home.jsx
 import { useEffect, useState } from 'react';
-import Terminal from '../../components/Terminal/Terminal';
+import { useScrollAnimation } from '../../hooks/useScrollAnimation';
 import './Home.css';
 
 const Home = () => {
-  const [meteors, setMeteors] = useState([]);
-  const [stars, setStars] = useState([]);
+  const [ref, isVisible] = useScrollAnimation(0.3);
+  const [textIndex, setTextIndex] = useState(0);
+  
+  const rotatingTexts = [
+    "Creative Developer",
+    "Problem Solver", 
+    "Tech Enthusiast",
+    "UI/UX Designer"
+  ];
 
-  // Meteor animation for light theme
   useEffect(() => {
-    const createMeteor = () => {
-      const meteor = {
-        id: Math.random(),
-        left: Math.random() * 100,
-        delay: Math.random() * 5
-      };
-      setMeteors(prev => [...prev, meteor]);
-      setTimeout(() => {
-        setMeteors(prev => prev.filter(m => m.id !== meteor.id));
-      }, 1000);
-    };
-
-    const meteorInterval = setInterval(createMeteor, 2000);
-    return () => clearInterval(meteorInterval);
-  }, []);
-
-  // Star shooting animation for dark theme
-  useEffect(() => {
-    const createStar = () => {
-      const star = {
-        id: Math.random(),
-        left: Math.random() * 100,
-        delay: Math.random() * 3
-      };
-      setStars(prev => [...prev, star]);
-      setTimeout(() => {
-        setStars(prev => prev.filter(s => s.id !== star.id));
-      }, 800);
-    };
-
-    const starInterval = setInterval(createStar, 1500);
-    return () => clearInterval(starInterval);
+    const interval = setInterval(() => {
+      setTextIndex((prev) => (prev + 1) % rotatingTexts.length);
+    }, 3000);
+    return () => clearInterval(interval);
   }, []);
 
   return (
     <section className="home-section">
-      {/* Meteor Animations */}
-      {meteors.map(meteor => (
-        <div
-          key={meteor.id}
-          className="meteor"
-          style={{
-            left: `${meteor.left}%`,
-            animationDelay: `${meteor.delay}s`
-          }}
-        />
-      ))}
-
-      {/* Star Animations */}
-      {stars.map(star => (
-        <div
-          key={star.id}
-          className="star"
-          style={{
-            left: `${star.left}%`,
-            animationDelay: `${star.delay}s`
-          }}
-        />
-      ))}
-
       <div className="home-container">
-        {/* ASCII Art */}
         <div className="ascii-art scale-in">
           <pre className="ascii-text">
 {`
@@ -88,11 +41,10 @@ const Home = () => {
           </pre>
         </div>
 
-        {/* Profile Section with Text Wrapping */}
-        <div className="profile-section fade-in-up">
+        <div ref={ref} className={`profile-section ${isVisible ? 'visible' : ''}`}>
           <div className="profile-content">
             <div className="profile-image-container">
-              <div className="profile-image">
+              <div className="profile-image glass-effect">
                 <div className="image-placeholder">
                   <svg viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
@@ -103,10 +55,15 @@ const Home = () => {
             </div>
             
             <div className="about-me">
-              <h1 className="greeting">
-                Hello, I'm <span className="gold-text">DJ</span>
+              <h1 className="greeting hero-gradient">
+                Hello, I'm <span className="accent-text">DJ</span>
               </h1>
-              <h2 className="title">Creative Developer & Problem Solver</h2>
+              
+              <h2 className="title">
+                <span className="rotating-text">
+                  {rotatingTexts[textIndex]}
+                </span>
+              </h2>
               
               <div className="description">
                 <p>
@@ -125,24 +82,21 @@ const Home = () => {
               </div>
               
               <div className="stats-grid">
-                <div className="stat">
+                <div className="stat glass-effect">
                   <span className="stat-number">50+</span>
                   <span className="stat-label">Projects</span>
                 </div>
-                <div className="stat">
+                <div className="stat glass-effect">
                   <span className="stat-number">3+</span>
                   <span className="stat-label">Years</span>
                 </div>
-                <div className="stat">
+                <div className="stat glass-effect">
                   <span className="stat-number">100%</span>
                   <span className="stat-label">Passion</span>
                 </div>
               </div>
             </div>
           </div>
-
-          {/* Terminal Component */}
-          <Terminal />
         </div>
       </div>
     </section>

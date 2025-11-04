@@ -2,11 +2,12 @@
 import { useState, useEffect, useRef } from 'react'
 import './Header.css'
 
-const Header = ({ activeSection, setActiveSection }) => {
+const Header = ({ activeSection, setActiveSection, onTerminalClick }) => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [hoveredItem, setHoveredItem] = useState(null)
   const [isPlaying, setIsPlaying] = useState(false)
   const [theme, setTheme] = useState('light')
+  const [showClickPrompt, setShowClickPrompt] = useState(true)
   const audioRef = useRef(null)
 
   useEffect(() => {
@@ -18,9 +19,15 @@ const Header = ({ activeSection, setActiveSection }) => {
   }, [])
 
   useEffect(() => {
-    // Initialize theme from localStorage
     const savedTheme = localStorage.getItem('portfolio-theme') || 'light'
     setTheme(savedTheme)
+    
+    // Hide click prompt after 5 seconds
+    const timer = setTimeout(() => {
+      setShowClickPrompt(false)
+    }, 5000)
+    
+    return () => clearTimeout(timer)
   }, [])
 
   const toggleTheme = () => {
@@ -35,16 +42,18 @@ const Header = ({ activeSection, setActiveSection }) => {
       if (isPlaying) {
         audioRef.current.pause()
       } else {
-        // ADD YOUR MUSIC FILE PATH HERE
-        // Example: audioRef.current.src = '/music/background.mp3'
         audioRef.current.play().catch(error => {
           console.log('Audio play failed:', error)
-          // If music fails to play, just toggle the visual state back
           setIsPlaying(false)
         })
       }
       setIsPlaying(!isPlaying)
     }
+  }
+
+  const handleBrandClick = () => {
+    setShowClickPrompt(false)
+    onTerminalClick()
   }
 
   const navItems = [
@@ -55,8 +64,7 @@ const Header = ({ activeSection, setActiveSection }) => {
   ]
 
   return (
-    <header className={`header ${isScrolled ? 'scrolled' : ''}`}>
-      {/* Hidden audio element */}
+    <header className={`header ${isScrolled ? 'scrolled' : ''} glass-effect`}>
       <audio
         ref={audioRef}
         loop
@@ -70,15 +78,19 @@ const Header = ({ activeSection, setActiveSection }) => {
       </audio>
       
       <nav className="nav">
-        {/* Brand Section */}
-        <div className="nav-brand">
-          <span className="brand-text">DJ</span>
+        <div className="nav-brand" onClick={handleBrandClick}>
+          <span className="brand-text hero-gradient">DJ</span>
           <div className="brand-underline"></div>
+          {showClickPrompt && (
+            <div className="click-prompt">
+              <span>Click me!</span>
+              <div className="pulse-ring"></div>
+            </div>
+          )}
         </div>
         
-        {/* Navigation Items */}
         <ul className="nav-list">
-          {navItems.map((item, index) => (
+          {navItems.map((item) => (
             <li key={item.id} className="nav-item">
               <button
                 className={`nav-button ${activeSection === item.id ? 'active' : ''} ${hoveredItem === item.id ? 'hovered' : ''}`}
@@ -88,14 +100,13 @@ const Header = ({ activeSection, setActiveSection }) => {
               >
                 <span className="button-text">{item.label}</span>
                 <div className="button-underline"></div>
+                <div className="button-glow"></div>
               </button>
             </li>
           ))}
         </ul>
 
-        {/* Control Section - Music & Theme Toggle */}
         <div className="nav-controls">
-          {/* Music Player */}
           <button
             className={`music-toggle ${isPlaying ? 'playing' : ''}`}
             onClick={toggleMusic}
@@ -113,7 +124,6 @@ const Header = ({ activeSection, setActiveSection }) => {
             </div>
           </button>
 
-          {/* Theme Toggle */}
           <button
             className={`theme-toggle ${theme}`}
             onClick={toggleTheme}
