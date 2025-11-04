@@ -1,12 +1,11 @@
-// src/components/Header/Header.jsx
+// src/components/Header/Header.jsx - Updated to accept theme props
 import { useState, useEffect, useRef } from 'react'
 import './Header.css'
 
-const Header = ({ activeSection, setActiveSection, onTerminalClick }) => {
+const Header = ({ activeSection, setActiveSection, onTerminalClick, theme, toggleTheme }) => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [hoveredItem, setHoveredItem] = useState(null)
   const [isPlaying, setIsPlaying] = useState(false)
-  const [theme, setTheme] = useState('light')
   const [showClickPrompt, setShowClickPrompt] = useState(true)
   const audioRef = useRef(null)
 
@@ -19,9 +18,6 @@ const Header = ({ activeSection, setActiveSection, onTerminalClick }) => {
   }, [])
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem('portfolio-theme') || 'light'
-    setTheme(savedTheme)
-    
     // Hide click prompt after 5 seconds
     const timer = setTimeout(() => {
       setShowClickPrompt(false)
@@ -29,13 +25,6 @@ const Header = ({ activeSection, setActiveSection, onTerminalClick }) => {
     
     return () => clearTimeout(timer)
   }, [])
-
-  const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light'
-    setTheme(newTheme)
-    localStorage.setItem('portfolio-theme', newTheme)
-    document.documentElement.setAttribute('data-theme', newTheme)
-  }
 
   const toggleMusic = () => {
     if (audioRef.current) {

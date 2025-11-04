@@ -1,5 +1,5 @@
 // src/App.jsx
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Header from './components/Header/Header'
 import SocialButtons from './components/SocialButtons/SocialButtons'
 import ContactModal from './components/ContactModal/ContactModal'
@@ -17,6 +17,21 @@ function App() {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
   const [isTerminalOpen, setIsTerminalOpen] = useState(false)
   const [isGameOpen, setIsGameOpen] = useState(false)
+  const [theme, setTheme] = useState('light')
+
+  // Initialize theme
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('portfolio-theme') || 'light'
+    setTheme(savedTheme)
+    document.documentElement.setAttribute('data-theme', savedTheme)
+  }, [])
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light'
+    setTheme(newTheme)
+    localStorage.setItem('portfolio-theme', newTheme)
+    document.documentElement.setAttribute('data-theme', newTheme)
+  }
 
   const renderSection = () => {
     switch (activeSection) {
@@ -45,42 +60,85 @@ function App() {
         break
       case 'progress':
         setActiveSection('progress')
-        break
+        return '🚧 Progress section is under construction. Check back soon!'
       case 'projects':
         setActiveSection('projects')
-        break
+        return '💼 Projects gallery is being curated. Launching in 2 weeks!'
       case 'game':
         setIsGameOpen(true)
-        return '🎮 Launching hidden game...'
+        return '🎮 Launching Click Attack Game! Close the terminal to play.'
+      case 'theme':
+      case 'toggle theme':
+      case 'dark mode':
+      case 'light mode':
+        toggleTheme()
+        return `Theme switched to ${theme === 'light' ? 'dark' : 'light'} mode`
       case 'clear':
         return 'clear'
       case 'help':
         return `Available commands:
+
+🌐 Navigation:
   home       - Navigate to Home section
   blog       - Navigate to Blog section  
-  progress   - Navigate to Progress section
-  projects   - Navigate to Projects section
-  game       - Launch hidden game 🎮
+  progress   - Navigate to Progress section (Coming Soon)
+  projects   - Navigate to Projects section (Launching Soon)
+
+🎮 Games & Fun:
+  game       - Play Click Attack Game 🎯
+
+💻 Technical:
   techstack  - Show my technology stack
+
+🎨 Appearance:
+  theme      - Toggle between light and dark mode
+
+🛠️ Utility:
   clear      - Clear terminal
-  help       - Show this help message`
+  help       - Show this help message
+  echo [text]- Echo back the text
+
+💡 Pro Tip: The Progress and Projects sections are coming soon with amazing features!`
+      case 'techstack':
+        return `🚀 My Tech Stack:
+
+Frontend:
+  React, TypeScript, JavaScript, HTML5, CSS3
+
+Backend:
+  Node.js, Python, Express, FastAPI
+
+Databases:
+  MongoDB, PostgreSQL, Redis
+
+Cloud & DevOps:
+  AWS, Docker, CI/CD, GitHub Actions
+
+Tools:
+  Git, VS Code, Figma, Postman`
       default:
         if (cmd.startsWith('echo ')) {
           return cmd.slice(5)
         }
-        return `Command not found: ${command}. Type 'help' for available commands.`
+        return `Command not found: ${cmd}. Type 'help' for available commands.`
     }
     return `Navigated to ${cmd} section`
   }
 
+  const handleSectionChange = (section) => {
+    setActiveSection(section)
+  }
+
   return (
-    <div className="app">
+    <div className="app" data-theme={theme}>
       <LeafBackground />
       
       <Header 
         activeSection={activeSection} 
-        setActiveSection={setActiveSection}
+        setActiveSection={handleSectionChange}
         onTerminalClick={() => setIsTerminalOpen(true)}
+        theme={theme}
+        toggleTheme={toggleTheme}
       />
       
       <SocialButtons 
