@@ -1,0 +1,69 @@
+
+/* src/sections/ProjectsSection/ProjectsSection.css */
+.projects-section {
+  min-height: 80vh;
+  padding: 40px 0;
+}
+
+.projects-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.section-title {
+  color: var(--cyan);
+  font-size: 3rem;
+  margin-bottom: 10px;
+  text-shadow: 0 0 10px rgba(151, 216, 230, 0.3);
+}
+
+.section-subtitle {
+  color: var(--text-light);
+  font-size: 1.2rem;
+  opacity: 0.8;
+}
+
+.projects-guide {
+  margin-top: 60px;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  border: 2px solid var(--purple);
+}
+
+.projects-guide h2 {
+  color: var(--peach);
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2rem;
+}
+
+.guide-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+}
+
+.step {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 25px;
+  border-radius: 15px;
+  border-left: 4px solid var(--yellow);
+  transition: transform 0.3s ease;
+}
+
+.step:hover {
+  transform: translateY(-5px);
+}
+
+.step h3 {
+  color: var(--yellow);
+  margin-bottom: 15px;
+  font-size: 1.3rem;
+}
+
+.step p {
+  color: var(--text-light);
+  line-height: 1.6;
+  margin: 0;
+}

@@ -1,0 +1,82 @@
+/* src/components/ThemeToggle/ThemeToggle.css */
+.theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.theme-toggle::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--premium-gold);
+  border-radius: 50%;
+  transform: scale(0);
+  transition: transform 0.3s ease;
+}
+
+.theme-toggle:hover::before {
+  transform: scale(1);
+}
+
+.toggle-track {
+  width: 48px;
+  height: 24px;
+  background: var(--light-gray);
+  border-radius: 12px;
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid var(--border-color);
+}
+
+.theme-toggle.dark .toggle-track {
+  background: var(--dark-gray);
+}
+
+.toggle-thumb {
+  width: 20px;
+  height: 20px;
+  background: var(--pure-white);
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.theme-toggle.dark .toggle-thumb {
+  left: 26px;
+  background: var(--pure-black);
+}
+
+.toggle-thumb svg {
+  width: 12px;
+  height: 12px;
+  color: var(--medium-gray);
+  transition: color 0.3s ease;
+}
+
+.theme-toggle:hover .toggle-thumb svg {
+  color: var(--premium-gold);
+}
+
+.theme-toggle.animating .toggle-thumb {
+  animation: bounce 0.6s ease;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
