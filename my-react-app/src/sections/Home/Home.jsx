@@ -27,16 +27,17 @@ const Home = () => {
         <div className="ascii-art scale-in">
           <pre className="ascii-text">
 {`
-╔═══════════════════════════════╗
-║                               ║
-║     ██████╗      ██╗         ║
-║    ██╔════╝      ╚██╗        ║
-║    ██║            ╚██╗       ║
-║    ██║            ██╔╝       ║
-║    ╚██████╗      ██╔╝        ║
-║     ╚═════╝      ╚═╝         ║
-║                               ║
-╚═══════════════════════════════╝
+ ██████████         █████
+▒▒███▒▒▒▒███       ▒▒███ 
+ ▒███   ▒▒███       ▒███ 
+ ▒███    ▒███       ▒███ 
+ ▒███    ▒███       ▒███ 
+ ▒███    ███  ███   ▒███ 
+ ██████████  ▒▒████████  
+▒▒▒▒▒▒▒▒▒▒    ▒▒▒▒▒▒▒▒   
+                         
+                         
+                                           
 `}
           </pre>
         </div>
@@ -56,7 +57,7 @@ const Home = () => {
             
             <div className="about-me">
               <h1 className="greeting hero-gradient">
-                Hello, I'm <span className="accent-text">DJ</span>
+                Hello, I'm <span className="accent-text">Devraj</span>
               </h1>
               
               <h2 className="title">
@@ -66,33 +67,45 @@ const Home = () => {
               </h2>
               
               <div className="description">
-                <p>
-                  I craft digital experiences that blend elegant design with 
-                  cutting-edge technology. Passionate about creating solutions 
-                  that make a difference. With over 3 years of experience in 
-                  full-stack development, I specialize in building scalable 
-                  applications that deliver exceptional user experiences.
-                </p>
-                <p>
-                  My approach combines technical expertise with creative 
-                  problem-solving to transform complex challenges into 
-                  elegant solutions. I believe in writing clean, maintainable 
-                  code and staying at the forefront of emerging technologies.
-                </p>
+           <p>
+  I design user interfaces and write automation scripts.
+</p>
+
+<p>
+  I began programming about two years ago, starting with C++. Over time, I expanded my skills to include Python — which I use to speed up my workflow and handle backend development.
+</p>
+
+<p>
+  My focus is on creating beautiful, responsive, and lag-free websites. Currently, I’m diving deeper into frontend development while building various Python projects.
+</p>
+
+<p>
+  In my free time, I enjoy competitive programming and reading books. Some of my favorites include:
+  <ul>
+    <li><em>The Brothers Karamazov</em></li>
+    <li><em>Vigyan bhairav tantra</em></li>
+    <li><em>Yoga Sutras</em></li>
+    <li><em>Ashtavakra Gita</em></li>
+    <li><em>Thus Spoke Zarathustra</em></li>
+    <li><em>The Hitchhiker’s Guide to the Galaxy</em></li>
+    <li><em>Sherlock Holmes</em> (a childhood favorite)</li>
+  </ul>
+</p>
+-+
               </div>
               
               <div className="stats-grid">
                 <div className="stat glass-effect">
-                  <span className="stat-number">50+</span>
+                  <span className="stat-number">10+</span>
                   <span className="stat-label">Projects</span>
                 </div>
                 <div className="stat glass-effect">
-                  <span className="stat-number">3+</span>
+                  <span className="stat-number">2+</span>
                   <span className="stat-label">Years</span>
                 </div>
                 <div className="stat glass-effect">
-                  <span className="stat-number">100%</span>
-                  <span className="stat-label">Passion</span>
+                  <span className="stat-number">1hr</span>
+                  <span className="stat-label">Excercise</span>
                 </div>
               </div>
             </div>
