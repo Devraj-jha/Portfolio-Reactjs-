@@ -6,6 +6,7 @@ import './Home.css';
 const Home = () => {
   const [ref, isVisible] = useScrollAnimation(0.3);
   const [textIndex, setTextIndex] = useState(0);
+  const [imageLoaded, setImageLoaded] = useState(false);
   
   const rotatingTexts = [
     "Programmer",
@@ -20,6 +21,15 @@ const Home = () => {
     }, 3000);
     return () => clearInterval(interval);
   }, []);
+
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+  };
+
+  const handleImageError = () => {
+    console.log('Failed to load profile image');
+    setImageLoaded(true); // Still set to true to hide loading state
+  };
 
   return (
     <section className="home-section">
@@ -46,10 +56,24 @@ const Home = () => {
           <div className="profile-content">
             <div className="profile-image-container">
               <div className="profile-image glass-effect">
-                <div className="image-placeholder">
-                  <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                  </svg>
+                <div className={`image-wrapper ${imageLoaded ? 'loaded' : ''}`}>
+                  {/* Replace with your profile image path */}
+                  <img 
+                    src="/assets/profile.png" 
+                    alt="Devraj - Programmer & Problem Solver"
+                    className="profile-photo"
+                    onLoad={handleImageLoad}
+                    onError={handleImageError}
+                  />
+                  
+                  {/* Fallback if image fails to load */}
+                  {!imageLoaded && (
+                    <div className="image-loading">
+                      <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                      </svg>
+                    </div>
+                  )}
                 </div>
                 <div className="image-glow"></div>
               </div>
@@ -67,31 +91,30 @@ const Home = () => {
               </h2>
               
               <div className="description">
-           <p>
-  I design user interfaces, Solve problems and write automation scripts.
-</p>
+                <p>
+                  I design user interfaces, Solve problems and write automation scripts.
+                </p>
 
-<p>
-  I began programming about two years ago, starting with C++. Over time, I expanded my skills to include Python — which I use to speed up my workflow and handle backend development.
-</p>
+                <p>
+                  I began programming about two years ago, starting with C++. Over time, I expanded my skills to include Python — which I use to speed up my workflow and handle backend development.
+                </p>
 
-<p>
-  My focus is on creating beautiful, responsive, and lag-free websites. Currently, I’m diving deeper into frontend development while building various Python projects.
-</p>
+                <p>
+                  My focus is on creating beautiful, responsive, and lag-free websites. Currently, I'm diving deeper into frontend development while building various Python projects.
+                </p>
 
-<p>
-  In my free time, I enjoy competitive programming, Watching One Piece and reading books. Some of my favorites include:
-  <ul>
-    <li><em>The Brothers Karamazov</em></li>
-    <li><em>Vigyan bhairav tantra</em></li>
-    <li><em>Yoga Sutras</em></li>
-    <li><em>Ashtavakra Gita</em></li>
-    <li><em>SICP </em> (currently reading)</li>
-    <li><em>The Hitchhiker’s Guide to the Galaxy</em></li>
-    <li><em>Sherlock Holmes</em> (Reading currently)</li>
-  </ul>
-</p>
--+
+                <p>
+                  In my free time, I enjoy competitive programming, Watching One Piece and reading books. Some of my favorites include:
+                </p>
+                <ul>
+                  <li><em>The Brothers Karamazov</em></li>
+                  <li><em>Vigyan bhairav tantra</em></li>
+                  <li><em>Yoga Sutras</em></li>
+                  <li><em>Ashtavakra Gita</em></li>
+                  <li><em>SICP </em> (currently reading)</li>
+                  <li><em>The Hitchhiker's Guide to the Galaxy</em></li>
+                  <li><em>Sherlock Holmes</em> (Reading currently)</li>
+                </ul>
               </div>
               
               <div className="stats-grid">
