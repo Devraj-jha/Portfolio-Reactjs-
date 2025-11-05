@@ -39,7 +39,7 @@ const Blog = () => {
 
   return (
     <section className="blog-section">
-      <div className="blog-header">
+      {/* <div className="blog-header">
         <h1 className="section-title">My Blog</h1>
         <p className="section-subtitle">Random ideas, thoughts, and things I'm learning</p>
       </div>
@@ -67,11 +67,11 @@ const Blog = () => {
             </div>
           </article>
         ))}
-      </div>
+      </div> */}
       
       <div className="blog-coming-soon">
         <h2>More Content Coming Soon!</h2>
-        <p>I'm constantly learning and sharing my journey. Stay tuned for more posts!</p>
+        <p>Will write blogs here !!! </p>
       </div>
     </section>
   )

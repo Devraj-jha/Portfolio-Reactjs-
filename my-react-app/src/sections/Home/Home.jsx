@@ -8,10 +8,10 @@ const Home = () => {
   const [textIndex, setTextIndex] = useState(0);
   
   const rotatingTexts = [
-    "Creative Developer",
+    "Programmer",
     "Problem Solver", 
-    "Tech Enthusiast",
-    "UI/UX Designer"
+    "Python and c++ Guy",
+    "Loves aesthetic"
   ];
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const Home = () => {
         <div className="ascii-art scale-in">
           <pre className="ascii-text">
 {`
- ██████████         █████
+ ██████████       █████
 ▒▒███▒▒▒▒███       ▒▒███ 
  ▒███   ▒▒███       ▒███ 
  ▒███    ▒███       ▒███ 
@@ -68,7 +68,7 @@ const Home = () => {
               
               <div className="description">
            <p>
-  I design user interfaces and write automation scripts.
+  I design user interfaces, Solve problems and write automation scripts.
 </p>
 
 <p>
@@ -80,15 +80,15 @@ const Home = () => {
 </p>
 
 <p>
-  In my free time, I enjoy competitive programming and reading books. Some of my favorites include:
+  In my free time, I enjoy competitive programming, Watching One Piece and reading books. Some of my favorites include:
   <ul>
     <li><em>The Brothers Karamazov</em></li>
     <li><em>Vigyan bhairav tantra</em></li>
     <li><em>Yoga Sutras</em></li>
     <li><em>Ashtavakra Gita</em></li>
-    <li><em>Thus Spoke Zarathustra</em></li>
+    <li><em>SICP </em> (currently reading)</li>
     <li><em>The Hitchhiker’s Guide to the Galaxy</em></li>
-    <li><em>Sherlock Holmes</em> (a childhood favorite)</li>
+    <li><em>Sherlock Holmes</em> (Reading currently)</li>
   </ul>
 </p>
 -+
@@ -104,8 +104,8 @@ const Home = () => {
                   <span className="stat-label">Years</span>
                 </div>
                 <div className="stat glass-effect">
-                  <span className="stat-number">1hr</span>
-                  <span className="stat-label">Excercise</span>
+                  <span className="stat-number">700+</span>
+                  <span className="stat-label">hours</span>
                 </div>
               </div>
             </div>

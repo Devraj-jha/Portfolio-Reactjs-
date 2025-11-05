@@ -9,15 +9,16 @@ const Terminal = ({ isOpen, onClose, onCommand }) => {
 
   const techStack = [
     { name: 'React', level: 'Expert', category: 'Frontend' },
-    { name: 'TypeScript', level: 'Advanced', category: 'Language' },
-    { name: 'Node.js', level: 'Expert', category: 'Backend' },
+    { name: 'TypeScript', level: 'intermediate', category: 'Language' },
+    { name: 'JavaScript', level: 'Expert', category: 'Language' },
+    { name: 'Node.js', level: 'intermediate', category: 'Backend' },
     { name: 'Python', level: 'Advanced', category: 'Language' },
-    { name: 'AWS', level: 'Intermediate', category: 'Cloud' },
-    { name: 'Docker', level: 'Advanced', category: 'DevOps' },
+    // { name: 'AWS', level: 'Intermediate', category: 'Cloud' },
+    // { name: 'Docker', level: 'Advanced', category: 'DevOps' },
     { name: 'MongoDB', level: 'Expert', category: 'Database' },
-    { name: 'GraphQL', level: 'Intermediate', category: 'API' },
+    // { name: 'GraphQL', level: 'Intermediate', category: 'API' },
     { name: 'PostgreSQL', level: 'Advanced', category: 'Database' },
-    { name: 'Redis', level: 'Intermediate', category: 'Cache' }
+    // { name: 'Redis', level: 'Intermediate', category: 'Cache' }
   ];
 
   const executeCommand = (cmd) => {
@@ -148,7 +149,7 @@ const Terminal = ({ isOpen, onClose, onCommand }) => {
               `}
             </div>
             <div className="welcome-text">
-              Welcome to DJ's Interactive Terminal
+              Welcome to My Interactive Terminal
             </div>
           </div>
 

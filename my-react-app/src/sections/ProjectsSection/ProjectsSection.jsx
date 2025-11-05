@@ -47,7 +47,7 @@ const ProjectsSection = () => {
           <div className="code-icon">
             <div className="code-bracket">{`{ }`}</div>
           </div>
-          <h1 className="coming-soon-title">Projects Gallery</h1>
+          <h1 className="coming-soon-title">Projects </h1>
           <p className="coming-soon-message">
             Will add soom 
           </p>

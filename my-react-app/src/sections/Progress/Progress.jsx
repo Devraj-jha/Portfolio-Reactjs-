@@ -106,21 +106,20 @@ const Progress = () => {
           </div>
           <h1 className="coming-soon-title">Progress Section</h1>
           <p className="coming-soon-message">
-            My achievement tree and progress tracking system is currently under construction. 
-            I'm building something amazing to showcase my journey and milestones!
-          </p>
+             My achievement tree and progress tracking system is currently under construction. 
+           </p>
           <div className="progress-bar">
             <div className="progress-fill" style={{ width: '65%' }}></div>
           </div>
-          <p className="completion-text">65% Complete - Coming Soon!</p>
+          <p className="completion-text"></p>
           
           <div className="feature-preview">
             <h3>What to Expect:</h3>
             <ul>
-              <li>🎯 Solo Leveling-style Progress Tree</li>
-              <li>📊 Achievement Tracking</li>
-              <li>🚀 Skill Development Timeline</li>
-              <li>🏆 Milestone Celebrations</li>
+              <li> Solo Leveling-style Progress Tree</li>
+              <li> step by step Task to complete  </li>
+              {/* <li> Skill Development Timeline</li>
+              <li> Milestone Celebrations</li> */}
             </ul>
           </div>
         </div>
