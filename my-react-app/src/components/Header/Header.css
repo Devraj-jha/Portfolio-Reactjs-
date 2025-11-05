@@ -667,3 +667,194 @@
 }
 
 /* ... rest of the previous styles remain the same ... */
+/* src/components/Header/Header.css - Music Button Updates */
+/* ... previous styles ... */
+
+.music-toggle {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  background: var(--bg-primary);
+  border: 2px solid var(--border-color);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.music-toggle::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--accent-primary);
+  border-radius: 50%;
+  transform: scale(0);
+  transition: transform 0.3s ease;
+}
+
+.music-toggle:hover::before {
+  transform: scale(1);
+}
+
+.music-toggle:hover {
+  border-color: var(--accent-primary);
+  transform: scale(1.05);
+}
+
+.music-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--text-primary);
+  position: relative;
+  z-index: 2;
+  transition: color 0.3s ease;
+}
+
+.music-toggle:hover .music-icon {
+  color: var(--pure-white);
+}
+
+.music-waves {
+  position: absolute;
+  display: flex;
+  gap: 2px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.music-toggle.playing .music-waves {
+  opacity: 1;
+}
+
+.wave {
+  width: 2px;
+  height: 6px;
+  background: var(--accent-primary);
+  border-radius: 1px;
+  animation: wave 1.2s ease-in-out infinite;
+}
+
+.wave:nth-child(1) { animation-delay: 0s; }
+.wave:nth-child(2) { animation-delay: 0.2s; }
+.wave:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes wave {
+  0%, 100% { transform: scaleY(0.3); }
+  50% { transform: scaleY(1.2); }
+}
+
+/* ... rest of the styles ... */
+/* src/components/Header/Header.css - RESTORED ORIGINAL MUSIC BUTTON */
+/* ... previous styles ... */
+
+.music-toggle {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  background: var(--bg-primary);
+  border: 2px solid var(--border-color);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.music-toggle::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--accent-primary);
+  border-radius: 50%;
+  transform: scale(0);
+  transition: transform 0.3s ease;
+}
+
+.music-toggle:hover::before {
+  transform: scale(1);
+}
+
+.music-toggle:hover {
+  border-color: var(--accent-primary);
+  transform: scale(1.05);
+}
+
+.music-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--text-primary);
+  position: relative;
+  z-index: 2;
+  transition: color 0.3s ease;
+}
+
+.music-toggle:hover .music-icon {
+  color: var(--pure-white);
+}
+
+.music-waves {
+  position: absolute;
+  display: flex;
+  gap: 2px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.music-toggle.playing .music-waves {
+  opacity: 1;
+}
+
+.wave {
+  width: 2px;
+  height: 6px;
+  background: var(--accent-primary);
+  border-radius: 1px;
+  animation: wave 1.2s ease-in-out infinite;
+}
+
+.wave:nth-child(1) { animation-delay: 0s; }
+.wave:nth-child(2) { animation-delay: 0.2s; }
+.wave:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes wave {
+  0%, 100% { transform: scaleY(0.3); }
+  50% { transform: scaleY(1.2); }
+}
+
+/* Auto-play indicator */
+.music-toggle::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 8px;
+  height: 8px;
+  background: #4CAF50;
+  border-radius: 50%;
+  border: 2px solid var(--bg-primary);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.music-toggle.playing::after {
+  opacity: 1;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+/* ... rest of the styles ... */

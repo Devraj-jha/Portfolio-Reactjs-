@@ -28,7 +28,7 @@ const Terminal = ({ isOpen, onClose, onCommand }) => {
     
     switch (cmd.toLowerCase()) {
       case 'techstack':
-        output = '🚀 My Tech Stack:\n\n';
+        output = ' My Tech Stack:\n\n';
         const categories = {};
         techStack.forEach(tech => {
           if (!categories[tech.category]) categories[tech.category] = [];
@@ -67,14 +67,14 @@ const Terminal = ({ isOpen, onClose, onCommand }) => {
 
 💻 Technical:
   techstack  - Show my technology stack
-  game       - Launch hidden game 🎮
+
 
 🛠️ Utility:
   clear      - Clear terminal
   help       - Show this help message
   echo [text]- Echo back the text
 
-💡 Tip: Try the 'game' command for a surprise!`;
+`;
         break;
         
       default:
@@ -115,9 +115,9 @@ const Terminal = ({ isOpen, onClose, onCommand }) => {
   useEffect(() => {
     if (isOpen) {
       setCommands([
-        { type: 'output', content: '🌟 Welcome to DJ\'s Terminal!' },
+        { type: 'output', content: '🌟 Welcome' },
         { type: 'output', content: 'Type "help" to see available commands.' },
-        { type: 'output', content: '💡 Pro tip: Try the "game" command for a surprise!' }
+        { type: 'output', content: '' }
       ]);
     }
   }, [isOpen]);
@@ -133,23 +133,29 @@ const Terminal = ({ isOpen, onClose, onCommand }) => {
             <div className="control minimize"></div>
             <div className="control maximize"></div>
           </div>
-          <div className="terminal-title">terminal — bash — 80×24</div>
+          <div className="terminal-title">terminal — bash</div>
         </div>
         
         <div className="terminal-body" ref={terminalRef}>
           <div className="welcome-message">
             <div className="ascii-art">
               {`
-   ██████╗ ██╗   ██╗
-  ██╔════╝ ██║   ██║
-  ██║  ███╗██║   ██║
-  ██║   ██║██║   ██║
-  ╚██████╔╝╚██████╔╝
-   ╚═════╝  ╚═════╝ 
+$$$$$$$\      
+$$  __$$\     
+$$ |  $$ |$$\ 
+$$ |  $$ |\__|
+$$ |  $$ |$$\ 
+$$ |  $$ |$$ |
+$$$$$$$  |$$ |
+\_______/ $$ |
+    $$\   $$ |
+    \$$$$$$  |
+     \______/ 
+
               `}
             </div>
             <div className="welcome-text">
-              Welcome to My Interactive Terminal
+              Welcome to my Terminal
             </div>
           </div>
 
@@ -167,7 +173,7 @@ const Terminal = ({ isOpen, onClose, onCommand }) => {
           ))}
           
           <form onSubmit={handleSubmit} className="terminal-input-line">
-            <span className="prompt">visitor@portfolio:~$ </span>
+            <span className="prompt">devraj@portfolio:~$ </span>
             <input
               type="text"
               value={input}

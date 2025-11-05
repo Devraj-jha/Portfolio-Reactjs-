@@ -7,6 +7,7 @@ const Header = ({ activeSection, setActiveSection, onTerminalClick, theme, toggl
   const [hoveredItem, setHoveredItem] = useState(null)
   const [isPlaying, setIsPlaying] = useState(false)
   const [showClickPrompt, setShowClickPrompt] = useState(true)
+  const [userInteracted, setUserInteracted] = useState(false)
   const audioRef = useRef(null)
   const clickTimeoutRef = useRef(null)
 
@@ -31,17 +32,57 @@ const Header = ({ activeSection, setActiveSection, onTerminalClick, theme, toggl
     }
   }, [])
 
+  // Auto-play music when user interacts with the page
+  useEffect(() => {
+    const handleUserInteraction = () => {
+      if (!userInteracted) {
+        setUserInteracted(true)
+        // Try to auto-play music
+        setTimeout(() => {
+          if (audioRef.current && !isPlaying) {
+            audioRef.current.play().then(() => {
+              setIsPlaying(true)
+              console.log('🎵 Music auto-played successfully')
+            }).catch(error => {
+              console.log('Auto-play failed, user needs to click manually:', error)
+            })
+          }
+        }, 1000)
+        
+        // Remove event listeners after first interaction
+        document.removeEventListener('click', handleUserInteraction)
+        document.removeEventListener('keydown', handleUserInteraction)
+        document.removeEventListener('touchstart', handleUserInteraction)
+      }
+    }
+
+    // Add event listeners for user interaction
+    document.addEventListener('click', handleUserInteraction)
+    document.addEventListener('keydown', handleUserInteraction)
+    document.addEventListener('touchstart', handleUserInteraction)
+
+    return () => {
+      document.removeEventListener('click', handleUserInteraction)
+      document.removeEventListener('keydown', handleUserInteraction)
+      document.removeEventListener('touchstart', handleUserInteraction)
+    }
+  }, [userInteracted, isPlaying])
+
   const toggleMusic = () => {
     if (audioRef.current) {
       if (isPlaying) {
         audioRef.current.pause()
+        setIsPlaying(false)
       } else {
         audioRef.current.play().catch(error => {
           console.log('Audio play failed:', error)
-          setIsPlaying(false)
+          // If auto-play fails, ask user to interact
+          if (!userInteracted) {
+            alert('Please click anywhere on the page first to enable audio.')
+          }
         })
+        setIsPlaying(true)
       }
-      setIsPlaying(!isPlaying)
     }
   }
 
@@ -62,15 +103,20 @@ const Header = ({ activeSection, setActiveSection, onTerminalClick, theme, toggl
 
   return (
     <header className={`header ${isScrolled ? 'scrolled' : ''} glass-effect`}>
+      {/* Audio element for background music */}
       <audio
         ref={audioRef}
         loop
         onEnded={() => setIsPlaying(false)}
-        onError={() => setIsPlaying(false)}
+        onError={(e) => {
+          console.log('Audio error:', e)
+          setIsPlaying(false)
+        }}
+        preload="auto"
       >
-        {/* ADD YOUR MUSIC FILE PATH IN THE SOURCE TAG BELOW */}
-        {/* <source src="/music/background.mp3" type="audio/mpeg" /> */}
-        {/* <source src="/music/background.ogg" type="audio/ogg" /> */}
+        {/* UPDATE THIS PATH TO YOUR MUSIC FILE */}
+        <source src="/music/background.mp3" type="audio/mpeg" />
+        <source src="/music/background.ogg" type="audio/ogg" />
         Your browser does not support the audio element.
       </audio>
       
@@ -105,12 +151,15 @@ const Header = ({ activeSection, setActiveSection, onTerminalClick, theme, toggl
         </ul>
 
         <div className="nav-controls">
+          {/* Music Toggle Button - RESTORED ORIGINAL ICON */}
           <button
             className={`music-toggle ${isPlaying ? 'playing' : ''}`}
             onClick={toggleMusic}
-            aria-label={isPlaying ? 'Pause music' : 'Play music'}
+            aria-label={isPlaying ? 'Pause background music' : 'Play background music'}
+            title={isPlaying ? 'Pause music' : 'Play music'}
           >
             <div className="music-icon">
+              {/* RESTORED ORIGINAL MUSIC ICON */}
               <svg viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
               </svg>

@@ -81,7 +81,7 @@ const Home = () => {
             
             <div className="about-me">
               <h1 className="greeting hero-gradient">
-                Hello, I'm <span className="accent-text">Devraj</span>
+                Hello, I'm <span className="accent-text">Devraj jha</span>
               </h1>
               
               <h2 className="title">
@@ -108,13 +108,14 @@ const Home = () => {
                 </p>
                 <ul>
                   <li><em>The Brothers Karamazov</em></li>
-                  <li><em>Vigyan bhairav tantra</em></li>
+                  <li><em>Introduction to algorithm</em></li>
                   <li><em>Yoga Sutras</em></li>
                   <li><em>Ashtavakra Gita</em></li>
                   <li><em>SICP </em> (currently reading)</li>
                   <li><em>The Hitchhiker's Guide to the Galaxy</em></li>
                   <li><em>Sherlock Holmes</em> (Reading currently)</li>
-                </ul>
+                </ul><p>
+CLick on the DJ logo at the top LEFT to open terminal                </p>
               </div>
               
               <div className="stats-grid">
@@ -130,7 +131,10 @@ const Home = () => {
                   <span className="stat-number">700+</span>
                   <span className="stat-label">hours</span>
                 </div>
+                
               </div>
+              <p>
+            </p>
             </div>
           </div>
         </div>

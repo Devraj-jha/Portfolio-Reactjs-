@@ -85,7 +85,7 @@ function App() {
   projects   - Navigate to Projects section (Launching Soon)
 
 🎮 Games & Fun:
-  game       - Play Click Attack Game 🎯
+  
 
 💻 Technical:
   techstack  - Show my technology stack
@@ -109,10 +109,9 @@ Backend:
   Node.js, Python, Express, FastAPI
 
 Databases:
-  MongoDB, PostgreSQL, Redis
+  MongoDB, PostgreSQL, 
 
-Cloud & DevOps:
-  AWS, Docker, CI/CD, GitHub Actions
+
 
 Tools:
   Git, VS Code, Figma, Postman`
