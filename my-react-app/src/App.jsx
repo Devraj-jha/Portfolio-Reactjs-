@@ -1,10 +1,9 @@
-// src/App.jsx
 import { useState, useEffect } from 'react'
 import Header from './components/Header/Header'
 import SocialButtons from './components/SocialButtons/SocialButtons'
 import ContactModal from './components/ContactModal/ContactModal'
 import Terminal from './components/Terminal/Terminal'
-import VideoBackground from './components/VideoBackground/VideoBackground'
+import SpaceBackground from './components/SpaceBackground/SpaceBackground'
 import HiddenGame from './components/HiddenGame/HiddenGame'
 import Home from './sections/Home/Home'
 import Blog from './sections/Blog/Blog'
@@ -130,7 +129,7 @@ Tools:
 
   return (
     <div className="app" data-theme={theme}>
-      <VideoBackground />
+      <SpaceBackground />
       
       <Header 
         activeSection={activeSection} 
