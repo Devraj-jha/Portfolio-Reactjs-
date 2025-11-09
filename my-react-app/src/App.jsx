@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react'
 import Header from './components/Header/Header'
 import SocialButtons from './components/SocialButtons/SocialButtons'
 import ContactModal from './components/ContactModal/ContactModal'
-import Terminal from './components/Terminal/Terminal'
 import VideoBackground from './components/VideoBackground/VideoBackground'
 import HiddenGame from './components/HiddenGame/HiddenGame'
 import Home from './sections/Home/Home'
@@ -15,7 +14,6 @@ import './App.css'
 function App() {
   const [activeSection, setActiveSection] = useState('home')
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
-  const [isTerminalOpen, setIsTerminalOpen] = useState(false)
   const [isGameOpen, setIsGameOpen] = useState(false)
   const [theme, setTheme] = useState('light')
 
@@ -48,83 +46,6 @@ function App() {
     }
   }
 
-  const handleTerminalCommand = (command) => {
-    const cmd = command.toLowerCase().trim()
-    
-    switch (cmd) {
-      case 'home':
-        setActiveSection('home')
-        return '📍 Navigating to Home section...'
-      case 'blog':
-        setActiveSection('blog')
-        return '📝 Navigating to Blog section...'
-      case 'progress':
-        setActiveSection('progress')
-        return '🚧 Progress section is under construction. Check back soon!'
-      case 'projects':
-        setActiveSection('projects')
-        return '💼 Projects gallery is being curated. Launching in 2 weeks!'
-      case 'game':
-        setIsGameOpen(true)
-        setIsTerminalOpen(false) // Only close for game
-        return '🎮 Launching Click Attack Game! Close the terminal to play.'
-      case 'theme':
-      case 'toggle theme':
-      case 'dark mode':
-      case 'light mode':
-        toggleTheme()
-        return `🎨 Theme switched to ${theme === 'light' ? 'dark' : 'light'} mode`
-      case 'clear':
-        return 'clear'
-      case 'help':
-        return `Available commands:
-
-🌐 Navigation:
-  home       - Navigate to Home section
-  blog       - Navigate to Blog section  
-  progress   - Navigate to Progress section (Coming Soon)
-  projects   - Navigate to Projects section (Launching Soon)
-
-🎮 Games & Fun:
-  game       - Play Click Attack Game 🎯
-
-💻 Technical:
-  techstack  - Show my technology stack
-
-🎨 Appearance:
-  theme      - Toggle between light and dark mode
-
-🛠️ Utility:
-  clear      - Clear terminal
-  help       - Show this help message
-  echo [text]- Echo back the text
-
-💡 Pro Tip: The terminal stays open after commands so you can run multiple commands!`
-      case 'techstack':
-        return `🚀 My Tech Stack:
-
-Frontend:
-  React, TypeScript, JavaScript, HTML5, CSS3
-
-Backend:
-  Node.js, Python, Express, FastAPI
-
-Databases:
-  MongoDB, PostgreSQL, Redis
-
-Cloud & DevOps:
-  AWS, Docker, CI/CD, GitHub Actions
-
-Tools:
-  Git, VS Code, Figma, Postman`
-      default:
-        if (cmd.startsWith('echo ')) {
-          return cmd.slice(5)
-        }
-        return `Command not found: ${cmd}. Type 'help' for available commands.`
-    }
-  }
-
   const handleSectionChange = (section) => {
     setActiveSection(section)
   }
@@ -136,7 +57,7 @@ Tools:
       <Header 
         activeSection={activeSection} 
         setActiveSection={handleSectionChange}
-        onTerminalClick={() => setIsTerminalOpen(true)}
+        onTerminalClick={() => console.log('Terminal disabled for now')}
         theme={theme}
         toggleTheme={toggleTheme}
       />
@@ -152,12 +73,6 @@ Tools:
       <ContactModal 
         isOpen={isContactModalOpen}
         onClose={() => setIsContactModalOpen(false)}
-      />
-      
-      <Terminal 
-        isOpen={isTerminalOpen}
-        onClose={() => setIsTerminalOpen(false)}
-        onCommand={handleTerminalCommand}
       />
       
       <HiddenGame 
