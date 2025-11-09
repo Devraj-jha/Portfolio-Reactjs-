@@ -5,44 +5,44 @@ const Projects = () => {
   const projects = [
     {
       id: 1,
-      title: 'Portfolio Website',
-      description: 'The very website you are viewing right now! Built with React, Vite, and modern CSS.',
-      technologies: ['React', 'Vite', 'CSS3', 'JavaScript'],
-      status: 'Completed',
-      githubUrl: 'https://github.com/yourusername/portfolio',
-      liveUrl: 'https://yourportfolio.com',
+      title: 'Python projects under 100 Lines of code',
+      description: 'These are the projects I created to Pratice my python logic and problem solving skills. and includes some cool projects.',
+      technologies: ['Python'],
+      status: 'In Progress',
+      githubUrl: 'https://github.com/Devraj-jha/Python-Projects.git',
+      // liveUrl: 'https://yourportfolio.com',
       image: '/project-placeholder-1.jpg'
     },
     {
       id: 2,
-      title: 'E-commerce Platform',
-      description: 'A full-stack e-commerce solution with user authentication and payment processing.',
-      technologies: ['React', 'Node.js', 'MongoDB', 'Stripe'],
+      title: 'Small web projects',
+      description: 'Projects I created in Plain html css js. to pratice',
+      technologies: ['javascript', 'html5','css'],
       status: 'In Progress',
-      githubUrl: 'https://github.com/yourusername/ecommerce',
+      githubUrl: 'https://github.com/Devraj-jha/Small-Web-Projects.git',
       liveUrl: null,
       image: '/project-placeholder-2.jpg'
     },
-    {
-      id: 3,
-      title: 'Task Management App',
-      description: 'A productivity app for managing tasks with drag-and-drop functionality.',
-      technologies: ['React', 'TypeScript', 'Firebase', 'Tailwind'],
-      status: 'Completed',
-      githubUrl: 'https://github.com/yourusername/taskapp',
-      liveUrl: 'https://yourtaskapp.com',
-      image: '/project-placeholder-3.jpg'
-    },
-    {
-      id: 4,
-      title: 'Weather Dashboard',
-      description: 'Real-time weather application with beautiful data visualizations.',
-      technologies: ['Vue.js', 'Chart.js', 'Weather API', 'CSS'],
-      status: 'Planning',
-      githubUrl: null,
-      liveUrl: null,
-      image: '/project-placeholder-4.jpg'
-    }
+    // {
+    //   id: 3,
+    //   title: 'Task Management App',
+    //   description: 'A productivity app for managing tasks with drag-and-drop functionality.',
+    //   technologies: ['React', 'TypeScript', 'Firebase', 'Tailwind'],
+    //   status: 'Completed',
+    //   githubUrl: 'https://github.com/yourusername/taskapp',
+    //   liveUrl: 'https://yourtaskapp.com',
+    //   image: '/project-placeholder-3.jpg'
+    // },
+    // {
+    //   id: 4,
+    //   title: 'Weather Dashboard',
+    //   description: 'Real-time weather application with beautiful data visualizations.',
+    //   technologies: ['Vue.js', 'Chart.js', 'Weather API', 'CSS'],
+    //   status: 'Planning',
+    //   githubUrl: null,
+    //   liveUrl: null,
+    //   image: '/project-placeholder-4.jpg'
+    // }
   ]
 
   const getStatusColor = (status) => {
