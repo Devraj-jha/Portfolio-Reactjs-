@@ -19,7 +19,8 @@ function App() {
   const [isGameOpen, setIsGameOpen] = useState(false)
   const [theme, setTheme] = useState('light')
 
-  // Initialize theme
+
+
   useEffect(() => {
     const savedTheme = localStorage.getItem('portfolio-theme') || 'light'
     setTheme(savedTheme)
