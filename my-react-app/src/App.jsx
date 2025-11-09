@@ -1,9 +1,10 @@
+// src/App.jsx
 import { useState, useEffect } from 'react'
 import Header from './components/Header/Header'
 import SocialButtons from './components/SocialButtons/SocialButtons'
 import ContactModal from './components/ContactModal/ContactModal'
 import Terminal from './components/Terminal/Terminal'
-import SpaceBackground from './components/SpaceBackground/SpaceBackground'
+import VideoBackground from './components/VideoBackground/VideoBackground'
 import HiddenGame from './components/HiddenGame/HiddenGame'
 import Home from './sections/Home/Home'
 import Blog from './sections/Blog/Blog'
@@ -84,7 +85,7 @@ function App() {
   projects   - Navigate to Projects section (Launching Soon)
 
 🎮 Games & Fun:
-  
+  game       - Play Click Attack Game 🎯
 
 💻 Technical:
   techstack  - Show my technology stack
@@ -108,9 +109,10 @@ Backend:
   Node.js, Python, Express, FastAPI
 
 Databases:
-  MongoDB, PostgreSQL, 
+  MongoDB, PostgreSQL, Redis
 
-
+Cloud & DevOps:
+  AWS, Docker, CI/CD, GitHub Actions
 
 Tools:
   Git, VS Code, Figma, Postman`
@@ -129,7 +131,7 @@ Tools:
 
   return (
     <div className="app" data-theme={theme}>
-      <SpaceBackground />
+      <VideoBackground />
       
       <Header 
         activeSection={activeSection} 
