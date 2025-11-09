@@ -21,6 +21,7 @@ const Terminal = ({ isOpen, onClose, onCommand }) => {
   const executeCommand = (cmd) => {
     if (!cmd.trim()) return;
 
+    // Add the input command to history
     const newCommands = [...commands, { type: 'input', content: cmd }];
     
     let output = '';
@@ -112,12 +113,14 @@ const Terminal = ({ isOpen, onClose, onCommand }) => {
     }
   }, [commands]);
 
-  // Focus input when terminal opens or when commands update
+  // Focus input when terminal opens
   useEffect(() => {
     if (isOpen && inputRef.current) {
-      inputRef.current.focus();
+      setTimeout(() => {
+        inputRef.current.focus();
+      }, 100);
     }
-  }, [isOpen, commands]);
+  }, [isOpen]);
 
   // Initialize terminal when it opens
   useEffect(() => {
@@ -126,6 +129,7 @@ const Terminal = ({ isOpen, onClose, onCommand }) => {
         { type: 'output', content: '🌟 Welcome to DevRaj\'s Terminal' },
         { type: 'output', content: 'Type "help" to see available commands.' }
       ]);
+      setInput('');
     }
   }, [isOpen]);
 
@@ -137,15 +141,20 @@ const Terminal = ({ isOpen, onClose, onCommand }) => {
       }
     };
 
-    document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscape);
+    }
+    
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+    };
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
   return (
     <div className="terminal-overlay" onClick={onClose}>
-      <div className="terminal-container scale-in" onClick={(e) => e.stopPropagation()}>
+      <div className="terminal-container" onClick={(e) => e.stopPropagation()}>
         <div className="terminal-header">
           <div className="terminal-controls">
             <div className="control close" onClick={onClose}></div>
@@ -158,7 +167,7 @@ const Terminal = ({ isOpen, onClose, onCommand }) => {
         <div className="terminal-body" ref={terminalRef}>
           <div className="welcome-message">
             <div className="ascii-art">
-              {`$$$$$$$\\      
+{`$$$$$$$\\      
 $$  __$$\\     
 $$ |  $$ |$$\\ 
 $$ |  $$ |\\__|
@@ -180,9 +189,11 @@ $$$$$$$  |$$ |
               {command.type === 'input' && (
                 <span className="prompt">devraj@portfolio:~$ </span>
               )}
-              <pre className={`content ${command.type === 'output' ? 'output' : ''}`}>
-                {command.content}
-              </pre>
+              <span className="content">
+                {command.type === 'input' ? command.content : (
+                  <pre className="output-content">{command.content}</pre>
+                )}
+              </span>
             </div>
           ))}
           

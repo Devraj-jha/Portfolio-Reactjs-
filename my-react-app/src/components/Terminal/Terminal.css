@@ -184,5 +184,36 @@
 
 .terminal-body::-webkit-scrollbar-thumb {
   background: var(--medium-gray);
-  border-radius: 3px;
+  border-radius: 3
+  px;
+}
+/* Add this to your existing Terminal.css */
+.output-content {
+  margin: 0;
+  font-family: inherit;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.terminal-line {
+  margin-bottom: 8px;
+  animation: typeIn 0.1s ease-out;
+  display: flex;
+  align-items: flex-start;
+}
+
+.terminal-line.input {
+  color: var(--accent-primary);
+}
+
+.terminal-line.output .content {
+  color: var(--text-primary);
+  width: 100%;
+}
+
+.terminal-input-line {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  gap: 5px;
 }

@@ -3,7 +3,7 @@
   min-height: 100vh;
   background: var(--bg-primary);
   position: relative;
-  /* Remove transition from main app to prevent shaking */
+  /* Remove any transitions that might cause shaking */
 }
 
 .main-content {
@@ -14,53 +14,14 @@
   z-index: 1;
 }
 
-/* Only apply transitions to specific elements, not all */
-.terminal-container,
-.glass-effect,
-.stat,
-.profile-image {
-  transition: all 0.3s ease;
-}
-
-/* Remove the global transition that causes shaking */
-/* * {
-  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
-} */
-
-/* Performance optimizations */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
+/* Remove problematic global transitions */
+/* Only apply transitions to specific elements if needed */
 
 /* Mobile optimizations */
 @media (max-width: 768px) {
   .main-content {
     padding: 90px 20px 20px;
   }
-}
-
-/* Scale in animation for modals */
-@keyframes scale-in {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.scale-in {
-  animation: scale-in 0.3s ease-out;
-}
-
-.app.terminal-open {
-  overflow: hidden;
 }
 
 .terminal-overlay {
@@ -74,7 +35,6 @@
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  animation: fadeIn 0.2s ease-out;
 }
 
 .terminal-container {
@@ -84,16 +44,4 @@
   max-width: 800px;
   height: 70vh;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-  animation: scaleIn 0.2s ease-out;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes scaleIn {
-  from { transform: scale(0.9); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
 }
