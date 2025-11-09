@@ -9,7 +9,10 @@ const ProjectsSection = () => {
         <h1 className="section-title">My Projects</h1>
         <p className="section-subtitle">
           A collection of things I've built and learned from
-          will add projects soon. 
+         i will add projects soon....
+        
+
+          
         </p>
       </div>
       
