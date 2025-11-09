@@ -9,15 +9,16 @@ const Terminal = ({ isOpen, onClose, onCommand }) => {
 
   const techStack = [
     { name: 'React', level: 'Expert', category: 'Frontend' },
-    { name: 'TypeScript', level: 'Advanced', category: 'Language' },
-    { name: 'Node.js', level: 'Expert', category: 'Backend' },
+    { name: 'TypeScript', level: 'intermediate', category: 'Language' },
+    { name: 'JavaScript', level: 'Expert', category: 'Language' },
+    { name: 'Node.js', level: 'intermediate', category: 'Backend' },
     { name: 'Python', level: 'Advanced', category: 'Language' },
-    { name: 'AWS', level: 'Intermediate', category: 'Cloud' },
-    { name: 'Docker', level: 'Advanced', category: 'DevOps' },
+    // { name: 'AWS', level: 'Intermediate', category: 'Cloud' },
+    // { name: 'Docker', level: 'Advanced', category: 'DevOps' },
     { name: 'MongoDB', level: 'Expert', category: 'Database' },
-    { name: 'GraphQL', level: 'Intermediate', category: 'API' },
+    // { name: 'GraphQL', level: 'Intermediate', category: 'API' },
     { name: 'PostgreSQL', level: 'Advanced', category: 'Database' },
-    { name: 'Redis', level: 'Intermediate', category: 'Cache' }
+    // { name: 'Redis', level: 'Intermediate', category: 'Cache' }
   ];
 
   const executeCommand = (cmd) => {
@@ -27,7 +28,7 @@ const Terminal = ({ isOpen, onClose, onCommand }) => {
     
     switch (cmd.toLowerCase()) {
       case 'techstack':
-        output = '🚀 My Tech Stack:\n\n';
+        output = ' My Tech Stack:\n\n';
         const categories = {};
         techStack.forEach(tech => {
           if (!categories[tech.category]) categories[tech.category] = [];
@@ -66,14 +67,14 @@ const Terminal = ({ isOpen, onClose, onCommand }) => {
 
 💻 Technical:
   techstack  - Show my technology stack
-  game       - Launch hidden game 🎮
+
 
 🛠️ Utility:
   clear      - Clear terminal
   help       - Show this help message
   echo [text]- Echo back the text
 
-💡 Tip: Try the 'game' command for a surprise!`;
+`;
         break;
         
       default:
@@ -114,9 +115,9 @@ const Terminal = ({ isOpen, onClose, onCommand }) => {
   useEffect(() => {
     if (isOpen) {
       setCommands([
-        { type: 'output', content: '🌟 Welcome to DJ\'s Terminal!' },
+        { type: 'output', content: '🌟 Welcome' },
         { type: 'output', content: 'Type "help" to see available commands.' },
-        { type: 'output', content: '💡 Pro tip: Try the "game" command for a surprise!' }
+        { type: 'output', content: '' }
       ]);
     }
   }, [isOpen]);
@@ -132,23 +133,29 @@ const Terminal = ({ isOpen, onClose, onCommand }) => {
             <div className="control minimize"></div>
             <div className="control maximize"></div>
           </div>
-          <div className="terminal-title">terminal — bash — 80×24</div>
+          <div className="terminal-title">terminal — bash</div>
         </div>
         
         <div className="terminal-body" ref={terminalRef}>
           <div className="welcome-message">
             <div className="ascii-art">
               {`
-   ██████╗ ██╗   ██╗
-  ██╔════╝ ██║   ██║
-  ██║  ███╗██║   ██║
-  ██║   ██║██║   ██║
-  ╚██████╔╝╚██████╔╝
-   ╚═════╝  ╚═════╝ 
+$$$$$$$\      
+$$  __$$\     
+$$ |  $$ |$$\ 
+$$ |  $$ |\__|
+$$ |  $$ |$$\ 
+$$ |  $$ |$$ |
+$$$$$$$  |$$ |
+\_______/ $$ |
+    $$\   $$ |
+    \$$$$$$  |
+     \______/ 
+
               `}
             </div>
             <div className="welcome-text">
-              Welcome to DJ's Interactive Terminal
+              Welcome to my Terminal
             </div>
           </div>
 
@@ -166,7 +173,7 @@ const Terminal = ({ isOpen, onClose, onCommand }) => {
           ))}
           
           <form onSubmit={handleSubmit} className="terminal-input-line">
-            <span className="prompt">visitor@portfolio:~$ </span>
+            <span className="prompt">devraj@portfolio:~$ </span>
             <input
               type="text"
               value={input}
