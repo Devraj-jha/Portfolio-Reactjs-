@@ -151,6 +151,27 @@ const Terminal = ({ isOpen, onClose, onCommand }) => {
         </div>
         
         <div className="terminal-body" ref={terminalRef}>
+          <div className="welcome-message">
+            <div className="ascii-art">
+              {`
+$$$$$$$\\      
+$$  __$$\\     
+$$ |  $$ |$$\\ 
+$$ |  $$ |\\__|
+$$ |  $$ |$$\\ 
+$$ |  $$ |$$ |
+$$$$$$$  |$$ |
+\\_______/ $$ |
+    $$\\   $$ |
+    \\$$$$$$  |
+     \\______/ 
+              `}
+            </div>
+            <div className="welcome-text">
+              Welcome to my Terminal
+            </div>
+          </div>
+
           {commands.map((command, index) => (
             <div key={index} className={`terminal-line ${command.type}`}>
               {command.type === 'input' && (

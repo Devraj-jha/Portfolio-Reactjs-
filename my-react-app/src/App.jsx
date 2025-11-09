@@ -134,7 +134,7 @@ Tools:
   }
 
   return (
-    <div className={`app ${isTerminalOpen ? 'terminal-open' : ''}`} data-theme={theme}>
+    <div className="app" data-theme={theme}>
       <VideoBackground />
       
       <Header 
