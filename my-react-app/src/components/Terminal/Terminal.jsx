@@ -19,6 +19,8 @@ const Terminal = ({ isOpen, onClose, onCommand }) => {
   ];
 
   const executeCommand = (cmd) => {
+    if (!cmd.trim()) return;
+
     const newCommands = [...commands, { type: 'input', content: cmd }];
     
     let output = '';
@@ -103,28 +105,31 @@ const Terminal = ({ isOpen, onClose, onCommand }) => {
     setInput('');
   };
 
+  // Auto-scroll to bottom when commands change
   useEffect(() => {
     if (terminalRef.current) {
       terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
     }
   }, [commands]);
 
+  // Focus input when terminal opens or when commands update
+  useEffect(() => {
+    if (isOpen && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isOpen, commands]);
+
+  // Initialize terminal when it opens
   useEffect(() => {
     if (isOpen) {
       setCommands([
         { type: 'output', content: '🌟 Welcome to DevRaj\'s Terminal' },
         { type: 'output', content: 'Type "help" to see available commands.' }
       ]);
-      // Focus input when terminal opens
-      setTimeout(() => {
-        if (inputRef.current) {
-          inputRef.current.focus();
-        }
-      }, 100);
     }
   }, [isOpen]);
 
-  // Handle click outside to close
+  // Handle Escape key to close terminal
   useEffect(() => {
     const handleEscape = (e) => {
       if (e.key === 'Escape' && isOpen) {
@@ -153,8 +158,7 @@ const Terminal = ({ isOpen, onClose, onCommand }) => {
         <div className="terminal-body" ref={terminalRef}>
           <div className="welcome-message">
             <div className="ascii-art">
-              {`
-$$$$$$$\\      
+              {`$$$$$$$\\      
 $$  __$$\\     
 $$ |  $$ |$$\\ 
 $$ |  $$ |\\__|
@@ -164,8 +168,7 @@ $$$$$$$  |$$ |
 \\_______/ $$ |
     $$\\   $$ |
     \\$$$$$$  |
-     \\______/ 
-              `}
+     \\______/ `}
             </div>
             <div className="welcome-text">
               Welcome to my Terminal
@@ -177,11 +180,9 @@ $$$$$$$  |$$ |
               {command.type === 'input' && (
                 <span className="prompt">devraj@portfolio:~$ </span>
               )}
-              <span className={`content ${command.type === 'output' ? 'output' : ''}`}>
-                {command.content.split('\n').map((line, i) => (
-                  <div key={i}>{line}</div>
-                ))}
-              </span>
+              <pre className={`content ${command.type === 'output' ? 'output' : ''}`}>
+                {command.content}
+              </pre>
             </div>
           ))}
           

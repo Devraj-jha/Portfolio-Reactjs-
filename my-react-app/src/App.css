@@ -3,7 +3,7 @@
   min-height: 100vh;
   background: var(--bg-primary);
   position: relative;
-  transition: background-color 0.5s ease;
+  /* Remove transition from main app to prevent shaking */
 }
 
 .main-content {
@@ -14,10 +14,18 @@
   z-index: 1;
 }
 
-/* Smooth transitions for theme changes */
-* {
-  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+/* Only apply transitions to specific elements, not all */
+.terminal-container,
+.glass-effect,
+.stat,
+.profile-image {
+  transition: all 0.3s ease;
 }
+
+/* Remove the global transition that causes shaking */
+/* * {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+} */
 
 /* Performance optimizations */
 @media (prefers-reduced-motion: reduce) {
@@ -50,7 +58,8 @@
 .scale-in {
   animation: scale-in 0.3s ease-out;
 }
- .app.terminal-open {
+
+.app.terminal-open {
   overflow: hidden;
 }
 
