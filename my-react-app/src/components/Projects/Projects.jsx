@@ -3,26 +3,26 @@ import './Projects.css'
 
 const Projects = () => {
   const projects = [
-    {
-      id: 1,
-      title: 'Python projects under 100 Lines of code',
-      description: 'These are the projects I created to Pratice my python logic and problem solving skills. and includes some cool projects.',
-      technologies: ['Python'],
-      status: 'In Progress',
-      githubUrl: 'https://github.com/Devraj-jha/Python-Projects.git',
-      // liveUrl: 'https://yourportfolio.com',
-      image: '/project-placeholder-1.jpg'
-    },
-    {
-      id: 2,
-      title: 'Small web projects',
-      description: 'Projects I created in Plain html css js. to pratice',
-      technologies: ['javascript', 'html5','css'],
-      status: 'In Progress',
-      githubUrl: 'https://github.com/Devraj-jha/Small-Web-Projects.git',
-      liveUrl: null,
-      image: '/project-placeholder-2.jpg'
-    },
+    // {
+    //   id: 1,
+    //   title: 'Python projects under 100 Lines of code',
+    //   description: 'These are the projects I created to Pratice my python logic and problem solving skills. and includes some cool projects.',
+    //   technologies: ['Python'],
+    //   status: 'In Progress',
+    //   githubUrl: 'https://github.com/Devraj-jha/Python-Projects.git',
+    //   // liveUrl: 'https://yourportfolio.com',
+    //   image: '/project-placeholder-1.jpg'
+    // },
+    // {
+    //   id: 2,
+    //   title: 'Small web projects',
+    //   description: 'Projects I created in Plain html css js. to pratice',
+    //   technologies: ['javascript', 'html5','css'],
+    //   status: 'In Progress',
+    //   githubUrl: 'https://github.com/Devraj-jha/Small-Web-Projects.git',
+    //   liveUrl: null,
+    //   image: '/project-placeholder-2.jpg'
+    // },
     // {
     //   id: 3,
     //   title: 'Task Management App',
