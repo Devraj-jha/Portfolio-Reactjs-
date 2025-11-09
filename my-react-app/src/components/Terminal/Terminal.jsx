@@ -162,7 +162,7 @@ $$$$$$$  |$$ |
           {commands.map((command, index) => (
             <div key={index} className={`terminal-line ${command.type}`}>
               {command.type === 'input' && (
-                <span className="prompt">visitor@portfolio:~$ </span>
+                <span className="prompt">devraj@portfolio:~$ </span>
               )}
               <span className={`content ${command.type === 'output' ? 'output' : ''}`}>
                 {command.content.split('\n').map((line, i) => (
