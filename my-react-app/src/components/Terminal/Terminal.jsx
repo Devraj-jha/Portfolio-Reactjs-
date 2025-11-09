@@ -113,14 +113,12 @@ const Terminal = ({ isOpen, onClose, onCommand }) => {
     }
   }, [commands]);
 
-  // Focus input when terminal opens
+  // Focus input when terminal opens or after command execution
   useEffect(() => {
     if (isOpen && inputRef.current) {
-      setTimeout(() => {
-        inputRef.current.focus();
-      }, 100);
+      inputRef.current.focus();
     }
-  }, [isOpen]);
+  }, [isOpen, commands]); // Added commands to dependencies to refocus after each command
 
   // Initialize terminal when it opens
   useEffect(() => {
@@ -189,10 +187,10 @@ $$$$$$$  |$$ |
               {command.type === 'input' && (
                 <span className="prompt">devraj@portfolio:~$ </span>
               )}
-              <span className="content">
-                {command.type === 'input' ? command.content : (
-                  <pre className="output-content">{command.content}</pre>
-                )}
+              <span className={`content ${command.type === 'output' ? 'output' : ''}`}>
+                {command.content.split('\n').map((line, i) => (
+                  <div key={i} className="output-line">{line}</div>
+                ))}
               </span>
             </div>
           ))}

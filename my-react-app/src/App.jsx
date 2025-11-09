@@ -54,23 +54,19 @@ function App() {
     switch (cmd) {
       case 'home':
         setActiveSection('home')
-        setIsTerminalOpen(false)
         return '📍 Navigating to Home section...'
       case 'blog':
         setActiveSection('blog')
-        setIsTerminalOpen(false)
         return '📝 Navigating to Blog section...'
       case 'progress':
         setActiveSection('progress')
-        setIsTerminalOpen(false)
         return '🚧 Progress section is under construction. Check back soon!'
       case 'projects':
         setActiveSection('projects')
-        setIsTerminalOpen(false)
         return '💼 Projects gallery is being curated. Launching in 2 weeks!'
       case 'game':
         setIsGameOpen(true)
-        setIsTerminalOpen(false)
+        setIsTerminalOpen(false) // Only close for game
         return '🎮 Launching Click Attack Game! Close the terminal to play.'
       case 'theme':
       case 'toggle theme':
@@ -103,7 +99,7 @@ function App() {
   help       - Show this help message
   echo [text]- Echo back the text
 
-💡 Pro Tip: Click the "DJ" logo to open the terminal!`
+💡 Pro Tip: The terminal stays open after commands so you can run multiple commands!`
       case 'techstack':
         return `🚀 My Tech Stack:
 
