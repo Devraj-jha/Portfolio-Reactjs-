@@ -20,8 +20,6 @@ function App() {
   const [theme, setTheme] = useState('light')
 
   // Initialize theme
-
-  
   useEffect(() => {
     const savedTheme = localStorage.getItem('portfolio-theme') || 'light'
     setTheme(savedTheme)
@@ -56,25 +54,30 @@ function App() {
     switch (cmd) {
       case 'home':
         setActiveSection('home')
-        break
+        setIsTerminalOpen(false)
+        return '📍 Navigating to Home section...'
       case 'blog':
         setActiveSection('blog')
-        break
+        setIsTerminalOpen(false)
+        return '📝 Navigating to Blog section...'
       case 'progress':
         setActiveSection('progress')
+        setIsTerminalOpen(false)
         return '🚧 Progress section is under construction. Check back soon!'
       case 'projects':
         setActiveSection('projects')
+        setIsTerminalOpen(false)
         return '💼 Projects gallery is being curated. Launching in 2 weeks!'
       case 'game':
         setIsGameOpen(true)
+        setIsTerminalOpen(false)
         return '🎮 Launching Click Attack Game! Close the terminal to play.'
       case 'theme':
       case 'toggle theme':
       case 'dark mode':
       case 'light mode':
         toggleTheme()
-        return `Theme switched to ${theme === 'light' ? 'dark' : 'light'} mode`
+        return `🎨 Theme switched to ${theme === 'light' ? 'dark' : 'light'} mode`
       case 'clear':
         return 'clear'
       case 'help':
@@ -124,7 +127,6 @@ Tools:
         }
         return `Command not found: ${cmd}. Type 'help' for available commands.`
     }
-    return `Navigated to ${cmd} section`
   }
 
   const handleSectionChange = (section) => {
@@ -132,7 +134,7 @@ Tools:
   }
 
   return (
-    <div className="app" data-theme={theme}>
+    <div className={`app ${isTerminalOpen ? 'terminal-open' : ''}`} data-theme={theme}>
       <VideoBackground />
       
       <Header 
