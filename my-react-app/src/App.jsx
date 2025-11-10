@@ -52,6 +52,10 @@ function App() {
     const cmd = command.toLowerCase().trim()
     
     switch (cmd) {
+    case 'date':
+    return new Date().toString()
+    case 'time':
+    return new Date().toLocaleTimeString()
     case 'exit':
     case 'close':
       setIsTerminalOpen(false)
