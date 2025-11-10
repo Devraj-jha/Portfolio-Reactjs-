@@ -6,22 +6,21 @@ const Terminal = ({ isOpen, onClose, onCommand }) => {
   const [commands, setCommands] = useState([]);
   const [input, setInput] = useState('');
   const terminalRef = useRef(null);
-  const inputRef = useRef(null);
 
   const techStack = [
     { name: 'React', level: 'Expert', category: 'Frontend' },
-    { name: 'TypeScript', level: 'Intermediate', category: 'Language' },
-    { name: 'JavaScript', level: 'Expert', category: 'Language' },
-    { name: 'Node.js', level: 'Intermediate', category: 'Backend' },
+    { name: 'TypeScript', level: 'Advanced', category: 'Language' },
+    { name: 'Node.js', level: 'Expert', category: 'Backend' },
     { name: 'Python', level: 'Advanced', category: 'Language' },
+    { name: 'AWS', level: 'Intermediate', category: 'Cloud' },
+    { name: 'Docker', level: 'Advanced', category: 'DevOps' },
     { name: 'MongoDB', level: 'Expert', category: 'Database' },
+    { name: 'GraphQL', level: 'Intermediate', category: 'API' },
     { name: 'PostgreSQL', level: 'Advanced', category: 'Database' },
+    { name: 'Redis', level: 'Intermediate', category: 'Cache' }
   ];
 
   const executeCommand = (cmd) => {
-    if (!cmd.trim()) return;
-
-    // Add the input command to history
     const newCommands = [...commands, { type: 'input', content: cmd }];
     
     let output = '';
@@ -49,7 +48,11 @@ const Terminal = ({ isOpen, onClose, onCommand }) => {
         return;
         
       case 'game':
-        output = '🎮 Launching hidden game... Close terminal to play!';
+        output = '🎮 Launching hidden game... Type "start" to begin!';
+        break;
+        
+      case 'start':
+        output = '🎯 Game started! Use commands: "left", "right", "up", "down" to move. Type "exit" to quit.';
         break;
         
       case 'help':
@@ -63,25 +66,21 @@ const Terminal = ({ isOpen, onClose, onCommand }) => {
 
 💻 Technical:
   techstack  - Show my technology stack
-
-🎮 Games:
-  game       - Play Click Attack Game
-
-🎨 Appearance:
-  theme      - Toggle light/dark mode
+  game       - Launch hidden game 🎮
 
 🛠️ Utility:
   clear      - Clear terminal
   help       - Show this help message
   echo [text]- Echo back the text
 
-`;
+💡 Tip: Try the 'game' command for a surprise!`;
         break;
         
       default:
         if (cmd.startsWith('echo ')) {
           output = cmd.slice(5);
         } else {
+          // Check if it's a navigation command
           const navResult = onCommand(cmd);
           if (navResult && navResult !== 'clear') {
             output = navResult;
@@ -106,99 +105,69 @@ const Terminal = ({ isOpen, onClose, onCommand }) => {
     setInput('');
   };
 
-  // Auto-scroll to bottom when commands change
   useEffect(() => {
     if (terminalRef.current) {
       terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
     }
   }, [commands]);
 
-  // Focus input when terminal opens or after command execution
-  useEffect(() => {
-    if (isOpen && inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [isOpen, commands]); // Added commands to dependencies to refocus after each command
-
-  // Initialize terminal when it opens
   useEffect(() => {
     if (isOpen) {
       setCommands([
-        { type: 'output', content: '🌟 Welcome to DevRaj\'s Terminal' },
-        { type: 'output', content: 'Type "help" to see available commands.' }
+        { type: 'output', content: '🌟 Welcome to DJ\'s Terminal!' },
+        { type: 'output', content: 'Type "help" to see available commands.' },
+        { type: 'output', content: '💡 Pro tip: Try the "game" command for a surprise!' }
       ]);
-      setInput('');
     }
   }, [isOpen]);
-
-  // Handle Escape key to close terminal
-  useEffect(() => {
-    const handleEscape = (e) => {
-      if (e.key === 'Escape' && isOpen) {
-        onClose();
-      }
-    };
-
-    if (isOpen) {
-      document.addEventListener('keydown', handleEscape);
-    }
-    
-    return () => {
-      document.removeEventListener('keydown', handleEscape);
-    };
-  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
   return (
     <div className="terminal-overlay" onClick={onClose}>
-      <div className="terminal-container" onClick={(e) => e.stopPropagation()}>
+      <div className="terminal-container scale-in" onClick={(e) => e.stopPropagation()}>
         <div className="terminal-header">
           <div className="terminal-controls">
             <div className="control close" onClick={onClose}></div>
             <div className="control minimize"></div>
             <div className="control maximize"></div>
           </div>
-          <div className="terminal-title">terminal — bash</div>
+          <div className="terminal-title">terminal — bash — 80×24</div>
         </div>
         
         <div className="terminal-body" ref={terminalRef}>
           <div className="welcome-message">
             <div className="ascii-art">
-{`$$$$$$$\\      
-$$  __$$\\     
-$$ |  $$ |$$\\ 
-$$ |  $$ |\\__|
-$$ |  $$ |$$\\ 
-$$ |  $$ |$$ |
-$$$$$$$  |$$ |
-\\_______/ $$ |
-    $$\\   $$ |
-    \\$$$$$$  |
-     \\______/ `}
+              {`
+   ██████╗ ██╗   ██╗
+  ██╔════╝ ██║   ██║
+  ██║  ███╗██║   ██║
+  ██║   ██║██║   ██║
+  ╚██████╔╝╚██████╔╝
+   ╚═════╝  ╚═════╝ 
+              `}
             </div>
             <div className="welcome-text">
-              Welcome to my Terminal
+              Welcome to DJ's Interactive Terminal
             </div>
           </div>
 
           {commands.map((command, index) => (
             <div key={index} className={`terminal-line ${command.type}`}>
               {command.type === 'input' && (
-                <span className="prompt">devraj@portfolio:~$ </span>
+                <span className="prompt">visitor@portfolio:~$ </span>
               )}
               <span className={`content ${command.type === 'output' ? 'output' : ''}`}>
                 {command.content.split('\n').map((line, i) => (
-                  <div key={i} className="output-line">{line}</div>
+                  <div key={i}>{line}</div>
                 ))}
               </span>
             </div>
           ))}
           
           <form onSubmit={handleSubmit} className="terminal-input-line">
-            <span className="prompt">devraj@portfolio:~$ </span>
+            <span className="prompt">visitor@portfolio:~$ </span>
             <input
-              ref={inputRef}
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
