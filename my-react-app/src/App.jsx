@@ -63,7 +63,7 @@ function App() {
         return '🚧 Progress section is under construction. Check back soon!'
       case 'projects':
         setActiveSection('projects')
-        return '💼 Projects gallery is being curated. Launching in 2 weeks!'
+        return '💼 Projects gallery is being curated.!'
       case 'game':
         setIsGameOpen(true)
         return '🎮 Launching Click Attack Game! Close the terminal to play.'

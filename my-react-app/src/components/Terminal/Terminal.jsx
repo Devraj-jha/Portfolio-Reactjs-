@@ -12,12 +12,12 @@ const Terminal = ({ isOpen, onClose, onCommand }) => {
     { name: 'TypeScript', level: 'Advanced', category: 'Language' },
     { name: 'Node.js', level: 'Expert', category: 'Backend' },
     { name: 'Python', level: 'Advanced', category: 'Language' },
-    { name: 'AWS', level: 'Intermediate', category: 'Cloud' },
-    { name: 'Docker', level: 'Advanced', category: 'DevOps' },
+    { name: 'Cpp', level: 'Advanced', category: 'Language' },
+
     { name: 'MongoDB', level: 'Expert', category: 'Database' },
-    { name: 'GraphQL', level: 'Intermediate', category: 'API' },
+
     { name: 'PostgreSQL', level: 'Advanced', category: 'Database' },
-    { name: 'Redis', level: 'Intermediate', category: 'Cache' }
+
   ];
 
   const executeCommand = (cmd) => {
@@ -27,7 +27,7 @@ const Terminal = ({ isOpen, onClose, onCommand }) => {
     
     switch (cmd.toLowerCase()) {
       case 'techstack':
-        output = '🚀 My Tech Stack:\n\n';
+        output = 'My Tech Stack:\n\n';
         const categories = {};
         techStack.forEach(tech => {
           if (!categories[tech.category]) categories[tech.category] = [];
@@ -58,22 +58,14 @@ const Terminal = ({ isOpen, onClose, onCommand }) => {
       case 'help':
         output = `Available commands:
 
-🌐 Navigation:
   home       - Navigate to Home section
   blog       - Navigate to Blog section  
   progress   - Navigate to Progress section
   projects   - Navigate to Projects section
-
-💻 Technical:
   techstack  - Show my technology stack
-  game       - Launch hidden game 🎮
-
-🛠️ Utility:
   clear      - Clear terminal
-  help       - Show this help message
   echo [text]- Echo back the text
-
-💡 Tip: Try the 'game' command for a surprise!`;
+`;
         break;
         
       default:
@@ -114,9 +106,9 @@ const Terminal = ({ isOpen, onClose, onCommand }) => {
   useEffect(() => {
     if (isOpen) {
       setCommands([
-        { type: 'output', content: '🌟 Welcome to DJ\'s Terminal!' },
+        // { type: 'output', content: '🌟 Welcome to DJ\'s Terminal!' },
         { type: 'output', content: 'Type "help" to see available commands.' },
-        { type: 'output', content: '💡 Pro tip: Try the "game" command for a surprise!' }
+        { type: 'output', content: 'just type your next cmd to enter after help, to make cmd line show' }
       ]);
     }
   }, [isOpen]);
@@ -139,23 +131,27 @@ const Terminal = ({ isOpen, onClose, onCommand }) => {
           <div className="welcome-message">
             <div className="ascii-art">
               {`
-   ██████╗ ██╗   ██╗
-  ██╔════╝ ██║   ██║
-  ██║  ███╗██║   ██║
-  ██║   ██║██║   ██║
-  ╚██████╔╝╚██████╔╝
-   ╚═════╝  ╚═════╝ 
+⣠⣤⣤⡤⠤⢤⣤⣀⡀⠀⠐⠒⡄⠀⡠⠒⠀⠀⢀⣀⣤⠤⠤⣤⣤⣤⡄
+⠈⠻⣿⡤⠤⡏⠀⠉⠙⠲⣄⠀⢰⢠⠃⢀⡤⠞⠋⠉⠈⢹⠤⢼⣿⠏⠀
+⠀⠀⠘⣿⡅⠓⢒⡤⠤⠀⡈⠱⣄⣼⡴⠋⡀⠀⠤⢤⡒⠓⢬⣿⠃⠀⠀
+⠀⠀⠀⠹⣿⣯⣐⢷⣀⣀⢤⡥⢾⣿⠷⢥⠤⣀⣀⣞⣢⣽⡿⠃⠀⠀⠀
+⠀⠀⠀⠀⠈⢙⣿⠝⠀⢁⠔⡨⡺⡿⡕⢔⠀⡈⠐⠹⣟⠋⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⢼⣟⢦⢶⢅⠜⢰⠃⠀⢹⡌⢢⣸⠦⠴⣿⡇⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠘⣿⣇⡬⡌⢀⡟⠀⠀⠀⢷⠀⣧⢧⣵⣿⠂⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠈⢻⠛⠋⠉⠀⠀⠀⠀⠈⠉⠙⢻⡏⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⢰⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⠄⠀⠀⠀⠀⠀⠀
+
               `}
             </div>
             <div className="welcome-text">
-              Welcome to DJ's Interactive Terminal
+              Welcome to The Terminal
             </div>
           </div>
 
           {commands.map((command, index) => (
             <div key={index} className={`terminal-line ${command.type}`}>
               {command.type === 'input' && (
-                <span className="prompt">visitor@portfolio:~$ </span>
+                <span className="prompt">Dj@portfolio:~$ </span>
               )}
               <span className={`content ${command.type === 'output' ? 'output' : ''}`}>
                 {command.content.split('\n').map((line, i) => (
@@ -166,7 +162,7 @@ const Terminal = ({ isOpen, onClose, onCommand }) => {
           ))}
           
           <form onSubmit={handleSubmit} className="terminal-input-line">
-            <span className="prompt">visitor@portfolio:~$ </span>
+            <span className="prompt">Dj@portfolio:~$ </span>
             <input
               type="text"
               value={input}
