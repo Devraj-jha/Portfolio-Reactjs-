@@ -65,6 +65,7 @@ const Terminal = ({ isOpen, onClose, onCommand }) => {
   techstack  - Show my technology stack
   clear      - Clear terminal
   echo [text]- Echo back the text
+  exit/close - to exit the terminal 
 `;
         break;
         

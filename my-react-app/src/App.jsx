@@ -52,6 +52,10 @@ function App() {
     const cmd = command.toLowerCase().trim()
     
     switch (cmd) {
+    case 'exit':
+    case 'close':
+      setIsTerminalOpen(false)
+      return 'Closing terminal...'
       case 'home':
         setActiveSection('home')
         break
