@@ -67,6 +67,7 @@ const Terminal = ({ isOpen, onClose, onCommand }) => {
   echo [text]- Echo back the text
   exit/close - to exit the terminal 
   date/time  - for date and time. 
+  quote      - for some quotes :)
 `;
         break;
         

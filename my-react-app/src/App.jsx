@@ -52,6 +52,53 @@ function App() {
     const cmd = command.toLowerCase().trim()
     
     switch (cmd) {
+    case 'quote':
+    const quotes = [
+  "The only way to do great work is to love what you do. - Steve Jobs",
+  "Code is like humor. When you have to explain it, it's bad. - Cory House",
+  "First, solve the problem. Then, write the code. - John Johnson",
+  "Programs must be written for people to read, and only incidentally for machines to execute. - Hal Abelson",
+  "Talk is cheap. Show me the code. - Linus Torvalds",
+  "Simplicity is prerequisite for reliability. - Edsger W. Dijkstra",
+  "Make it work, make it right, make it fast. - Kent Beck",
+  "Premature optimization is the root of all evil. - Donald Knuth",
+  "Any fool can write code that a computer can understand. Good programmers write code that humans can understand. - Martin Fowler",
+  "If debugging is the process of removing bugs, then programming must be the process of putting them in. - Edsger W. Dijkstra",
+  "Imagination is more important than knowledge. - Albert Einstein",
+  "We are made of star-stuff. - Carl Sagan",
+  "If I have seen further it is by standing on the shoulders of giants. - Isaac Newton",
+  "Nothing in life is to be feared; it is only to be understood. - Marie Curie",
+  "The unexamined life is not worth living. - Socrates",
+  "You have power over your mind — not outside events. Realize this, and you will find strength. - Marcus Aurelius",
+  "Luck is what happens when preparation meets opportunity. - Seneca",
+  "It does not matter how slowly you go as long as you do not stop. - Confucius",
+  "Stay hungry. Stay foolish. - Steve Jobs",
+  "Genius is one percent inspiration and ninety-nine percent perspiration. - Thomas Edison",
+  "Perfection is achieved not when there is nothing more to add, but when there is nothing left to take away. - Antoine de Saint-Exupéry",
+  "Any sufficiently advanced technology is indistinguishable from magic. - Arthur C. Clarke",
+  "If you can’t explain it to a six-year-old, you don’t understand it yourself. - Richard Feynman",
+  "I have not failed. I’ve just found 10,000 ways that won’t work. - Thomas Edison",
+  "The best way to predict the future is to invent it. - Alan Kay",
+  "He who has a why to live can bear almost any how. - Friedrich Nietzsche",
+  "Real knowledge is to know the extent of one's ignorance. - Confucius",
+  "Waste no more time arguing what a good man should be. Be one. - Marcus Aurelius",
+  "A ship in harbor is safe—but that is not what ships are built for. - John A. Shedd",
+  "You miss 100% of the shots you don’t take. - Wayne Gretzky",
+  "In the middle of difficulty lies opportunity. - Albert Einstein",
+  "The whole is greater than the sum of its parts. - Aristotle",
+  "Learning never exhausts the mind. - Leonardo da Vinci",
+  "Simplicity is the ultimate sophistication. - Leonardo da Vinci",
+  "Everything should be made as simple as possible, but not simpler. - Albert Einstein",
+  "Do not wait to strike till the iron is hot; but make it hot by striking. - William Butler Yeats",
+  "The meaning of life is to find your gift. The purpose of life is to give it away. - Pablo Picasso",
+  "If you spend too much time thinking about a thing, you'll never get it done. - Bruce Lee",
+  "Start where you are. Use what you have. Do what you can. - Arthur Ashe",
+  "The important thing is not to stop questioning. Curiosity has its own reason for existing. - Albert Einstein",
+  "Small daily improvements are the key to staggering long-term results. - James Clear",
+  "Be kind, for everyone you meet is fighting a hard battle. - Plato"
+];
+
+  return quotes[Math.floor(Math.random() * quotes.length)]
     case 'date':
     return new Date().toString()
     case 'time':
