@@ -68,6 +68,11 @@ const Terminal = ({ isOpen, onClose, onCommand }) => {
   exit/close - to exit the terminal 
   date/time  - for date and time. 
   quote      - for some quotes :)
+  twitter/x  - Open my X/Twitter profile
+  youtube/yt    - Open my YouTube channel
+  github     - Open my GitHub profile
+  linkedin   - Open my LinkedIn profile
+
 `;
         break;
         

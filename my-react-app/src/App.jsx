@@ -97,8 +97,23 @@ function App() {
   "Small daily improvements are the key to staggering long-term results. - James Clear",
   "Be kind, for everyone you meet is fighting a hard battle. - Plato"
 ];
-
   return quotes[Math.floor(Math.random() * quotes.length)]
+  case 'x':
+  case 'twitter':
+  window.open('https://x.com/djjha_', '_blank')
+  return 'Opening X (Twitter) profile...'
+  case 'yt':
+  case 'youtube':
+  window.open('https://youtube.com/@djdebugslife1?si=tu2fub-RTPZXOmLT', '_blank')
+  return 'Opening YouTube channel...'
+
+  case 'github':
+  window.open('https://github.com/Devraj-jha', '_blank')
+  return 'Opening GitHub profile...'
+
+  case 'linkedin':
+  window.open('https://www.linkedin.com/in/devraj-jha-4ba7a2342/', '_blank')
+  return 'Opening LinkedIn profile...'
     case 'date':
     return new Date().toString()
     case 'time':
