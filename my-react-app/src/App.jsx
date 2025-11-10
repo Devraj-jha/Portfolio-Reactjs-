@@ -78,27 +78,23 @@ function App() {
       case 'help':
         return `Available commands:
 
-🌐 Navigation:
+Navigation:
   home       - Navigate to Home section
   blog       - Navigate to Blog section  
   progress   - Navigate to Progress section (Coming Soon)
   projects   - Navigate to Projects section (Launching Soon)
 
-🎮 Games & Fun:
-  game       - Play Click Attack Game 🎯
-
-💻 Technical:
+ Technical:
   techstack  - Show my technology stack
 
-🎨 Appearance:
+Appearance:
   theme      - Toggle between light and dark mode
 
-🛠️ Utility:
+Utility:
   clear      - Clear terminal
   help       - Show this help message
   echo [text]- Echo back the text
-
-💡 Pro Tip: Click the "DJ" logo to open the terminal!`
+ `
       case 'techstack':
         return `🚀 My Tech Stack:
 
@@ -109,10 +105,7 @@ Backend:
   Node.js, Python, Express, FastAPI
 
 Databases:
-  MongoDB, PostgreSQL, Redis
-
-Cloud & DevOps:
-  AWS, Docker, CI/CD, GitHub Actions
+  MongoDB, PostgreSQL
 
 Tools:
   Git, VS Code, Figma, Postman`
