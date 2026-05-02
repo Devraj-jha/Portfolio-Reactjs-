@@ -100,11 +100,11 @@ function App() {
   return quotes[Math.floor(Math.random() * quotes.length)]
   case 'x':
   case 'twitter':
-  window.open('https://x.com/djjha_', '_blank')
+  window.open('https://x.com/djjhacodes', '_blank')
   return 'Opening X (Twitter) profile...'
   case 'yt':
   case 'youtube':
-  window.open('https://youtube.com/@djdebugslife1?si=tu2fub-RTPZXOmLT', '_blank')
+  window.open('https://www.youtube.com/@djjhaTech', '_blank')
   return 'Opening YouTube channel...'
 
   case 'github':

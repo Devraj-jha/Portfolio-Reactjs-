@@ -104,21 +104,22 @@ const Home = () => {
                 </p>
 
                 <p>
-                  In my free time, I enjoy competitive programming, Watching One Piece and reading books. Some of my favorites include:
+                  In my free time, I enjoy competitive programming,
                 </p>
-                <ul>
-                  <li><em>The Brothers Karamazov</em></li>
-                  <li><em>Introduction to algorithm</em></li>
-                  <li><em>Yoga Sutras</em></li>
-                  <li><em>Ashtavakra Gita</em></li>
-                  <li><em>SICP </em> (currently reading)</li>
-                  <li><em>The Hitchhiker's Guide to the Galaxy</em></li>
-                  <li><em>Sherlock Holmes</em> (Reading currently)</li>
-                </ul><p>
+                {/* <ul>
+                  {/* <li><em>The Brothers Karamazov</em></li> */}
+                  {/* <li><em>Introduction to algorithm</em></li> */}
+                  {/* <li><em>Yoga Sutras</em></li> */}
+                  {/* <li><em>Ashtavakra Gita</em></li> */}
+                  {/* <li><em>SICP </em> (currently reading)</li> */}
+                  {/* <li><em>The Hitchhiker's Guide to the Galaxy</em></li> */}
+                  {/* <li><em>Sherlock Holmes</em> (Reading currently)</li> */}
+                {/* </ul> */}
+                <p>
 CLick on the DJ logo at the top LEFT to open terminal                </p>
               </div>
               
-              <div className="stats-grid">
+              {/* <div className="stats-grid">
                 <div className="stat glass-effect">
                   <span className="stat-number">10+</span>
                   <span className="stat-label">Projects</span>
@@ -132,7 +133,7 @@ CLick on the DJ logo at the top LEFT to open terminal                </p>
                   <span className="stat-label">hours</span>
                 </div>
                 
-              </div>
+              </div> */}
               <p>
             </p>
             </div>
