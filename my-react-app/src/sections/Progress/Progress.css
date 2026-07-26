@@ -2,144 +2,139 @@
 .progress-section {
   min-height: 80vh;
   padding: 40px 0;
+  max-width: 700px;
 }
 
-.coming-soon-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 60vh;
+.progress-block {
+  margin-bottom: 60px;
 }
 
-.coming-soon-content {
-  text-align: center;
-  max-width: 600px;
-  padding: 40px;
-}
-
-.construction-icon {
-  margin-bottom: 30px;
-}
-
-.crane {
-  display: inline-block;
-  position: relative;
-  width: 80px;
-  height: 80px;
-}
-
-.crane-base {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 8px;
-  background: var(--text-secondary);
-  border-radius: 4px;
-}
-
-.crane-arm {
-  position: absolute;
-  bottom: 8px;
-  left: 50%;
-  width: 4px;
-  height: 50px;
-  background: var(--text-secondary);
-  transform-origin: bottom center;
-  animation: craneSwing 3s ease-in-out infinite;
-}
-
-.crane-hook {
-  position: absolute;
-  top: -8px;
-  left: -6px;
-  width: 16px;
-  height: 12px;
-  border: 3px solid var(--text-secondary);
-  border-top: none;
-  border-radius: 0 0 8px 8px;
-}
-
-@keyframes craneSwing {
-  0%, 100% { transform: rotate(-5deg); }
-  50% { transform: rotate(5deg); }
-}
-
-.coming-soon-title {
-  font-size: 2.5rem;
-  font-weight: 700;
+.progress-heading {
+  font-size: 2rem;
+  font-weight: 600;
   color: var(--text-primary);
-  margin-bottom: 16px;
+  margin-bottom: 6px;
   letter-spacing: -0.02em;
 }
 
-.coming-soon-message {
+.progress-sub {
   color: var(--text-secondary);
-  font-size: 1.1rem;
-  line-height: 1.7;
-  margin-bottom: 30px;
+  font-size: 0.95rem;
+  margin-bottom: 28px;
 }
 
-.progress-bar {
-  width: 100%;
-  height: 6px;
-  background: var(--border-color);
-  border-radius: 3px;
-  overflow: hidden;
-  margin-bottom: 12px;
+/* Skills */
+.skills-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.progress-fill {
-  height: 100%;
-  background: var(--text-primary);
-  border-radius: 3px;
-  transition: width 1s ease;
+.skill-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.feature-preview {
-  text-align: left;
-  margin-top: 40px;
-  padding: 24px;
-  background: var(--bg-secondary);
-  border-radius: 12px;
-  border: 1px solid var(--border-color);
+.skill-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.feature-preview h3 {
+.skill-name {
+  font-weight: 500;
   color: var(--text-primary);
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 16px;
-}
-
-.feature-preview ul {
-  list-style: none;
-  padding: 0;
-}
-
-.feature-preview li {
-  color: var(--text-secondary);
-  padding: 8px 0;
-  padding-left: 20px;
-  position: relative;
   font-size: 0.95rem;
 }
 
-.feature-preview li::before {
-  content: '>';
+.skill-level {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.skill-bar {
+  height: 4px;
+  background: var(--border-color);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.skill-fill {
+  height: 100%;
+  background: var(--text-primary);
+  border-radius: 2px;
+  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.skill-fill.animate {
+  /* width set inline by JS */
+}
+
+/* Timeline */
+.timeline {
+  position: relative;
+  padding-left: 24px;
+}
+
+.timeline::before {
+  content: '';
   position: absolute;
-  left: 0;
-  color: var(--accent-primary);
+  left: 7px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--border-color);
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 28px;
+  padding-left: 20px;
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all 0.5s ease;
+}
+
+.timeline-item.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.timeline-dot {
+  position: absolute;
+  left: -21px;
+  top: 4px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--text-primary);
+  border: 2px solid var(--bg-primary);
+  z-index: 1;
+}
+
+.timeline-year {
+  display: inline-block;
+  font-size: 0.8rem;
   font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+  opacity: 0.6;
+}
+
+.timeline-event {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.5;
 }
 
 @media (max-width: 768px) {
-  .coming-soon-content {
-    padding: 20px;
+  .progress-section {
+    padding: 20px 0;
   }
 
-  .coming-soon-title {
-    font-size: 2rem;
+  .progress-heading {
+    font-size: 1.75rem;
   }
 }
