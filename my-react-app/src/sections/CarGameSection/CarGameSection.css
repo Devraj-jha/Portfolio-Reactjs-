@@ -1,0 +1,119 @@
+/* src/sections/CarGameSection/CarGameSection.css */
+.cardrive-section {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+}
+
+.cardrive-hero {
+  text-align: center;
+  max-width: 600px;
+}
+
+.cardrive-glitch {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  animation: floatGlow 3s ease-in-out infinite;
+}
+
+@keyframes floatGlow {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-10px) scale(1.1); }
+}
+
+.cardrive-title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, #FF6B6B, #4ECDC4, #FFE66D);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cardrive-subtitle {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 32px;
+}
+
+.cardrive-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 32px;
+  padding: 20px;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+}
+
+.cardrive-detail {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cardrive-label {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.cardrive-value {
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.cardrive-value kbd {
+  background: var(--bg-primary);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  border: 1px solid var(--border-color);
+  font-family: inherit;
+}
+
+.cardrive-btn {
+  background: linear-gradient(135deg, #FF6B6B, #4ECDC4);
+  color: #fff;
+  border: none;
+  padding: 14px 36px;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: -0.01em;
+}
+
+.cardrive-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 30px rgba(78, 205, 196, 0.3);
+}
+
+.cardrive-hint {
+  margin-top: 20px;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+}
+
+.cardrive-hint kbd {
+  background: var(--bg-secondary);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  border: 1px solid var(--border-color);
+  font-family: inherit;
+}
+
+@media (max-width: 768px) {
+  .cardrive-title {
+    font-size: 2rem;
+  }
+}

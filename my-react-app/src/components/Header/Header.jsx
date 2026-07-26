@@ -219,6 +219,7 @@ const Header = ({ activeSection, setActiveSection, onTerminalClick, theme, toggl
             </button>
           ))}
         </div>
+      </header>
   )
 }
 

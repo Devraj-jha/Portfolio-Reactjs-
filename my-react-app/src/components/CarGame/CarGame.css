@@ -1,0 +1,192 @@
+/* src/components/CarGame/CarGame.css */
+.car-game-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 20px;
+}
+
+.car-game-container {
+  background: #111;
+  border-radius: 16px;
+  overflow: hidden;
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  border: 1px solid #333;
+  display: flex;
+  flex-direction: column;
+}
+
+.car-game-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: #1a1a1a;
+  border-bottom: 1px solid #333;
+}
+
+.car-game-header h2 {
+  color: #fff;
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.car-game-hud {
+  color: #4CAF50;
+  font-weight: 600;
+  font-size: 1rem;
+  font-family: monospace;
+}
+
+.car-game-close {
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.car-game-close:hover {
+  color: #fff;
+  background: #333;
+}
+
+.car-game-canvas {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  min-height: 400px;
+  background: #000;
+  overflow: hidden;
+}
+
+.car-game-canvas canvas {
+  display: block;
+}
+
+/* Start/Game Over overlay */
+.car-game-start {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 10;
+  gap: 16px;
+}
+
+.car-game-start h3 {
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.car-game-start p {
+  color: #999;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.car-game-start kbd {
+  background: #333;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  border: 1px solid #555;
+  color: #fff;
+}
+
+.car-game-final-score {
+  font-size: 1.5rem !important;
+  color: #4CAF50 !important;
+  font-weight: 700;
+}
+
+.car-game-btn {
+  background: #4CAF50;
+  color: #fff;
+  border: none;
+  padding: 12px 32px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.car-game-btn:hover {
+  background: #66BB6A;
+  transform: scale(1.05);
+}
+
+/* Mobile controls */
+.car-game-controls {
+  display: none;
+  padding: 12px;
+  background: #1a1a1a;
+  border-top: 1px solid #333;
+  justify-content: center;
+}
+
+.car-game-keys {
+  display: flex;
+  gap: 16px;
+}
+
+.ctrl-btn {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #333;
+  border: 2px solid #555;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.1s ease;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.ctrl-btn:active {
+  background: #4CAF50;
+  transform: scale(0.95);
+}
+
+@media (pointer: coarse) {
+  .car-game-controls {
+    display: flex;
+  }
+}
+
+@media (max-width: 600px) {
+  .car-game-canvas {
+    min-height: 250px;
+  }
+
+  .car-game-start h3 {
+    font-size: 1.5rem;
+  }
+}
