@@ -5,6 +5,7 @@ import ContactModal from './components/ContactModal/ContactModal'
 import Terminal from './components/Terminal/Terminal'
 import HiddenGame from './components/HiddenGame/HiddenGame'
 import LoadingScreen from './components/LoadingScreen/LoadingScreen'
+import Footer from './components/Footer/Footer'
 import Home from './sections/Home/Home'
 import Blog from './sections/Blog/Blog'
 import Progress from './sections/Progress/Progress'
@@ -187,6 +188,8 @@ function App() {
           {renderSection()}
         </div>
       </main>
+
+      <Footer />
 
       <ContactModal
         isOpen={isContactModalOpen}
