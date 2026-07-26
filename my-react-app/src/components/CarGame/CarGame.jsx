@@ -4,69 +4,64 @@ import './CarGame.css'
 
 const CarGame = ({ isOpen, onClose }) => {
   const mountRef = useRef(null)
-
-  if (!isOpen) return null
+  const rendererRef = useRef(null)
   const sceneRef = useRef(null)
-  const gameStateRef = useRef({
-    score: 0,
-    gameOver: false,
-    started: false,
-    speed: 0.15,
-    carX: 0,
-    obstacles: [],
-    buildings: [],
-    laneOffset: 0,
-  })
-  const keysRef = useRef({ left: false, right: false })
+  const cameraRef = useRef(null)
+  const carGroupRef = useRef(null)
   const animFrameRef = useRef(null)
+  const keysRef = useRef({ left: false, right: false })
+  const obstaclesRef = useRef([])
+  const speedRef = useRef(0.15)
+  const carXRef = useRef(0)
+  const scoreRef = useRef(0)
+
   const [score, setScore] = useState(0)
   const [gameOver, setGameOver] = useState(false)
   const [started, setStarted] = useState(false)
 
-  const resetGame = useCallback(() => {
-    const gs = gameStateRef.current
-    gs.score = 0
-    gs.gameOver = false
-    gs.speed = 0.15
-    gs.carX = 0
-    gs.obstacles = []
-    setScore(0)
-    setGameOver(false)
+  const cleanup = useCallback(() => {
+    if (animFrameRef.current) {
+      cancelAnimationFrame(animFrameRef.current)
+      animFrameRef.current = null
+    }
+    if (rendererRef.current) {
+      const canvas = rendererRef.current.domElement
+      if (canvas && canvas.parentNode) {
+        canvas.parentNode.removeChild(canvas)
+      }
+      rendererRef.current.dispose()
+      rendererRef.current = null
+    }
+    sceneRef.current = null
+    cameraRef.current = null
+    carGroupRef.current = null
+    obstaclesRef.current = []
   }, [])
 
-  const startGame = useCallback(() => {
-    resetGame()
-    const gs = gameStateRef.current
-    gs.started = true
-    setStarted(true)
-  }, [resetGame])
-
-  const endGame = useCallback(() => {
-    const gs = gameStateRef.current
-    gs.gameOver = true
-    gs.started = false
-    setGameOver(true)
-    setStarted(false)
-  }, [])
-
+  // Initialize Three.js scene when game opens
   useEffect(() => {
-    if (!mountRef.current) return
+    if (!isOpen) return
+
+    const mount = mountRef.current
+    if (!mount) return
 
     // Scene setup
     const scene = new THREE.Scene()
-    scene.background = new THREE.Color(0x87CEEB) // Sky blue
+    scene.background = new THREE.Color(0x87CEEB)
     scene.fog = new THREE.Fog(0x87CEEB, 50, 100)
+    sceneRef.current = scene
 
-    const camera = new THREE.PerspectiveCamera(60, mountRef.current.clientWidth / mountRef.current.clientHeight, 0.1, 200)
+    const camera = new THREE.PerspectiveCamera(60, mount.clientWidth / mount.clientHeight, 0.1, 200)
     camera.position.set(0, 6, -10)
     camera.lookAt(0, 0, 20)
+    cameraRef.current = camera
 
     const renderer = new THREE.WebGLRenderer({ antialias: true })
-    renderer.setSize(mountRef.current.clientWidth, mountRef.current.clientHeight)
+    renderer.setSize(mount.clientWidth, mount.clientHeight)
     renderer.shadowMap.enabled = true
     renderer.shadowMap.type = THREE.PCFSoftShadowMap
-    mountRef.current.appendChild(renderer.domElement)
-    sceneRef.current = { scene, camera, renderer }
+    mount.appendChild(renderer.domElement)
+    rendererRef.current = renderer
 
     // Lights
     const ambient = new THREE.AmbientLight(0x404060, 0.5)
@@ -85,15 +80,13 @@ const CarGame = ({ isOpen, onClose }) => {
     sun.shadow.camera.near = 1
     sun.shadow.camera.far = 50
     scene.add(sun)
+    scene.add(new THREE.AmbientLight(0x404060, 0.3))
 
-    const fill = new THREE.DirectionalLight(0x4444ff, 0.3)
-    fill.position.set(-10, 10, -10)
-    scene.add(fill)
-
-    // Ground / Road
-    const roadGeo = new THREE.PlaneGeometry(12, 200)
-    const roadMat = new THREE.MeshStandardMaterial({ color: 0x333333, roughness: 0.8 })
-    const road = new THREE.Mesh(roadGeo, roadMat)
+    // Road
+    const road = new THREE.Mesh(
+      new THREE.PlaneGeometry(12, 200),
+      new THREE.MeshStandardMaterial({ color: 0x333333, roughness: 0.8 })
+    )
     road.rotation.x = -Math.PI / 2
     road.position.set(0, -0.01, 50)
     road.receiveShadow = true
@@ -121,21 +114,20 @@ const CarGame = ({ isOpen, onClose }) => {
       scene.add(e2)
     }
 
-    // Grass / sides
+    // Grass
     const grassMat = new THREE.MeshStandardMaterial({ color: 0x4CAF50 })
     const leftGrass = new THREE.Mesh(new THREE.PlaneGeometry(20, 200), grassMat)
     leftGrass.rotation.x = -Math.PI / 2
     leftGrass.position.set(-16, -0.01, 50)
     scene.add(leftGrass)
-
     const rightGrass = new THREE.Mesh(new THREE.PlaneGeometry(20, 200), grassMat)
     rightGrass.rotation.x = -Math.PI / 2
     rightGrass.position.set(16, -0.01, 50)
     scene.add(rightGrass)
 
-    // Colorful buildings on sides
+    // Colorful buildings
     const buildingColors = [0xFF6B6B, 0x4ECDC4, 0xFFE66D, 0xA8E6CF, 0xFF8A5C, 0x7C4DFF, 0xFF4081, 0x00BCD4]
-    const gs = gameStateRef.current
+    const buildings = []
     for (let z = 0; z < 200; z += 8) {
       const side = Math.random() > 0.5 ? 1 : -1
       const bw = 2 + Math.random() * 3
@@ -146,182 +138,122 @@ const CarGame = ({ isOpen, onClose }) => {
         new THREE.BoxGeometry(bw, bh, bd),
         new THREE.MeshStandardMaterial({ color, roughness: 0.6 })
       )
-      const bx = side * (8 + Math.random() * 4)
-      building.position.set(bx, bh / 2, z)
+      building.position.set(side * (8 + Math.random() * 4), bh / 2, z)
       building.castShadow = true
       building.receiveShadow = true
       scene.add(building)
-      gs.buildings.push(building)
+      buildings.push(building)
     }
 
-    // Car - simplified 3D car
+    // Car
     const carGroup = new THREE.Group()
-
-    // Car body
     const bodyMat = new THREE.MeshStandardMaterial({ color: 0xff4444, roughness: 0.3, metalness: 0.3 })
     const body = new THREE.Mesh(new THREE.BoxGeometry(1.8, 0.5, 3.5), bodyMat)
     body.position.y = 0.35
     body.castShadow = true
     carGroup.add(body)
 
-    // Car cabin (windshield area)
     const cabinMat = new THREE.MeshStandardMaterial({ color: 0x2196F3, roughness: 0.1, metalness: 0.8 })
     const cabin = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.4, 1.5), cabinMat)
     cabin.position.set(0, 0.7, -0.3)
     carGroup.add(cabin)
 
-    // Wheels
     const wheelMat = new THREE.MeshStandardMaterial({ color: 0x222222, roughness: 0.8 })
-    const wheelPositions = [
-      [-1, 0.15, 1.2],
-      [1, 0.15, 1.2],
-      [-1, 0.15, -1.2],
-      [1, 0.15, -1.2],
-    ]
-    wheelPositions.forEach(([x, y, z]) => {
+    const wp = [[-1, 0.15, 1.2], [1, 0.15, 1.2], [-1, 0.15, -1.2], [1, 0.15, -1.2]]
+    wp.forEach(([x, y, z]) => {
       const wheel = new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.25, 0.15, 12), wheelMat)
       wheel.rotation.z = Math.PI / 2
       wheel.position.set(x, y, z)
       carGroup.add(wheel)
     })
 
-    // Headlights
-    const lightMat = new THREE.MeshStandardMaterial({ color: 0xffffaa, emissive: 0xffffaa, emissiveIntensity: 0.3 })
-    const hl = new THREE.Mesh(new THREE.SphereGeometry(0.12, 8, 8), lightMat)
-    hl.position.set(-0.5, 0.3, 1.8)
-    carGroup.add(hl)
-    const hr = new THREE.Mesh(new THREE.SphereGeometry(0.12, 8, 8), lightMat)
-    hr.position.set(0.5, 0.3, 1.8)
-    carGroup.add(hr)
-
     carGroup.position.set(0, 0, 3)
     scene.add(carGroup)
+    carGroupRef.current = carGroup
 
-    gs.carGroup = carGroup
+    return cleanup
+  }, [isOpen, cleanup])
 
-    // Trees on sides (colorful spheres)
-    for (let z = 0; z < 200; z += 6) {
-      const side = Math.random() > 0.5 ? 1 : -1
-      const treeColors = [0x66BB6A, 0x43A047, 0x81C784, 0x2E7D32, 0xE91E63, 0x9C27B0, 0xFF9800]
-      const tc = treeColors[Math.floor(Math.random() * treeColors.length)]
-      const trunk = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.15, 0.2, 1),
-        new THREE.MeshStandardMaterial({ color: 0x795548 })
-      )
-      trunk.position.set(side * (9 + Math.random() * 3), 0.5, z)
-      scene.add(trunk)
+  // Game loop - runs continuously when open
+  useEffect(() => {
+    if (!isOpen || !sceneRef.current || !rendererRef.current) return
 
-      const foliage = new THREE.Mesh(
-        new THREE.SphereGeometry(0.8 + Math.random() * 0.5, 8, 8),
-        new THREE.MeshStandardMaterial({ color: tc })
-      )
-      foliage.position.set(side * (9 + Math.random() * 3), 1.2 + Math.random() * 0.5, z)
-      scene.add(foliage)
-    }
+    const scene = sceneRef.current
+    const camera = cameraRef.current
+    const renderer = rendererRef.current
 
-    // Stars / sparkles in the sky (colorful points)
-    const sparkleGeo = new THREE.BufferGeometry()
-    const sparkleCount = 200
-    const positions = new Float32Array(sparkleCount * 3)
-    const colors = new Float32Array(sparkleCount * 3)
-    for (let i = 0; i < sparkleCount; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 100
-      positions[i * 3 + 1] = 20 + Math.random() * 30
-      positions[i * 3 + 2] = Math.random() * 100
-      colors[i * 3] = Math.random()
-      colors[i * 3 + 1] = Math.random()
-      colors[i * 3 + 2] = Math.random()
-    }
-    sparkleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3))
-    sparkleGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3))
-    const sparkleMat = new THREE.PointsMaterial({ size: 0.3, vertexColors: true, transparent: true, opacity: 0.6 })
-    const sparkles = new THREE.Points(sparkleGeo, sparkleMat)
-    scene.add(sparkles)
-
-    // Animation loop
     let obstacleTimer = 0
-    let lastObstacleZ = 0
+    let running = false
 
     const animate = () => {
-      const gs = gameStateRef.current
-      if (!gs.started || gs.gameOver) {
-        animFrameRef.current = requestAnimationFrame(animate)
-        renderer.render(scene, camera)
-        return
-      }
+      if (!sceneRef.current || !rendererRef.current) return
 
-      const keys = keysRef.current
+      const carGroup = carGroupRef.current
+      if (carGroup && running) {
+        const keys = keysRef.current
+        if (keys.left) carXRef.current -= 0.08
+        if (keys.right) carXRef.current += 0.08
+        carXRef.current = Math.max(-4.5, Math.min(4.5, carXRef.current))
+        carGroup.position.x = carXRef.current
 
-      // Car movement
-      if (keys.left) gs.carX -= 0.08
-      if (keys.right) gs.carX += 0.08
-      gs.carX = Math.max(-4.5, Math.min(4.5, gs.carX))
-      carGroup.position.x = gs.carX
+        speedRef.current = Math.min(0.15 + scoreRef.current * 0.002, 0.5)
 
-      // Speed increase over time
-      gs.speed = Math.min(0.15 + gs.score * 0.002, 0.5)
-
-      // Move world elements (buildings, trees, road markings)
-      const worldObjects = []
-      scene.children.forEach(child => {
-        if (child.isMesh && child !== road && child !== leftGrass && child !== rightGrass) {
-          worldObjects.push(child)
-        }
-      })
-
-      // Move everything that's not the car, lights, or helpers
-      scene.children.forEach(child => {
-        if (child === carGroup || child === road || child === leftGrass || child === rightGrass) return
-        if (child.isMesh || child.isPoints || child.isGroup) {
-          child.position.z -= gs.speed
-          if (child.position.z < -5) {
-            // Reset obstacles
-            if (child.userData.isObstacle) {
-              child.position.z = 80 + Math.random() * 40
-              child.position.x = (Math.random() - 0.5) * 7
-            } else if (child !== sun && child !== ambient && child !== fill) {
+        // Move world objects
+        scene.children.forEach(child => {
+          if (child === carGroup || child.isMesh && (child.material?.color?.getHex() === 0x333333 || child.material?.color?.getHex() === 0x4CAF50)) return
+          if (child.position && child.position.z !== undefined && child !== camera) {
+            child.position.z -= speedRef.current
+            if (child.position.z < -5 && child.position.z > -50) {
               child.position.z = 100 + Math.random() * 80
-              // Re-randomize building color
-              if (child.isMesh && child.material && child.material.color && buildingColors.includes(child.material.color.getHex())) {
-                child.material.color.setHex(buildingColors[Math.floor(Math.random() * buildingColors.length)])
-              }
             }
           }
-        }
-      })
+        })
 
-      // Spawn obstacles
-      obstacleTimer += gs.speed
-      if (obstacleTimer > 5) {
-        obstacleTimer = 0
-        const obstacleColors = [0xFF5252, 0xFF4081, 0xE040FB, 0x7C4DFF]
-        const obs = new THREE.Mesh(
-          new THREE.BoxGeometry(1, 1, 1),
-          new THREE.MeshStandardMaterial({
-            color: obstacleColors[Math.floor(Math.random() * obstacleColors.length)],
-            emissive: 0xffffff,
-            emissiveIntensity: 0.2,
-          })
-        )
-        obs.position.set((Math.random() - 0.5) * 6, 0.5, 80)
-        obs.userData.isObstacle = true
-        scene.add(obs)
-        gs.obstacles.push(obs)
+        // Obstacles
+        obstacleTimer += speedRef.current
+        if (obstacleTimer > 5) {
+          obstacleTimer = 0
+          const obsColors = [0xFF5252, 0xFF4081, 0xE040FB, 0x7C4DFF]
+          const obs = new THREE.Mesh(
+            new THREE.BoxGeometry(1, 1, 1),
+            new THREE.MeshStandardMaterial({ color: obsColors[Math.floor(Math.random() * obsColors.length)], emissive: 0xffffff, emissiveIntensity: 0.2 })
+          )
+          obs.position.set((Math.random() - 0.5) * 6, 0.5, 80)
+          scene.add(obs)
+          obstaclesRef.current.push(obs)
+        }
+
+        // Collision
+        const carBox = new THREE.Box3().setFromObject(carGroup)
+        obstaclesRef.current = obstaclesRef.current.filter(obs => {
+          if (!obs) return false
+          const obsBox = new THREE.Box3().setFromObject(obs)
+          if (carBox.intersectsBox(obsBox)) {
+            scene.remove(obs)
+            running = false
+            speedRef.current = 0
+            scoreRef.current = Math.floor(scoreRef.current)
+            setScore(scoreRef.current)
+            setGameOver(true)
+            setStarted(false)
+            return false
+          }
+          if (obs.position.z < -5) {
+            scene.remove(obs)
+            return false
+          }
+          return true
+        })
+
+        // Clean up far obstacles
+        obstaclesRef.current = obstaclesRef.current.filter(obs => {
+          if (obs.position.z < -5) { scene.remove(obs); return false }
+          return true
+        })
+
+        scoreRef.current += 0.01
+        setScore(Math.floor(scoreRef.current))
       }
-
-      // Collision detection
-      const carBox = new THREE.Box3().setFromObject(carGroup)
-      gs.obstacles.forEach(obs => {
-        if (!obs) return
-        const obsBox = new THREE.Box3().setFromObject(obs)
-        if (carBox.intersectsBox(obsBox)) {
-          endGame()
-        }
-      })
-
-      // Score
-      gs.score += 0.01
-      setScore(Math.floor(gs.score))
 
       renderer.render(scene, camera)
       animFrameRef.current = requestAnimationFrame(animate)
@@ -329,30 +261,24 @@ const CarGame = ({ isOpen, onClose }) => {
 
     animate()
 
-    // Keyboard controls
-    const handleKeyDown = (e) => {
-      if (e.key === 'ArrowLeft' || e.key === 'a') keysRef.current.left = true
-      if (e.key === 'ArrowRight' || e.key === 'd') keysRef.current.right = true
-      if (e.key === ' ') { e.preventDefault(); startGame() }
-    }
-    const handleKeyUp = (e) => {
-      if (e.key === 'ArrowLeft' || e.key === 'a') keysRef.current.left = false
-      if (e.key === 'ArrowRight' || e.key === 'd') keysRef.current.right = false
-    }
-    window.addEventListener('keydown', handleKeyDown)
-    window.addEventListener('keyup', handleKeyUp)
-
-    // Cleanup
     return () => {
-      window.removeEventListener('keydown', handleKeyDown)
-      window.removeEventListener('keyup', handleKeyUp)
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current)
-      if (mountRef.current && renderer.domElement) {
-        mountRef.current.removeChild(renderer.domElement)
-      }
-      renderer.dispose()
     }
-  }, [startGame, endGame])
+  }, [isOpen])
+
+  const handleStart = useCallback(() => {
+    speedRef.current = 0.15
+    carXRef.current = 0
+    scoreRef.current = 0
+    obstaclesRef.current.forEach(o => sceneRef.current?.remove(o))
+    obstaclesRef.current = []
+    setScore(0)
+    setGameOver(false)
+    setStarted(true)
+    if (carGroupRef.current) carGroupRef.current.position.x = 0
+  }, [])
+
+  if (!isOpen) return null
 
   return (
     <div className="car-game-overlay">
@@ -369,15 +295,15 @@ const CarGame = ({ isOpen, onClose }) => {
           {!started && !gameOver && (
             <div className="car-game-start">
               <h3>Colorful 3D Drive</h3>
-              <p>Dodge the obstacles! Use <kbd>←</kbd> <kbd>→</kbd> or <kbd>A</kbd> <kbd>D</kbd></p>
-              <button className="car-game-btn" onClick={startGame}>Start Game</button>
+              <p>Use <kbd>←</kbd> <kbd>→</kbd> or <kbd>A</kbd> <kbd>D</kbd> to dodge obstacles</p>
+              <button className="car-game-btn" onClick={handleStart}>Start Game</button>
             </div>
           )}
           {gameOver && (
             <div className="car-game-start">
               <h3>💥 Game Over!</h3>
-              <p className="car-game-final-score">Score: {Math.floor(score)}</p>
-              <button className="car-game-btn" onClick={startGame}>Play Again</button>
+              <p className="car-game-final-score">Score: {score}</p>
+              <button className="car-game-btn" onClick={handleStart}>Play Again</button>
             </div>
           )}
         </div>
