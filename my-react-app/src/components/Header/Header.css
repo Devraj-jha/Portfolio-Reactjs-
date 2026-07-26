@@ -35,9 +35,17 @@
   gap: 40px;
 }
 
+/* Brand */
 .nav-brand {
   position: relative;
   flex-shrink: 0;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  padding-bottom: 20px;
+}
+
+.nav-brand:hover {
+  transform: scale(1.05);
 }
 
 .brand-text {
@@ -65,6 +73,55 @@
   transform: scaleX(1);
 }
 
+/* Click Prompt */
+.click-prompt-simple {
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  padding: 4px 10px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px var(--shadow-color);
+  animation: promptSlideUp 0.5s ease-out, promptPulse 2s ease-in-out infinite;
+}
+
+.prompt-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--accent-primary);
+  border-radius: 50%;
+  animation: dotBlink 1.5s ease-in-out infinite;
+}
+
+.prompt-text {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+@keyframes promptSlideUp {
+  from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes promptPulse {
+  0%, 100% { box-shadow: 0 2px 8px var(--shadow-color); }
+  50% { box-shadow: 0 2px 12px var(--shadow-color), 0 0 0 2px rgba(0, 0, 0, 0.05); }
+}
+
+@keyframes dotBlink {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+/* Navigation List */
 .nav-list {
   display: flex;
   list-style: none;
@@ -219,6 +276,25 @@
   50% { transform: scaleY(1.2); }
 }
 
+/* Auto-play indicator */
+.music-toggle::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 8px;
+  height: 8px;
+  background: #4CAF50;
+  border-radius: 50%;
+  border: 2px solid var(--bg-primary);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.music-toggle.playing::after {
+  opacity: 1;
+}
+
 /* Theme Toggle */
 .theme-toggle {
   position: relative;
@@ -301,17 +377,94 @@
   50% { filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.6)); }
 }
 
+/* Hamburger Menu */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 44px;
+  height: 44px;
+  background: var(--bg-primary);
+  border: 2px solid var(--border-color);
+  border-radius: 50%;
+  cursor: pointer;
+  gap: 5px;
+  padding: 12px;
+  transition: all 0.3s ease;
+}
+
+.hamburger:hover {
+  border-color: var(--accent-primary);
+  transform: scale(1.05);
+}
+
+.hamburger-line {
+  width: 16px;
+  height: 2px;
+  background: var(--text-primary);
+  border-radius: 1px;
+  transition: all 0.3s ease;
+}
+
+.hamburger.open .hamburger-line:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.open .hamburger-line:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.open .hamburger-line:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* Mobile Menu Overlay */
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 80px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--bg-primary);
+  z-index: 999;
+  padding: 40px;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  animation: slideDown 0.3s ease-out;
+}
+
+.mobile-menu.open {
+  display: flex;
+}
+
+.mobile-menu .nav-button {
+  font-size: 1.2rem;
+  padding: 16px 32px;
+  width: 100%;
+  max-width: 300px;
+  text-align: center;
+  border-radius: 12px;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 /* Responsive Design */
 @media (max-width: 1024px) {
   .nav {
     padding: 0 20px;
     gap: 20px;
   }
-  
+
   .nav-list {
     gap: 4px;
   }
-  
+
   .nav-button {
     padding: 10px 16px;
     font-size: 0.9rem;
@@ -324,30 +477,30 @@
     padding: 0 16px;
     gap: 16px;
   }
-  
+
   .brand-text {
     font-size: 1.8rem;
   }
-  
+
   .nav-list {
     gap: 2px;
   }
-  
+
   .nav-button {
     padding: 8px 12px;
     font-size: 0.85rem;
   }
-  
+
   .nav-controls {
     gap: 12px;
   }
-  
+
   .music-toggle,
   .theme-toggle {
     width: 40px;
     height: 40px;
   }
-  
+
   .music-icon,
   .toggle-handle svg {
     width: 18px;
@@ -359,502 +512,12 @@
   .nav-list {
     display: none;
   }
-  
+
+  .hamburger {
+    display: flex;
+  }
+
   .nav {
     justify-content: space-between;
   }
 }
-/* src/components/Header/Header.css */
-/* ... previous styles ... */
-
-.nav-brand {
-  position: relative;
-  flex-shrink: 0;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-}
-
-.nav-brand:hover {
-  transform: scale(1.05);
-}
-
-.click-prompt {
-  position: absolute;
-  top: -30px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--accent-primary);
-  color: var(--pure-white);
-  padding: 4px 8px;
-  border-radius: 12px;
-  font-size: var(--text-xs);
-  font-weight: 600;
-  white-space: nowrap;
-  animation: bounce 2s infinite;
-}
-
-.click-prompt::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: 50%;
-  transform: translateX(-50%);
-  border: 4px solid transparent;
-  border-top-color: var(--accent-primary);
-}
-
-.pulse-ring {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 60px;
-  height: 60px;
-  border: 2px solid var(--accent-primary);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  animation: pulse 2s infinite;
-}
-
-@keyframes bounce {
-  0%, 100% { transform: translateX(-50%) translateY(0); }
-  50% { transform: translateX(-50%) translateY(-5px); }
-}
-
-@keyframes pulse {
-  0% {
-    transform: translate(-50%, -50%) scale(0.8);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(1.2);
-    opacity: 0;
-  }
-}
-
-/* ... rest of the previous styles ... */
-/* src/components/Header/Header.css - Updated Click Prompt Section */
-/* ... previous styles remain the same ... */
-
-.nav-brand {
-  position: relative;
-  flex-shrink: 0;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-  padding-bottom: 25px; /* Space for click prompt */
-}
-
-.nav-brand:hover {
-  transform: scale(1.05);
-}
-
-.click-prompt {
-  position: absolute;
-  bottom: -20px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 100;
-}
-
-.prompt-content {
-  position: relative;
-  z-index: 3;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  animation: promptBounce 2s ease-in-out infinite;
-}
-
-.prompt-text {
-  background: var(--accent-primary);
-  color: var(--pure-white);
-  padding: 6px 12px;
-  border-radius: 12px;
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  white-space: nowrap;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  border: 2px solid var(--pure-white);
-}
-
-.prompt-arrow {
-  color: var(--accent-primary);
-  font-size: 1.2rem;
-  margin-top: -2px;
-  animation: arrowBlink 1.5s ease-in-out infinite;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
-}
-
-.pulse-ring-1,
-.pulse-ring-2 {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 60px;
-  height: 60px;
-  border: 2px solid var(--accent-primary);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.pulse-ring-1 {
-  animation: pulse 2s ease-out infinite;
-}
-
-.pulse-ring-2 {
-  animation: pulse 2s ease-out 0.5s infinite;
-}
-
-.sparkle-1,
-.sparkle-2 {
-  position: absolute;
-  font-size: 0.8rem;
-  animation: sparkleFloat 3s ease-in-out infinite;
-}
-
-.sparkle-1 {
-  top: -10px;
-  left: 10px;
-  animation-delay: 0s;
-}
-
-.sparkle-2 {
-  top: -5px;
-  right: 5px;
-  animation-delay: 1.5s;
-}
-
-@keyframes promptBounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-5px);
-  }
-}
-
-@keyframes arrowBlink {
-  0%, 100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  50% {
-    opacity: 0.6;
-    transform: translateY(2px);
-  }
-}
-
-@keyframes pulse {
-  0% {
-    transform: translate(-50%, -50%) scale(0.8);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(1.3);
-    opacity: 0;
-  }
-}
-
-@keyframes sparkleFloat {
-  0%, 100% {
-    opacity: 0;
-    transform: translateY(0) rotate(0deg);
-  }
-  25% {
-    opacity: 1;
-    transform: translateY(-5px) rotate(90deg);
-  }
-  50% {
-    opacity: 0.8;
-    transform: translateY(-10px) rotate(180deg);
-  }
-  75% {
-    opacity: 0.5;
-    transform: translateY(-5px) rotate(270deg);
-  }
-}
-
-/* ... rest of the previous styles remain the same ... */
-/* src/components/Header/Header.css - Updated Simple Click Prompt */
-/* ... previous styles remain the same ... */
-
-.nav-brand {
-  position: relative;
-  flex-shrink: 0;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-  padding-bottom: 20px; /* Space for click prompt */
-}
-
-.nav-brand:hover {
-  transform: scale(1.05);
-}
-
-/* Simple Click Prompt */
-.click-prompt-simple {
-  position: absolute;
-  bottom: -15px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: var(--bg-primary);
-  border: 1px solid var(--border-color);
-  padding: 4px 10px;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px var(--shadow-color);
-  animation: promptSlideUp 0.5s ease-out, promptPulse 2s ease-in-out infinite;
-}
-
-.prompt-dot {
-  width: 6px;
-  height: 6px;
-  background: var(--accent-primary);
-  border-radius: 50%;
-  animation: dotBlink 1.5s ease-in-out infinite;
-}
-
-.prompt-text {
-  font-size: 0.7rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-@keyframes promptSlideUp {
-  from {
-    opacity: 0;
-    transform: translateX(-50%) translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
-}
-
-@keyframes promptPulse {
-  0%, 100% {
-    box-shadow: 0 2px 8px var(--shadow-color);
-  }
-  50% {
-    box-shadow: 0 2px 12px var(--shadow-color), 0 0 0 2px rgba(var(--accent-primary-rgb), 0.1);
-  }
-}
-
-@keyframes dotBlink {
-  0%, 100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.5;
-    transform: scale(0.8);
-  }
-}
-
-/* Remove old click prompt styles */
-.click-prompt,
-.prompt-content,
-.prompt-arrow,
-.pulse-ring-1,
-.pulse-ring-2,
-.sparkle-1,
-.sparkle-2 {
-  display: none;
-}
-
-/* ... rest of the previous styles remain the same ... */
-/* src/components/Header/Header.css - Music Button Updates */
-/* ... previous styles ... */
-
-.music-toggle {
-  position: relative;
-  width: 44px;
-  height: 44px;
-  background: var(--bg-primary);
-  border: 2px solid var(--border-color);
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow: hidden;
-}
-
-.music-toggle::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: var(--accent-primary);
-  border-radius: 50%;
-  transform: scale(0);
-  transition: transform 0.3s ease;
-}
-
-.music-toggle:hover::before {
-  transform: scale(1);
-}
-
-.music-toggle:hover {
-  border-color: var(--accent-primary);
-  transform: scale(1.05);
-}
-
-.music-icon {
-  width: 20px;
-  height: 20px;
-  color: var(--text-primary);
-  position: relative;
-  z-index: 2;
-  transition: color 0.3s ease;
-}
-
-.music-toggle:hover .music-icon {
-  color: var(--pure-white);
-}
-
-.music-waves {
-  position: absolute;
-  display: flex;
-  gap: 2px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.music-toggle.playing .music-waves {
-  opacity: 1;
-}
-
-.wave {
-  width: 2px;
-  height: 6px;
-  background: var(--accent-primary);
-  border-radius: 1px;
-  animation: wave 1.2s ease-in-out infinite;
-}
-
-.wave:nth-child(1) { animation-delay: 0s; }
-.wave:nth-child(2) { animation-delay: 0.2s; }
-.wave:nth-child(3) { animation-delay: 0.4s; }
-
-@keyframes wave {
-  0%, 100% { transform: scaleY(0.3); }
-  50% { transform: scaleY(1.2); }
-}
-
-/* ... rest of the styles ... */
-/* src/components/Header/Header.css - RESTORED ORIGINAL MUSIC BUTTON */
-/* ... previous styles ... */
-
-.music-toggle {
-  position: relative;
-  width: 44px;
-  height: 44px;
-  background: var(--bg-primary);
-  border: 2px solid var(--border-color);
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow: hidden;
-}
-
-.music-toggle::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: var(--accent-primary);
-  border-radius: 50%;
-  transform: scale(0);
-  transition: transform 0.3s ease;
-}
-
-.music-toggle:hover::before {
-  transform: scale(1);
-}
-
-.music-toggle:hover {
-  border-color: var(--accent-primary);
-  transform: scale(1.05);
-}
-
-.music-icon {
-  width: 20px;
-  height: 20px;
-  color: var(--text-primary);
-  position: relative;
-  z-index: 2;
-  transition: color 0.3s ease;
-}
-
-.music-toggle:hover .music-icon {
-  color: var(--pure-white);
-}
-
-.music-waves {
-  position: absolute;
-  display: flex;
-  gap: 2px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.music-toggle.playing .music-waves {
-  opacity: 1;
-}
-
-.wave {
-  width: 2px;
-  height: 6px;
-  background: var(--accent-primary);
-  border-radius: 1px;
-  animation: wave 1.2s ease-in-out infinite;
-}
-
-.wave:nth-child(1) { animation-delay: 0s; }
-.wave:nth-child(2) { animation-delay: 0.2s; }
-.wave:nth-child(3) { animation-delay: 0.4s; }
-
-@keyframes wave {
-  0%, 100% { transform: scaleY(0.3); }
-  50% { transform: scaleY(1.2); }
-}
-
-/* Auto-play indicator */
-.music-toggle::after {
-  content: '';
-  position: absolute;
-  top: -2px;
-  right: -2px;
-  width: 8px;
-  height: 8px;
-  background: #4CAF50;
-  border-radius: 50%;
-  border: 2px solid var(--bg-primary);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.music-toggle.playing::after {
-  opacity: 1;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-}
-
-/* ... rest of the styles ... */
