@@ -60,17 +60,22 @@ const CarGame = ({ isOpen, onClose, embedded = false }) => {
     camera.lookAt(0, 0, 20)
     cameraRef.current = camera
 
+    const w = mount.clientWidth || window.innerWidth
+    const h = mount.clientHeight || window.innerHeight
     const renderer = new THREE.WebGLRenderer({ antialias: true })
-    renderer.setSize(mount.clientWidth, mount.clientHeight)
+    renderer.setSize(w, h)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     renderer.shadowMap.enabled = true
     renderer.shadowMap.type = THREE.PCFSoftShadowMap
     mount.appendChild(renderer.domElement)
     rendererRef.current = renderer
 
     const handleResize = () => {
-      camera.aspect = mount.clientWidth / mount.clientHeight
+      const w2 = mount.clientWidth || window.innerWidth
+      const h2 = mount.clientHeight || window.innerHeight
+      camera.aspect = w2 / h2
       camera.updateProjectionMatrix()
-      renderer.setSize(mount.clientWidth, mount.clientHeight)
+      renderer.setSize(w2, h2)
     }
     window.addEventListener('resize', handleResize)
 
