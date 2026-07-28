@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import * as THREE from 'three'
-import { Tree } from '@dgreenheck/ez-tree'
 import './CarGame.css'
 
 const CarGame = ({ isOpen, onClose, embedded = false }) => {
@@ -49,56 +48,57 @@ const CarGame = ({ isOpen, onClose, embedded = false }) => {
     const mount = mountRef.current
     if (!mount) return
 
-    // Scene setup
-    const scene = new THREE.Scene()
-    scene.background = new THREE.Color(0x87CEEB)
-    scene.fog = new THREE.Fog(0x87CEEB, 50, 100)
-    sceneRef.current = scene
+    try {
+      // Scene setup
+      const scene = new THREE.Scene()
+      scene.background = new THREE.Color(0x87CEEB)
+      scene.fog = new THREE.Fog(0x87CEEB, 50, 100)
+      sceneRef.current = scene
 
-    const camera = new THREE.PerspectiveCamera(60, mount.clientWidth / mount.clientHeight, 0.1, 200)
-    camera.position.set(0, 6, -10)
-    camera.lookAt(0, 0, 20)
-    cameraRef.current = camera
+      const camera = new THREE.PerspectiveCamera(60, mount.clientWidth / mount.clientHeight, 0.1, 200)
+      camera.position.set(0, 6, -10)
+      camera.lookAt(0, 0, 20)
+      cameraRef.current = camera
 
-    const w = mount.clientWidth || window.innerWidth
-    const h = mount.clientHeight || window.innerHeight
-    const renderer = new THREE.WebGLRenderer({ antialias: true })
-    renderer.setSize(w, h)
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-    renderer.shadowMap.enabled = true
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap
-    mount.appendChild(renderer.domElement)
-    rendererRef.current = renderer
+      const w = mount.clientWidth || window.innerWidth
+      const h = mount.clientHeight || window.innerHeight
+      const renderer = new THREE.WebGLRenderer({ antialias: true })
+      renderer.setSize(w, h)
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+      renderer.shadowMap.enabled = true
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap
+      mount.appendChild(renderer.domElement)
+      rendererRef.current = renderer
 
-    const handleResize = () => {
-      const w2 = mount.clientWidth || window.innerWidth
-      const h2 = mount.clientHeight || window.innerHeight
-      camera.aspect = w2 / h2
-      camera.updateProjectionMatrix()
-      renderer.setSize(w2, h2)
-    }
-    window.addEventListener('resize', handleResize)
+      const handleResize = () => {
+        const w2 = mount.clientWidth || window.innerWidth
+        const h2 = mount.clientHeight || window.innerHeight
+        camera.aspect = w2 / h2
+        camera.updateProjectionMatrix()
+        renderer.setSize(w2, h2)
+      }
+      window.addEventListener('resize', handleResize)
 
-    // Lights
-    const ambient = new THREE.AmbientLight(0x404060, 0.5)
-    scene.add(ambient)
+      // Lights
+      const ambient = new THREE.AmbientLight(0x404060, 0.5)
+      scene.add(ambient)
 
-    const sun = new THREE.DirectionalLight(0xffeedd, 1)
-    sun.position.set(10, 20, 10)
-    sun.castShadow = true
-    sun.shadow.mapSize.width = 1024
-    sun.shadow.mapSize.height = 1024
-    const d = 30
-    sun.shadow.camera.left = -d
-    sun.shadow.camera.right = d
-    sun.shadow.camera.top = d
-    sun.shadow.camera.bottom = -d
-    sun.shadow.camera.near = 1
-    sun.shadow.camera.far = 50
-    scene.add(sun)
-    scene.add(new THREE.AmbientLight(0x404060, 0.3))
+      const sun = new THREE.DirectionalLight(0xffeedd, 1)
+      sun.position.set(10, 20, 10)
+      sun.castShadow = true
+      sun.shadow.mapSize.width = 1024
+      sun.shadow.mapSize.height = 1024
+      const d = 30
+      sun.shadow.camera.left = -d
+      sun.shadow.camera.right = d
+      sun.shadow.camera.top = d
+      sun.shadow.camera.bottom = -d
+      sun.shadow.camera.near = 1
+      sun.shadow.camera.far = 50
+      scene.add(sun)
+      scene.add(new THREE.AmbientLight(0x404060, 0.3))
 
-    // Road
+      // Road
     const road = new THREE.Mesh(
       new THREE.PlaneGeometry(12, 200),
       new THREE.MeshStandardMaterial({ color: 0x333333, roughness: 0.8 })
@@ -141,23 +141,16 @@ const CarGame = ({ isOpen, onClose, embedded = false }) => {
     rightGrass.position.set(16, -0.01, 50)
     scene.add(rightGrass)
 
-    // Trees alongside the road using ez-tree
-    const treePresets = ['Pine', 'Pine', 'Pine', 'Oak Medium', 'Oak Medium', 'Ash Medium']
-    for (let z = 0; z < 200; z += 6) {
+    // Roadside markers (colored poles)
+    const poleMat = new THREE.MeshStandardMaterial({ color: 0xffaa00 })
+    for (let z = 0; z < 200; z += 8) {
       const side = Math.random() > 0.5 ? 1 : -1
-      const tree = new Tree()
-      const preset = treePresets[Math.floor(Math.random() * treePresets.length)]
-      tree.loadPreset(preset)
-      tree.options.seed = Math.floor(Math.random() * 99999)
-      // Scale trees for the game world
-      const scale = 0.3 + Math.random() * 0.4
-      tree.options.trunk.length *= scale
-      tree.options.branch.length['0'] = tree.options.branch.length['0'] * scale
-      tree.generate()
-      tree.position.set(side * (7 + Math.random() * 3), 0, z)
-      tree.scale.set(1, 1, 1)
-      tree.castShadow = true
-      scene.add(tree)
+      const pole = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.1, 0.15, 0.5, 4),
+        poleMat
+      )
+      pole.position.set(side * 7.5, 0.25, z)
+      scene.add(pole)
     }
 
     // Car
@@ -189,6 +182,13 @@ const CarGame = ({ isOpen, onClose, embedded = false }) => {
     return () => {
       window.removeEventListener('resize', handleResize)
       cleanup()
+    }
+    } catch (e) {
+      console.error('CarGame 3D init failed:', e)
+      // Still show the canvas with a basic renderer so it's not just black
+      if (mount) {
+        mount.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#fff;font-family:sans-serif;flex-direction:column;gap:12px"><span style="font-size:48px">🏎️</span><p style="margin:0;font-size:18px;opacity:0.7">3D Drive</p><p style="margin:0;font-size:14px;opacity:0.5">Click Play to start the game</p></div>'
+      }
     }
   }, [isOpen, embedded, cleanup])
 
