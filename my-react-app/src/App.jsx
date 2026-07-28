@@ -192,11 +192,15 @@ function App() {
         onContactClick={() => setIsContactModalOpen(true)}
       />
 
-      <main className="main-content">
-        <div className={`page-transition ${isTransitioning ? 'transitioning' : ''}`}>
-          {renderSection()}
-        </div>
-      </main>
+      {displaySection === 'cardrive' ? (
+        <CarGameSection />
+      ) : (
+        <main className="main-content">
+          <div className={`page-transition ${isTransitioning ? 'transitioning' : ''}`}>
+            {renderSection()}
+          </div>
+        </main>
+      )}
 
       <Footer />
 
