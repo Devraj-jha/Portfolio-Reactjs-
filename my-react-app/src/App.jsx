@@ -4,7 +4,6 @@ import SocialButtons from './components/SocialButtons/SocialButtons'
 import ContactModal from './components/ContactModal/ContactModal'
 import Terminal from './components/Terminal/Terminal'
 import HiddenGame from './components/HiddenGame/HiddenGame'
-import CarGame from './components/CarGame/CarGame'
 import LoadingScreen from './components/LoadingScreen/LoadingScreen'
 import Footer from './components/Footer/Footer'
 import Home from './sections/Home/Home'
@@ -19,7 +18,6 @@ function App() {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
   const [isTerminalOpen, setIsTerminalOpen] = useState(false)
   const [isGameOpen, setIsGameOpen] = useState(false)
-  const [isCarGameOpen, setIsCarGameOpen] = useState(false)
   const [theme, setTheme] = useState('light')
   const [isLoading, setIsLoading] = useState(true)
   const [isTransitioning, setIsTransitioning] = useState(false)
@@ -67,7 +65,7 @@ function App() {
       case 'projects':
         return <ProjectsSection />
       case 'cardrive':
-        return <CarGameSection onStartCarGame={() => setIsCarGameOpen(true)} />
+        return <CarGameSection />
       default:
         return <Home />
     }
@@ -218,10 +216,6 @@ function App() {
         onClose={() => setIsGameOpen(false)}
       />
 
-      <CarGame
-        isOpen={isCarGameOpen}
-        onClose={() => setIsCarGameOpen(false)}
-      />
     </div>
   )
 }

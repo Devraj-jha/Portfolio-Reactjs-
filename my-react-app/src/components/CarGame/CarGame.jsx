@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, useCallback } from 'react'
 import * as THREE from 'three'
 import './CarGame.css'
 
-const CarGame = ({ isOpen, onClose }) => {
+const CarGame = ({ isOpen, onClose, embedded = false }) => {
   const mountRef = useRef(null)
   const rendererRef = useRef(null)
   const sceneRef = useRef(null)
@@ -43,7 +43,7 @@ const CarGame = ({ isOpen, onClose }) => {
 
   // Initialize Three.js scene when game opens
   useEffect(() => {
-    if (!isOpen) return
+    if (!isOpen && !embedded) return
 
     const mount = mountRef.current
     if (!mount) return
@@ -185,11 +185,11 @@ const CarGame = ({ isOpen, onClose }) => {
       window.removeEventListener('resize', handleResize)
       cleanup()
     }
-  }, [isOpen, cleanup])
+  }, [isOpen, embedded, cleanup])
 
   // Game loop - runs continuously when open
   useEffect(() => {
-    if (!isOpen || !sceneRef.current || !rendererRef.current) return
+    if ((!isOpen && !embedded) || !sceneRef.current || !rendererRef.current) return
 
     const scene = sceneRef.current
     const camera = cameraRef.current
@@ -276,11 +276,11 @@ const CarGame = ({ isOpen, onClose }) => {
     return () => {
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current)
     }
-  }, [isOpen])
+  }, [isOpen, embedded])
 
   // Keyboard controls
   useEffect(() => {
-    if (!isOpen) return
+    if (!isOpen && !embedded) return
 
     const handleKeyDown = (e) => {
       if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') keysRef.current.left = true
@@ -297,7 +297,7 @@ const CarGame = ({ isOpen, onClose }) => {
       window.removeEventListener('keydown', handleKeyDown)
       window.removeEventListener('keyup', handleKeyUp)
     }
-  }, [isOpen])
+  }, [isOpen, embedded])
 
   const handleStart = useCallback(() => {
     speedRef.current = 0.15
@@ -312,7 +312,50 @@ const CarGame = ({ isOpen, onClose }) => {
     if (carGroupRef.current) carGroupRef.current.position.x = 0
   }, [])
 
-  if (!isOpen) return null
+  if (!isOpen && !embedded) return null
+
+  // Embedded mode: just the canvas with overlays, no fullscreen wrapper
+  if (embedded) {
+    return (
+      <div className="car-game-embedded">
+        <div className="car-game-canvas" ref={mountRef}>
+          {!started && !gameOver && (
+            <div className="car-game-start">
+              <button className="car-game-btn car-game-btn-play" onClick={handleStart}>▶ Play</button>
+            </div>
+          )}
+          {gameOver && (
+            <div className="car-game-start">
+              <h3 className="car-game-over-title">💥 Game Over</h3>
+              <p className="car-game-final-score">{score}</p>
+              <button className="car-game-btn car-game-btn-play" onClick={handleStart}>↻ Play Again</button>
+            </div>
+          )}
+          {started && !gameOver && (
+            <div className="car-game-embedded-score">{score}</div>
+          )}
+        </div>
+        <div className="car-game-controls">
+          <div className="car-game-keys">
+            <button
+              className="ctrl-btn"
+              onTouchStart={() => keysRef.current.left = true}
+              onTouchEnd={() => keysRef.current.left = false}
+              onMouseDown={() => keysRef.current.left = true}
+              onMouseUp={() => keysRef.current.left = false}
+            >←</button>
+            <button
+              className="ctrl-btn"
+              onTouchStart={() => keysRef.current.right = true}
+              onTouchEnd={() => keysRef.current.right = false}
+              onMouseDown={() => keysRef.current.right = true}
+              onMouseUp={() => keysRef.current.right = false}
+            >→</button>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="car-game-overlay">
