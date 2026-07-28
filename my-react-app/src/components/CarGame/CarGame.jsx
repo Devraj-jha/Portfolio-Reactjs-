@@ -19,6 +19,8 @@ const CarGame = ({ isOpen, onClose }) => {
   const [gameOver, setGameOver] = useState(false)
   const [started, setStarted] = useState(false)
 
+  const runningRef = useRef(false)
+
   const cleanup = useCallback(() => {
     if (animFrameRef.current) {
       cancelAnimationFrame(animFrameRef.current)
@@ -36,6 +38,7 @@ const CarGame = ({ isOpen, onClose }) => {
     cameraRef.current = null
     carGroupRef.current = null
     obstaclesRef.current = []
+    runningRef.current = false
   }, [])
 
   // Initialize Three.js scene when game opens
@@ -62,6 +65,13 @@ const CarGame = ({ isOpen, onClose }) => {
     renderer.shadowMap.type = THREE.PCFSoftShadowMap
     mount.appendChild(renderer.domElement)
     rendererRef.current = renderer
+
+    const handleResize = () => {
+      camera.aspect = mount.clientWidth / mount.clientHeight
+      camera.updateProjectionMatrix()
+      renderer.setSize(mount.clientWidth, mount.clientHeight)
+    }
+    window.addEventListener('resize', handleResize)
 
     // Lights
     const ambient = new THREE.AmbientLight(0x404060, 0.5)
@@ -171,7 +181,10 @@ const CarGame = ({ isOpen, onClose }) => {
     scene.add(carGroup)
     carGroupRef.current = carGroup
 
-    return cleanup
+    return () => {
+      window.removeEventListener('resize', handleResize)
+      cleanup()
+    }
   }, [isOpen, cleanup])
 
   // Game loop - runs continuously when open
@@ -183,13 +196,12 @@ const CarGame = ({ isOpen, onClose }) => {
     const renderer = rendererRef.current
 
     let obstacleTimer = 0
-    let running = false
 
     const animate = () => {
       if (!sceneRef.current || !rendererRef.current) return
 
       const carGroup = carGroupRef.current
-      if (carGroup && running) {
+      if (carGroup && runningRef.current) {
         const keys = keysRef.current
         if (keys.left) carXRef.current -= 0.08
         if (keys.right) carXRef.current += 0.08
@@ -230,7 +242,7 @@ const CarGame = ({ isOpen, onClose }) => {
           const obsBox = new THREE.Box3().setFromObject(obs)
           if (carBox.intersectsBox(obsBox)) {
             scene.remove(obs)
-            running = false
+            runningRef.current = false
             speedRef.current = 0
             scoreRef.current = Math.floor(scoreRef.current)
             setScore(scoreRef.current)
@@ -266,6 +278,27 @@ const CarGame = ({ isOpen, onClose }) => {
     }
   }, [isOpen])
 
+  // Keyboard controls
+  useEffect(() => {
+    if (!isOpen) return
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') keysRef.current.left = true
+      if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') keysRef.current.right = true
+    }
+    const handleKeyUp = (e) => {
+      if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') keysRef.current.left = false
+      if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') keysRef.current.right = false
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    window.addEventListener('keyup', handleKeyUp)
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+      window.removeEventListener('keyup', handleKeyUp)
+    }
+  }, [isOpen])
+
   const handleStart = useCallback(() => {
     speedRef.current = 0.15
     carXRef.current = 0
@@ -275,6 +308,7 @@ const CarGame = ({ isOpen, onClose }) => {
     setScore(0)
     setGameOver(false)
     setStarted(true)
+    runningRef.current = true
     if (carGroupRef.current) carGroupRef.current.position.x = 0
   }, [])
 
@@ -283,20 +317,11 @@ const CarGame = ({ isOpen, onClose }) => {
   return (
     <div className="car-game-overlay">
       <div className="car-game-container">
-        <div className="car-game-header">
-          <h2>🏎️ 3D Drive</h2>
-          <div className="car-game-hud">
-            <span>Score: {score}</span>
-          </div>
-          <button className="car-game-close" onClick={onClose}>✕</button>
-        </div>
-
         <div className="car-game-canvas" ref={mountRef}>
           {!started && !gameOver && (
             <div className="car-game-start">
-              <h3>Colorful 3D Drive</h3>
-              <p>Use <kbd>←</kbd> <kbd>→</kbd> or <kbd>A</kbd> <kbd>D</kbd> to dodge obstacles</p>
-              <button className="car-game-btn" onClick={handleStart}>Start Game</button>
+              <h3>🏎️ 3D Drive</h3>
+              <button className="car-game-btn" onClick={handleStart}>▶ Start Playing</button>
             </div>
           )}
           {gameOver && (
@@ -307,6 +332,8 @@ const CarGame = ({ isOpen, onClose }) => {
             </div>
           )}
         </div>
+
+        <button className="car-game-close" onClick={onClose}>✕</button>
 
         <div className="car-game-controls">
           <div className="car-game-keys">
