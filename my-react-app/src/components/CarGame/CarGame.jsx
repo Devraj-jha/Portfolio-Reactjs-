@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import * as THREE from 'three'
+import { Tree } from '@dgreenheck/ez-tree'
 import './CarGame.css'
 
 const CarGame = ({ isOpen, onClose, embedded = false }) => {
@@ -135,24 +136,23 @@ const CarGame = ({ isOpen, onClose, embedded = false }) => {
     rightGrass.position.set(16, -0.01, 50)
     scene.add(rightGrass)
 
-    // Colorful buildings
-    const buildingColors = [0xFF6B6B, 0x4ECDC4, 0xFFE66D, 0xA8E6CF, 0xFF8A5C, 0x7C4DFF, 0xFF4081, 0x00BCD4]
-    const buildings = []
-    for (let z = 0; z < 200; z += 8) {
+    // Trees alongside the road using ez-tree
+    const treePresets = ['Pine', 'Pine', 'Pine', 'Oak Medium', 'Oak Medium', 'Ash Medium']
+    for (let z = 0; z < 200; z += 6) {
       const side = Math.random() > 0.5 ? 1 : -1
-      const bw = 2 + Math.random() * 3
-      const bh = 2 + Math.random() * 6
-      const bd = 2 + Math.random() * 2
-      const color = buildingColors[Math.floor(Math.random() * buildingColors.length)]
-      const building = new THREE.Mesh(
-        new THREE.BoxGeometry(bw, bh, bd),
-        new THREE.MeshStandardMaterial({ color, roughness: 0.6 })
-      )
-      building.position.set(side * (8 + Math.random() * 4), bh / 2, z)
-      building.castShadow = true
-      building.receiveShadow = true
-      scene.add(building)
-      buildings.push(building)
+      const tree = new Tree()
+      const preset = treePresets[Math.floor(Math.random() * treePresets.length)]
+      tree.loadPreset(preset)
+      tree.options.seed = Math.floor(Math.random() * 99999)
+      // Scale trees for the game world
+      const scale = 0.3 + Math.random() * 0.4
+      tree.options.trunk.length *= scale
+      tree.options.branch.length['0'] = tree.options.branch.length['0'] * scale
+      tree.generate()
+      tree.position.set(side * (7 + Math.random() * 3), 0, z)
+      tree.scale.set(1, 1, 1)
+      tree.castShadow = true
+      scene.add(tree)
     }
 
     // Car
@@ -203,8 +203,8 @@ const CarGame = ({ isOpen, onClose, embedded = false }) => {
       const carGroup = carGroupRef.current
       if (carGroup && runningRef.current) {
         const keys = keysRef.current
-        if (keys.left) carXRef.current -= 0.08
-        if (keys.right) carXRef.current += 0.08
+        if (keys.left) carXRef.current += 0.08
+        if (keys.right) carXRef.current -= 0.08
         carXRef.current = Math.max(-4.5, Math.min(4.5, carXRef.current))
         carGroup.position.x = carXRef.current
 
