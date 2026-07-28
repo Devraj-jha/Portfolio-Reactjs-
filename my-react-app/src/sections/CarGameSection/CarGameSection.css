@@ -1,105 +1,83 @@
 /* src/sections/CarGameSection/CarGameSection.css */
 .cardrive-section {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 999;
+  min-height: 80vh;
   display: flex;
-  background: #000;
-}
-
-.car-game-embedded {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.car-game-embedded .car-game-canvas {
-  position: relative;
-  width: 100%;
-  flex: 1;
-  background: #000;
-  overflow: hidden;
-  min-height: 0;
-}
-
-.car-game-embedded .car-game-canvas canvas {
-  display: block;
-  width: 100% !important;
-  height: 100% !important;
-}
-
-/* Big play button overlay */
-.car-game-embedded .car-game-btn-play {
-  font-size: 1.5rem;
-  padding: 20px 56px;
-  border-radius: 16px;
-  background: linear-gradient(135deg, #4CAF50, #2196F3);
-  box-shadow: 0 8px 32px rgba(76, 175, 80, 0.4);
-  transition: all 0.3s ease;
-}
-
-.car-game-embedded .car-game-btn-play:hover {
-  transform: scale(1.08);
-  box-shadow: 0 12px 40px rgba(76, 175, 80, 0.6);
-}
-
-.car-game-embedded .car-game-over-title {
-  color: #fff;
-  font-size: 1.2rem;
-  font-weight: 700;
-  margin: 0;
-  opacity: 0.9;
-}
-
-/* Floating score during gameplay */
-.car-game-embedded-score {
-  position: absolute;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 20;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
-  color: #4CAF50;
-  font-size: 1.2rem;
-  font-weight: 700;
-  font-family: monospace;
-  padding: 8px 20px;
-  border-radius: 10px;
-  border: 1px solid rgba(76, 175, 80, 0.3);
-}
-
-/* Controls for touch devices */
-.car-game-embedded .car-game-controls {
-  display: none;
-  position: absolute;
-  bottom: 24px;
-  left: 0;
-  right: 0;
-  z-index: 50;
+  align-items: center;
   justify-content: center;
+  padding: 40px 0;
 }
 
-.car-game-embedded .car-game-keys {
-  display: flex;
-  gap: 20px;
+.cardrive-hero {
+  text-align: center;
+  max-width: 600px;
 }
 
-@media (pointer: coarse) {
-  .car-game-embedded .car-game-controls {
-    display: flex;
-  }
+.cardrive-glitch {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  animation: floatGlow 3s ease-in-out infinite;
+}
+
+@keyframes floatGlow {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-10px) scale(1.1); }
+}
+
+.cardrive-title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, #FF6B6B, #4ECDC4, #FFE66D);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cardrive-subtitle {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 32px;
+}
+
+.cardrive-btn {
+  background: linear-gradient(135deg, #4CAF50, #2196F3);
+  color: #fff;
+  border: none;
+  padding: 18px 48px;
+  border-radius: 14px;
+  font-size: 1.3rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: -0.01em;
+  box-shadow: 0 8px 32px rgba(76, 175, 80, 0.3);
+}
+
+.cardrive-btn:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 12px 40px rgba(76, 175, 80, 0.5);
+}
+
+.cardrive-hint {
+  margin-top: 20px;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.cardrive-hint kbd {
+  background: var(--bg-secondary);
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  border: 1px solid var(--border-color);
+  font-family: inherit;
 }
 
 @media (max-width: 768px) {
-  .car-game-embedded .car-game-btn-play {
-    font-size: 1.2rem;
-    padding: 16px 40px;
+  .cardrive-title {
+    font-size: 2rem;
   }
 }

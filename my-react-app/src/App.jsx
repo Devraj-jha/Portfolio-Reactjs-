@@ -4,13 +4,13 @@ import SocialButtons from './components/SocialButtons/SocialButtons'
 import ContactModal from './components/ContactModal/ContactModal'
 import Terminal from './components/Terminal/Terminal'
 import HiddenGame from './components/HiddenGame/HiddenGame'
+import CarGame from './components/CarGame/CarGame'
 import LoadingScreen from './components/LoadingScreen/LoadingScreen'
 import Footer from './components/Footer/Footer'
 import Home from './sections/Home/Home'
 import Blog from './sections/Blog/Blog'
 import Progress from './sections/Progress/Progress'
 import ProjectsSection from './sections/ProjectsSection/ProjectsSection'
-import CarGameSection from './sections/CarGameSection/CarGameSection'
 import './App.css'
 
 function App() {
@@ -18,6 +18,7 @@ function App() {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
   const [isTerminalOpen, setIsTerminalOpen] = useState(false)
   const [isGameOpen, setIsGameOpen] = useState(false)
+  const [isCarGameOpen, setIsCarGameOpen] = useState(false)
   const [theme, setTheme] = useState('light')
   const [isLoading, setIsLoading] = useState(true)
   const [isTransitioning, setIsTransitioning] = useState(false)
@@ -65,7 +66,7 @@ function App() {
       case 'projects':
         return <ProjectsSection />
       case 'cardrive':
-        return <CarGameSection />
+        return <CarGameSection onStartCarGame={() => setIsCarGameOpen(true)} />
       default:
         return <Home />
     }
@@ -192,15 +193,11 @@ function App() {
         onContactClick={() => setIsContactModalOpen(true)}
       />
 
-      {displaySection === 'cardrive' ? (
-        <CarGameSection />
-      ) : (
-        <main className="main-content">
-          <div className={`page-transition ${isTransitioning ? 'transitioning' : ''}`}>
-            {renderSection()}
-          </div>
-        </main>
-      )}
+      <main className="main-content">
+        <div className={`page-transition ${isTransitioning ? 'transitioning' : ''}`}>
+          {renderSection()}
+        </div>
+      </main>
 
       <Footer />
 
@@ -220,6 +217,10 @@ function App() {
         onClose={() => setIsGameOpen(false)}
       />
 
+      <CarGame
+        isOpen={isCarGameOpen}
+        onClose={() => setIsCarGameOpen(false)}
+      />
     </div>
   )
 }
