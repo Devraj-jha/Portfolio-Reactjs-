@@ -99,8 +99,7 @@ const Header = ({ activeSection, setActiveSection, onTerminalClick, theme, toggl
     { id: 'home', label: 'Home' },
     { id: 'blog', label: 'Blog' },
     { id: 'progress', label: 'Progress' },
-    { id: 'projects', label: 'Projects' },
-    { id: 'cardrive', label: '3D Drive' }
+    { id: 'projects', label: 'Projects' }
   ]
 
   return (

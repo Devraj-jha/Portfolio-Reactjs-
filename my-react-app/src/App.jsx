@@ -4,7 +4,6 @@ import SocialButtons from './components/SocialButtons/SocialButtons'
 import ContactModal from './components/ContactModal/ContactModal'
 import Terminal from './components/Terminal/Terminal'
 import HiddenGame from './components/HiddenGame/HiddenGame'
-import CarGame from './components/CarGame/CarGame'
 import LoadingScreen from './components/LoadingScreen/LoadingScreen'
 import Footer from './components/Footer/Footer'
 import Home from './sections/Home/Home'
@@ -18,7 +17,6 @@ function App() {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
   const [isTerminalOpen, setIsTerminalOpen] = useState(false)
   const [isGameOpen, setIsGameOpen] = useState(false)
-  const [isCarGameOpen, setIsCarGameOpen] = useState(false)
   const [theme, setTheme] = useState('light')
   const [isLoading, setIsLoading] = useState(true)
   const [isTransitioning, setIsTransitioning] = useState(false)
@@ -65,8 +63,6 @@ function App() {
         return <Progress />
       case 'projects':
         return <ProjectsSection />
-      case 'cardrive':
-        return <CarGameSection onStartCarGame={() => setIsCarGameOpen(true)} />
       default:
         return <Home />
     }
@@ -127,11 +123,6 @@ function App() {
       case 'game':
         setIsGameOpen(true)
         return 'Launching Click Attack Game!'
-      case 'car':
-      case 'drive':
-      case 'racing':
-        handleSectionChange('cardrive')
-        return '🏎️ Entering 3D Drive mode! Use left/right arrows to dodge obstacles.'
       case 'theme':
       case 'toggle theme':
       case 'dark mode':
@@ -147,7 +138,6 @@ function App() {
   blog       - Navigate to Blog
   progress   - Navigate to Progress
   projects   - Navigate to Projects
-  car/drive  - 3D Car Driving Game!
   techstack  - Show technology stack
   theme      - Toggle light/dark mode
   quote      - Random quote
@@ -215,11 +205,6 @@ function App() {
       <HiddenGame
         isOpen={isGameOpen}
         onClose={() => setIsGameOpen(false)}
-      />
-
-      <CarGame
-        isOpen={isCarGameOpen}
-        onClose={() => setIsCarGameOpen(false)}
       />
     </div>
   )
