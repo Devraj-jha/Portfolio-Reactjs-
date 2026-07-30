@@ -3,7 +3,7 @@ import GitHubContributions from '../../components/GitHubContributions/GitHubCont
 import './Home.css'
 
 const BG_COUNT = 20 // scans b1 … b20 across jpg/jpeg/png
-const BG_INTERVAL = 6000 // ms between transitions
+const THEME_ORDER = ['light', 'dark', 'sunset', 'ocean', 'forest', 'midnight']
 
 const tryLoad = (src) =>
   new Promise((resolve) => {
@@ -44,7 +44,7 @@ const useHeroBackgrounds = () => {
   return images
 }
 
-/** Fading background slideshow — renders nothing when no images exist */
+/** Full-width fading background — renders nothing when no images exist */
 const HeroBackground = ({ images, currentIndex }) => {
   if (images.length === 0) return null
 
@@ -65,7 +65,7 @@ const HeroBackground = ({ images, currentIndex }) => {
   )
 }
 
-const Home = () => {
+const Home = ({ theme }) => {
   const [textIndex, setTextIndex] = useState(0)
   const [displayText, setDisplayText] = useState('')
   const [isDeleting, setIsDeleting] = useState(false)
@@ -80,16 +80,12 @@ const Home = () => {
   ]
 
   const bgImages = useHeroBackgrounds()
-  const [bgIndex, setBgIndex] = useState(0)
 
-  // Cycle background
-  useEffect(() => {
-    if (bgImages.length < 2) return
-    const id = setInterval(() => {
-      setBgIndex((p) => (p + 1) % bgImages.length)
-    }, BG_INTERVAL)
-    return () => clearInterval(id)
-  }, [bgImages.length])
+  // Pick image based on theme — wraps around if more themes than images
+  const themeIndex = THEME_ORDER.indexOf(theme)
+  const bgIndex = bgImages.length > 0
+    ? (themeIndex >= 0 ? themeIndex % bgImages.length : 0)
+    : 0
 
   // Typewriter effect
   useEffect(() => {
@@ -137,10 +133,11 @@ const Home = () => {
 
   return (
     <section className="home-section">
+      <HeroBackground images={bgImages} currentIndex={bgIndex} />
+
       <div className="home-container">
         {/* Hero Area */}
         <div className="hero-area">
-          <HeroBackground images={bgImages} currentIndex={bgIndex} />
           <div className="hero-content">
             <p className="hero-greeting">Hello, I'm</p>
             <h1 className="hero-name">

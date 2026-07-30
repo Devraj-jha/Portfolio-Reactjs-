@@ -77,7 +77,7 @@ function App() {
   const renderSection = () => {
     switch (displaySection) {
       case 'home':
-        return <Home />
+        return <Home theme={theme} />
       case 'blog':
         return <Blog />
       case 'progress':

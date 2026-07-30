@@ -2,11 +2,14 @@
 .home-section {
   min-height: 100vh;
   padding: 20px 0;
+  position: relative;
 }
 
 .home-container {
   max-width: 1200px;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
 }
 
 /* Hero Area */
@@ -21,10 +24,14 @@
   overflow: hidden;
 }
 
-/* Background slideshow — only renders when images exist */
+/* Background slideshow — full viewport width, only renders when images exist */
 .hero-bg-slideshow {
   position: absolute;
-  inset: 0;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
   z-index: 0;
 }
 
@@ -41,7 +48,7 @@
   position: absolute;
   inset: 0;
   background: var(--bg-primary);
-  opacity: 0.75;
+  opacity: 0.45;
 }
 
 /* Content sits above the background */
