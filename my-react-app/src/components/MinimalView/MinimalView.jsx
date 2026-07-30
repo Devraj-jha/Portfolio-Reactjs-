@@ -1,4 +1,7 @@
+'use client';
+
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import './MinimalView.css'
 
 const projects = [
@@ -57,7 +60,7 @@ const DAY_LABELS = ['', 'Mon', '', 'Wed', '', 'Fri', '']
 
 const TOP_PROJECTS_COUNT = 3
 
-const MinimalView = ({ onBack }) => {
+const MinimalView = () => {
   const [blogPosts, setBlogPosts] = useState([])
   const [showAllProjects, setShowAllProjects] = useState(false)
   const [selectedBlogPost, setSelectedBlogPost] = useState(null)
@@ -191,7 +194,7 @@ const MinimalView = ({ onBack }) => {
             <a href="https://x.com/djjhacodes" target="_blank" rel="noopener noreferrer">X / Twitter</a>
             <a href="https://www.youtube.com/@djjhaTech" target="_blank" rel="noopener noreferrer">YouTube</a>
             <a href="https://www.linkedin.com/in/devraj-jha-4ba7a2342/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-            <a href="mailto:devraj@example.com">Email</a>
+            <a href="mailto:forwork.dj100806@gmail.com">Email</a>
           </div>
         </header>
 
@@ -338,15 +341,15 @@ const MinimalView = ({ onBack }) => {
             &nbsp;&middot;&nbsp;
             <a href="https://www.youtube.com/@djjhaTech" target="_blank" rel="noopener noreferrer">YouTube</a>
             &nbsp;&middot;&nbsp;
-            <a href="mailto:devraj@example.com">Email</a>
+            <a href="mailto:forwork.dj100806@gmail.com">Email</a>
           </p>
         </section>
 
         {/* Footer */}
         <footer className="minimal-footer">
-          <button className="minimal-back-btn" onClick={onBack}>
+          <Link href="/" className="minimal-back-btn">
             &larr; back to normal view
-          </button>
+          </Link>
         </footer>
       </div>
     </div>
