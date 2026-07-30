@@ -3,6 +3,14 @@
   min-height: 80vh;
   padding: 40px 0;
   max-width: 700px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.progress-section.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .progress-block {
@@ -20,113 +28,137 @@
 .progress-sub {
   color: var(--text-secondary);
   font-size: 0.95rem;
-  margin-bottom: 28px;
+  margin-bottom: 20px;
 }
 
-/* Skills */
-.skills-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.skill-item {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.skill-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.skill-name {
-  font-weight: 500;
+.cf-profile-link {
   color: var(--text-primary);
-  font-size: 0.95rem;
-}
-
-.skill-level {
-  color: var(--text-secondary);
-  font-size: 0.85rem;
+  text-decoration: underline;
+  text-underline-offset: 2px;
   font-weight: 500;
 }
 
-.skill-bar {
-  height: 4px;
-  background: var(--border-color);
-  border-radius: 2px;
-  overflow: hidden;
+.cf-profile-link:hover {
+  opacity: 0.7;
 }
 
-.skill-fill {
-  height: 100%;
-  background: var(--text-primary);
-  border-radius: 2px;
-  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+/* Calendar layout — matches GitHub contribution graph style */
+.cf-calendar-wrapper {
+  margin-bottom: 16px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
-.skill-fill.animate {
-  /* width set inline by JS */
+.cf-table {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }
 
-/* Timeline */
-.timeline {
-  position: relative;
-  padding-left: 24px;
+.cf-table-row {
+  display: flex;
+  gap: 6px;
 }
 
-.timeline::before {
-  content: '';
-  position: absolute;
-  left: 7px;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background: var(--border-color);
+.cf-labels-col {
+  width: 26px;
+  flex-shrink: 0;
 }
 
-.timeline-item {
-  position: relative;
-  margin-bottom: 28px;
-  padding-left: 20px;
-  opacity: 0;
-  transform: translateX(-10px);
-  transition: all 0.5s ease;
-}
-
-.timeline-item.visible {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.timeline-dot {
-  position: absolute;
-  left: -21px;
-  top: 4px;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--text-primary);
-  border: 2px solid var(--bg-primary);
-  z-index: 1;
-}
-
-.timeline-year {
-  display: inline-block;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--text-primary);
+.cf-month-labels {
+  display: grid;
+  gap: 3px;
   margin-bottom: 4px;
-  opacity: 0.6;
 }
 
-.timeline-event {
+.cf-month-label {
+  font-size: 0.7rem;
   color: var(--text-secondary);
-  font-size: 0.95rem;
-  line-height: 1.5;
+}
+
+.cf-day-labels {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  width: 26px;
+  flex-shrink: 0;
+}
+
+.cf-day-label {
+  font-size: 0.6rem;
+  color: var(--text-secondary);
+  height: 13px;
+  line-height: 13px;
+  text-align: left;
+}
+
+.cf-cells {
+  display: flex;
+  gap: 3px;
+}
+
+.cf-week {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.cf-cell {
+  width: 13px;
+  height: 13px;
+  border-radius: 2px;
+  background: var(--border-color);
+}
+
+.cf-cell[data-level="0"] {
+  background: var(--border-color);
+}
+
+.cf-cell[data-level="1"] {
+  background: #9be9a8;
+}
+
+.cf-cell[data-level="2"] {
+  background: #40c463;
+}
+
+.cf-cell[data-level="3"] {
+  background: #30a14e;
+}
+
+.cf-cell[data-level="4"] {
+  background: #216e39;
+}
+
+/* Legend */
+.cf-legend {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+  justify-content: flex-end;
+}
+
+.cf-legend-label {
+  font-size: 0.65rem;
+  color: var(--text-secondary);
+}
+
+/* Stats */
+.cf-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin-top: 8px;
+}
+
+.cf-stat {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.cf-stat strong {
+  color: var(--text-primary);
 }
 
 @media (max-width: 768px) {
