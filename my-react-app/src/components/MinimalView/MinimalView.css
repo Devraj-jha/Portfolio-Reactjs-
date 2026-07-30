@@ -84,30 +84,140 @@
 }
 
 .minimal-project-item {
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #eee;
 }
 
-.minimal-project-title {
+.minimal-project-item:last-child {
+  border-bottom: none;
+}
+
+.minimal-project-title-link {
   font-weight: 600;
   font-size: 0.9rem;
+  color: #0000ee;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.minimal-project-title-link:hover {
+  color: #551a8b;
 }
 
 .minimal-project-desc {
   font-size: 0.8rem;
   color: #555;
-  margin-top: 1px;
-}
-
-.minimal-project-links {
-  font-size: 0.75rem;
   margin-top: 2px;
 }
 
-.minimal-project-links a {
-  color: #555;
+.minimal-project-tech {
+  font-size: 0.72rem;
+  color: #888;
+  margin-top: 2px;
+}
+
+/* Blog */
+.minimal-blog-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.minimal-blog-item {
+  margin-bottom: 16px;
+}
+
+.minimal-blog-title-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #0000ee;
   text-decoration: underline;
   text-underline-offset: 2px;
-  margin-right: 12px;
+  cursor: pointer;
+  display: inline;
+}
+
+.minimal-blog-title-btn:hover {
+  color: #551a8b;
+}
+
+.minimal-blog-meta {
+  font-size: 0.72rem;
+  color: #888;
+  margin-top: 2px;
+}
+
+.minimal-blog-excerpt {
+  font-size: 0.82rem;
+  color: #555;
+  margin-top: 4px;
+}
+
+.minimal-blog-content {
+  margin-top: 12px;
+  padding: 12px 16px;
+  background: #f8f8f8;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: #333;
+}
+
+.minimal-blog-content h1,
+.minimal-blog-content h2,
+.minimal-blog-content h3 {
+  font-size: 1rem;
+  margin: 16px 0 8px;
+  color: #000;
+}
+
+.minimal-blog-content p {
+  margin: 0 0 8px;
+  font-size: 0.85rem;
+  color: #333;
+}
+
+.minimal-blog-content a {
+  color: #0000ee;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.minimal-blog-content code {
+  background: #eee;
+  padding: 1px 4px;
+  border-radius: 2px;
+  font-size: 0.8rem;
+}
+
+.minimal-blog-content pre {
+  background: #eee;
+  padding: 8px 12px;
+  border-radius: 4px;
+  overflow-x: auto;
+  font-size: 0.78rem;
+}
+
+.minimal-blog-content ul {
+  margin: 4px 0;
+  padding-left: 20px;
+}
+
+.minimal-blog-content hr {
+  border: none;
+  border-top: 1px solid #ddd;
+  margin: 16px 0;
+}
+
+.minimal-muted {
+  font-size: 0.85rem;
+  color: #999;
 }
 
 /* Tech tags */

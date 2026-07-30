@@ -1,6 +1,74 @@
+import { useState, useEffect } from 'react'
 import './MinimalView.css'
 
+const projects = [
+  { title: 'IP Tracker', desc: 'IP geolocation tool built in Go.', tech: ['Go'], url: 'https://github.com/Devraj-jha/IP-Tracker' },
+  { title: 'Automatic Folder Organizer', desc: 'Automatically organizes files into folders by type.', tech: ['Python'], url: 'https://github.com/Devraj-jha/Automatic-Folder-Organizer' },
+  { title: 'Go Webserver', desc: 'HTTP server using only the Go standard library.', tech: ['Go'], url: 'https://github.com/Devraj-jha/golang-webserver-no-deps' },
+  { title: 'Python Projects', desc: 'Collection of compact Python projects under 100 lines.', tech: ['Python'], url: 'https://github.com/Devraj-jha/Python-Projects' },
+  { title: 'Small Go Projects', desc: 'Backend utilities and experiments in Go.', tech: ['Go'], url: 'https://github.com/Devraj-jha/Small_go_projects' },
+  { title: 'Snake Game', desc: 'Classic Snake game built with Pygame.', tech: ['Python', 'Pygame'], url: 'https://github.com/Devraj-jha/Snake-Game' },
+  { title: 'Minimal Chat', desc: 'React typing application.', tech: ['React', 'JavaScript'], url: 'https://github.com/Devraj-jha/Minimal_Type' },
+  { title: 'CodeForces Problems', desc: 'Competitive programming solutions on CodeForces.', tech: ['C++'], url: 'https://github.com/Devraj-jha/CodeForces-Problem' },
+  { title: 'Portfolio Website', desc: 'This very portfolio — React single page application.', tech: ['React', 'Vite'], url: 'https://github.com/Devraj-jha/Portfolio-Reactjs-' },
+  { title: 'Rock Paper Scissors', desc: 'Classic browser game built with JavaScript.', tech: ['JavaScript', 'HTML', 'CSS'], url: 'https://github.com/Devraj-jha/Rock-Paper-Scissors-' },
+]
+
+const parseFrontmatter = (text) => {
+  const match = text.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/)
+  if (!match) return { data: {}, content: text }
+  const data = {}
+  match[1].split('\n').forEach(line => {
+    const ci = line.indexOf(':')
+    if (ci > 0) {
+      let value = line.substring(ci + 1).trim().replace(/^["'](.*)["']$/, '$1')
+      if (value.startsWith('[') && value.endsWith(']'))
+        value = value.slice(1, -1).split(',').map(s => s.trim().replace(/["']/g, ''))
+      data[line.substring(0, ci).trim()] = value
+    }
+  })
+  return { data, content: match[2] }
+}
+
+const renderMarkdown = (content) => {
+  if (!content) return ''
+  let html = content
+    .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+    .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+    .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+    .replace(/\*\*\*(.*?)\*\*\*/gim, '<strong><em>$1</em></strong>')
+    .replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/gim, '<em>$1</em>')
+    .replace(/```([\s\S]*?)```/gim, '<pre><code>$1</code></pre>')
+    .replace(/`(.*?)`/gim, '<code>$1</code>')
+    .replace(/^\s*-\s(.*$)/gim, '<li>$1</li>')
+    .replace(/((?:<li>.*?<\/li>\s*)+)/g, '<ul>$1</ul>')
+    .split(/\n\n/)
+    .map(p => p.trim()).filter(p => p.length)
+    .map(p => p.match(/^<(h[1-6]|ul|ol|pre|hr)/) ? p : `<p>${p.replace(/\n/g, '<br>')}</p>`)
+    .join('')
+    .replace(/<p>---<\/p>/g, '<hr>')
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/gim, '<a href="$2" target="_blank" rel="noopener noreferrer" class="minimal-blog-link">$1</a>')
+  return html
+}
+
 const MinimalView = ({ onBack }) => {
+  const [blogPosts, setBlogPosts] = useState([])
+  const [openBlogId, setOpenBlogId] = useState(null)
+  const [blogLoading, setBlogLoading] = useState(true)
+
+  useEffect(() => {
+    fetch('/content/blog/my-first-blog.md')
+      .then(res => res.ok ? res.text() : null)
+      .then(text => {
+        if (!text) { setBlogLoading(false); return }
+        const { data, content } = parseFrontmatter(text)
+        setBlogPosts([{ id: 'my-first-blog', ...data, content }])
+        setBlogLoading(false)
+      })
+      .catch(() => setBlogLoading(false))
+  }, [])
+
   return (
     <div className="minimal-page">
       <div className="minimal-container">
@@ -32,22 +100,51 @@ const MinimalView = ({ onBack }) => {
         <section className="minimal-section">
           <h2 className="minimal-section-heading">Projects</h2>
           <ul className="minimal-project-list">
-            <li className="minimal-project-item">
-              <div className="minimal-project-title">Portfolio Website</div>
-              <div className="minimal-project-desc">
-                Personal portfolio built with React, featuring theme cycling, terminal, and GitHub contributions graph.
-              </div>
-              <div className="minimal-project-links">
-                <a href="https://github.com/Devraj-jha/Portfolio-Reactjs-" target="_blank" rel="noopener noreferrer">source</a>
-              </div>
-            </li>
-            <li className="minimal-project-item">
-              <div className="minimal-project-title">Click Attack Game</div>
-              <div className="minimal-project-desc">
-                Simple browser-based reaction game built into the portfolio.
-              </div>
-            </li>
+            {projects.map((p, i) => (
+              <li key={i} className="minimal-project-item">
+                <a href={p.url} target="_blank" rel="noopener noreferrer" className="minimal-project-title-link">
+                  {p.title} ↗
+                </a>
+                <div className="minimal-project-desc">{p.desc}</div>
+                <div className="minimal-project-tech">{p.tech.join(' · ')}</div>
+              </li>
+            ))}
           </ul>
+        </section>
+
+        {/* Blog */}
+        <section className="minimal-section">
+          <h2 className="minimal-section-heading">Blog</h2>
+          {blogLoading ? (
+            <p className="minimal-muted">Loading...</p>
+          ) : blogPosts.length === 0 ? (
+            <p className="minimal-muted">Coming soon.</p>
+          ) : (
+            <ul className="minimal-blog-list">
+              {blogPosts.map(post => (
+                <li key={post.id} className="minimal-blog-item">
+                  <button
+                    className="minimal-blog-title-btn"
+                    onClick={() => setOpenBlogId(openBlogId === post.id ? null : post.id)}
+                  >
+                    {post.title}
+                  </button>
+                  <div className="minimal-blog-meta">
+                    {post.date} · {post.readTime}
+                  </div>
+                  {post.excerpt && (
+                    <div className="minimal-blog-excerpt">{post.excerpt}</div>
+                  )}
+                  {openBlogId === post.id && (
+                    <div
+                      className="minimal-blog-content"
+                      dangerouslySetInnerHTML={{ __html: renderMarkdown(post.content) }}
+                    />
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
         </section>
 
         {/* Tech */}
