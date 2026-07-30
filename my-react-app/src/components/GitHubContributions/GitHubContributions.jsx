@@ -43,14 +43,19 @@ const GitHubContributions = ({ username = 'Devraj-jha' }) => {
       })
   }, [visible])
 
-  // Build weeks array from flat contributions
+  // Build weeks array from flat contributions, ending at today
   const buildCalendar = () => {
     if (!data?.contributions) return []
 
     const weeks = []
     let currentWeek = []
+    const today = new Date()
+    today.setHours(23, 59, 59, 999)
 
     for (const day of data.contributions) {
+      const dayDate = new Date(day.date + 'T23:59:59')
+      if (dayDate > today) break // stop at today
+
       currentWeek.push(day)
       if (currentWeek.length === 7) {
         weeks.push(currentWeek)
@@ -58,10 +63,15 @@ const GitHubContributions = ({ username = 'Devraj-jha' }) => {
       }
     }
 
-    // Pad incomplete last week
+    // Pad incomplete last week with real future dates (level 0)
     if (currentWeek.length > 0) {
+      const lastDate = currentWeek.length > 0
+        ? new Date(currentWeek[currentWeek.length - 1].date + 'T00:00:00')
+        : new Date()
       while (currentWeek.length < 7) {
-        currentWeek.push({ date: '', count: 0, level: 0 })
+        lastDate.setDate(lastDate.getDate() + 1)
+        const dateStr = lastDate.toISOString().split('T')[0]
+        currentWeek.push({ date: dateStr, count: 0, level: 0 })
       }
       weeks.push(currentWeek)
     }
@@ -69,19 +79,28 @@ const GitHubContributions = ({ username = 'Devraj-jha' }) => {
     return weeks
   }
 
-  // Get month labels
+  // Get month labels — skip the first if data starts mid-month
   const getMonthLabels = () => {
     const weeks = buildCalendar()
+    if (!weeks.length) return []
+
     const labels = []
     let lastMonth = -1
 
+    // Check if the graph starts on the 1st of a month
+    const firstRealDay = data?.contributions?.[0]
+    const startsMidMonth = firstRealDay && new Date(firstRealDay.date).getDate() !== 1
+
     weeks.forEach((week, weekIdx) => {
-      // Find first non-empty day in the week to determine month
       for (const day of week) {
         if (day.date) {
           const month = new Date(day.date).getMonth()
           if (month !== lastMonth) {
-            labels.push({ index: weekIdx, label: MONTHS[month] })
+            // Skip the first month label if data starts mid-month
+            // (e.g. Jul 27 → don't show "Jul", start from "Aug")
+            if (!(labels.length === 0 && startsMidMonth)) {
+              labels.push({ index: weekIdx, label: MONTHS[month] })
+            }
             lastMonth = month
           }
           break

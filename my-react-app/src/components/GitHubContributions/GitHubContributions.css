@@ -106,7 +106,6 @@
   gap: 3px;
   margin-bottom: 4px;
   height: 18px;
-  flex: 1;
 }
 
 .gh-month-label {
@@ -141,7 +140,6 @@
 .gh-cells {
   display: flex;
   gap: 3px;
-  flex: 1;
 }
 
 .gh-week {
