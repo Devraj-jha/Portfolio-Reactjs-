@@ -1,5 +1,8 @@
+'use client';
+
 import { useEffect, useState, useRef } from 'react'
 import GitHubContributions from '../../components/GitHubContributions/GitHubContributions'
+import { useTheme } from '../../contexts/ThemeContext'
 import './Home.css'
 
 const BG_COUNT = 20 // scans b1 … b20 across jpg/jpeg/png
@@ -65,7 +68,8 @@ const HeroBackground = ({ images, currentIndex }) => {
   )
 }
 
-const Home = ({ theme }) => {
+const Home = () => {
+  const { theme } = useTheme()
   const [textIndex, setTextIndex] = useState(0)
   const [displayText, setDisplayText] = useState('')
   const [isDeleting, setIsDeleting] = useState(false)
