@@ -60,6 +60,7 @@ const MinimalView = ({ onBack }) => {
   const [selectedBlogPost, setSelectedBlogPost] = useState(null)
   const [blogLoading, setBlogLoading] = useState(true)
   const [isBW, setIsBW] = useState(false)
+  const [fontSize, setFontSize] = useState(16)
 
   useEffect(() => {
     fetch('/content/blog/my-first-blog.md')
@@ -75,7 +76,7 @@ const MinimalView = ({ onBack }) => {
 
   if (selectedBlogPost) {
     return (
-      <div className={`minimal-page${isBW ? ' minimal-bw' : ''}`}>
+      <div className={`minimal-page${isBW ? ' minimal-bw' : ''}`} style={{ fontSize: `${fontSize}px` }}>
         <div className="minimal-container">
           <button className="minimal-back-btn" onClick={() => setSelectedBlogPost(null)}>
             &larr; back to blog
@@ -101,12 +102,16 @@ const MinimalView = ({ onBack }) => {
   }
 
   return (
-    <div className={`minimal-page${isBW ? ' minimal-bw' : ''}`}>
+    <div className={`minimal-page${isBW ? ' minimal-bw' : ''}`} style={{ fontSize: `${fontSize}px` }}>
       <div className="minimal-container">
-        {/* Theme toggle for minimal view */}
-        <div className="minimal-theme-toggle">
+        {/* Controls */}
+        <div className="minimal-controls">
+          <div className="minimal-controls-group">
+            <button className="minimal-ctrl-btn" onClick={() => setFontSize(s => Math.max(12, s - 2))} title="Decrease font size">A−</button>
+            <button className="minimal-ctrl-btn" onClick={() => setFontSize(s => Math.min(32, s + 2))} title="Increase font size">A+</button>
+          </div>
           <button
-            className={`minimal-theme-btn${isBW ? ' active' : ''}`}
+            className={`minimal-ctrl-btn${isBW ? ' active' : ''}`}
             onClick={() => setIsBW(!isBW)}
             title={isBW ? 'Switch to serif theme' : 'Switch to black & white theme'}
           >
