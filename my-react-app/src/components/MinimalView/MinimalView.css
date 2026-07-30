@@ -442,6 +442,107 @@
   background: #444;
 }
 
+/* GitHub contribution heatmap — minimal style */
+.minimal-gh-calendar {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.minimal-gh-table {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.minimal-gh-row {
+  display: flex;
+  gap: 6px;
+}
+
+.minimal-gh-labels-col {
+  width: 26px;
+  flex-shrink: 0;
+}
+
+.minimal-gh-month-labels {
+  display: grid;
+  gap: 3px;
+  margin-bottom: 4px;
+}
+
+.minimal-gh-month-label {
+  font-size: 0.7rem;
+  color: #888;
+}
+
+.minimal-gh-day-labels {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  width: 26px;
+  flex-shrink: 0;
+}
+
+.minimal-gh-day-label {
+  font-size: 0.6rem;
+  color: #888;
+  height: 13px;
+  line-height: 13px;
+  text-align: left;
+}
+
+.minimal-gh-cells {
+  display: flex;
+  gap: 3px;
+}
+
+.minimal-gh-week {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.minimal-gh-cell {
+  width: 13px;
+  height: 13px;
+  border-radius: 2px;
+  background: #eee;
+}
+
+.minimal-gh-cell[data-level="0"] { background: #eee; }
+.minimal-gh-cell[data-level="1"] { background: #9be9a8; }
+.minimal-gh-cell[data-level="2"] { background: #40c463; }
+.minimal-gh-cell[data-level="3"] { background: #30a14e; }
+.minimal-gh-cell[data-level="4"] { background: #216e39; }
+
+.minimal-bw .minimal-gh-cell {
+  background: #222;
+}
+.minimal-bw .minimal-gh-cell[data-level="0"] { background: #222; }
+.minimal-bw .minimal-gh-cell[data-level="1"] { background: #1a4a2e; }
+.minimal-bw .minimal-gh-cell[data-level="2"] { background: #1e6b3e; }
+.minimal-bw .minimal-gh-cell[data-level="3"] { background: #27944d; }
+.minimal-bw .minimal-gh-cell[data-level="4"] { background: #3fb85e; }
+
+.minimal-gh-legend {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+  justify-content: flex-end;
+}
+
+.minimal-gh-legend-label {
+  font-size: 0.65rem;
+  color: #888;
+}
+
+.minimal-bw .minimal-gh-month-label,
+.minimal-bw .minimal-gh-day-label,
+.minimal-bw .minimal-gh-legend-label {
+  color: #aaa;
+}
+
 /* Footer */
 .minimal-footer {
   margin-top: 40px;

@@ -52,6 +52,9 @@ const renderMarkdown = (content) => {
   return html
 }
 
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+const DAY_LABELS = ['', 'Mon', '', 'Wed', '', 'Fri', '']
+
 const TOP_PROJECTS_COUNT = 3
 
 const MinimalView = ({ onBack }) => {
@@ -69,38 +72,59 @@ const MinimalView = ({ onBack }) => {
       .then(res => res.ok ? res.json() : null)
       .then(data => {
         if (data?.contributions) {
-          const days = data.contributions
-
-          // Current streak: count consecutive days with contributions from today backwards
-          let currentStreak = 0
-          for (let i = days.length - 1; i >= 0; i--) {
-            if (days[i].count > 0) currentStreak++
-            else break
-          }
-
-          // Longest streak
-          let longestStreak = 0
-          let temp = 0
-          for (const day of days) {
-            if (day.count > 0) {
-              temp++
-              longestStreak = Math.max(longestStreak, temp)
-            } else {
-              temp = 0
-            }
-          }
-
-          setGhData({
-            total: data.total?.lastYear || 0,
-            currentStreak,
-            longestStreak,
-            contributions: days,
-          })
+          setGhData(data.contributions)
         }
         setGhLoading(false)
       })
       .catch(() => setGhLoading(false))
   }, [])
+
+  const buildGHCalendar = (contributions) => {
+    const today = new Date()
+    const startDate = new Date(today)
+    startDate.setDate(startDate.getDate() - 340)
+    startDate.setDate(startDate.getDate() - startDate.getDay())
+
+    // Build a map from date string -> contribution day
+    const dayMap = {}
+    contributions.forEach(d => { dayMap[d.date] = d })
+
+    const weeks = []
+    const current = new Date(startDate)
+
+    while (current <= today) {
+      const week = []
+      for (let d = 0; d < 7; d++) {
+        const key = `${current.getFullYear()}-${String(current.getMonth() + 1).padStart(2, '0')}-${String(current.getDate()).padStart(2, '0')}`
+        const match = dayMap[key]
+        week.push({
+          count: match ? match.count : 0,
+          level: match ? match.level : 0,
+          date: new Date(current),
+        })
+        current.setDate(current.getDate() + 1)
+      }
+      weeks.push(week)
+    }
+
+    const monthLabels = []
+    let lastMonth = -1
+    weeks.forEach((week, wi) => {
+      const month = week[3]?.date?.getMonth()
+      if (month !== undefined && month !== lastMonth) {
+        monthLabels.push({ index: wi, label: MONTHS[month], span: 1 })
+        if (lastMonth >= 0) {
+          monthLabels[monthLabels.length - 2].span = wi - monthLabels[monthLabels.length - 2].index
+        }
+        lastMonth = month
+      }
+    })
+    if (monthLabels.length > 0) {
+      monthLabels[monthLabels.length - 1].span = weeks.length - monthLabels[monthLabels.length - 1].index
+    }
+
+    return { weeks, monthLabels }
+  }
 
   useEffect(() => {
     fetch('/content/blog/my-first-blog.md')
@@ -237,35 +261,66 @@ const MinimalView = ({ onBack }) => {
           )}
         </section>
 
-        {/* GitHub Streak */}
+        {/* GitHub Streak — heatmap */}
         <section className="minimal-section">
           <h2 className="minimal-section-heading">GitHub Streak</h2>
           {ghLoading ? (
             <p className="minimal-muted">Loading streak...</p>
           ) : ghData ? (
-            <>
-              <div className="gh-streak-stats">
-                <div className="gh-streak-stat">
-                  <span className="gh-streak-num">{ghData.currentStreak}</span>
-                  <span className="gh-streak-label">day streak</span>
+            (() => {
+              const { weeks, monthLabels } = buildGHCalendar(ghData)
+              return (
+                <div className="minimal-gh-calendar">
+                  <div className="minimal-gh-table">
+                    <div className="minimal-gh-row">
+                      <div className="minimal-gh-labels-col" />
+                      <div
+                        className="minimal-gh-month-labels"
+                        style={{ gridTemplateColumns: `repeat(${weeks.length}, 13px)` }}
+                      >
+                        {monthLabels.map((m, i) => (
+                          <span
+                            key={i}
+                            className="minimal-gh-month-label"
+                            style={{ gridColumn: `${m.index + 1} / span ${m.span}` }}
+                          >
+                            {m.label}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="minimal-gh-row">
+                      <div className="minimal-gh-day-labels">
+                        {DAY_LABELS.map((day, i) => (
+                          <span key={i} className="minimal-gh-day-label">{day}</span>
+                        ))}
+                      </div>
+                      <div className="minimal-gh-cells">
+                        {weeks.map((week, wi) => (
+                          <div key={wi} className="minimal-gh-week">
+                            {week.map((day, di) => (
+                              <div
+                                key={di}
+                                className="minimal-gh-cell"
+                                data-level={day.level}
+                                title={`${day.date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })} — ${day.count} ${day.count === 1 ? 'contribution' : 'contributions'}`}
+                              />
+                            ))}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="minimal-gh-legend">
+                    <span className="minimal-gh-legend-label">Less</span>
+                    {[0, 1, 2, 3, 4].map(level => (
+                      <div key={level} className="minimal-gh-cell" data-level={level} />
+                    ))}
+                    <span className="minimal-gh-legend-label">More</span>
+                  </div>
                 </div>
-                <div className="gh-streak-divider" />
-                <div className="gh-streak-stat">
-                  <span className="gh-streak-num">{ghData.longestStreak}</span>
-                  <span className="gh-streak-label">longest</span>
-                </div>
-                <div className="gh-streak-divider" />
-                <div className="gh-streak-stat">
-                  <span className="gh-streak-num">{ghData.total.toLocaleString()}</span>
-                  <span className="gh-streak-label">contributions</span>
-                </div>
-              </div>
-              {/*
-                <a href="https://github.com/Devraj-jha" target="_blank" rel="noopener noreferrer" className="minimal-project-title-link">
-                  View GitHub profile ↗
-                </a>
-              */}
-            </>
+              )
+            })()
           ) : (
             <p className="minimal-muted">Couldn't load contribution data.</p>
           )}
