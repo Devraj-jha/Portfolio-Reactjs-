@@ -4,26 +4,24 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "npm run fetch-contributions && vite",
-    "build": "npm run fetch-contributions && vite build",
-    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
+    "dev": "next dev",
+    "build": "npm run fetch-contributions && next build",
+    "start": "next start",
+    "lint": "next lint",
     "fetch-contributions": "node scripts/fetch-contributions.mjs"
   },
   "dependencies": {
     "emailjs-com": "^3.2.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "three": "^0.185.1",
-    "vite": "^5.4.21"
+    "next": "^16.2.12",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "three": "^0.185.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
-    "@vitejs/plugin-react": "^5.2.0",
     "eslint": "^8.55.0",
     "eslint-plugin-react": "^7.33.2",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.5"
+    "eslint-plugin-react-hooks": "^4.6.0"
   }
 }
