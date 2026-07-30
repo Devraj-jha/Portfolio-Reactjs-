@@ -1,4 +1,5 @@
-// src/components/Terminal/Terminal.jsx
+'use client';
+
 import { useState, useEffect, useRef } from 'react';
 import './Terminal.css';
 
@@ -22,9 +23,9 @@ const Terminal = ({ isOpen, onClose, onCommand }) => {
 
   const executeCommand = (cmd) => {
     const newCommands = [...commands, { type: 'input', content: cmd }];
-    
+
     let output = '';
-    
+
     switch (cmd.toLowerCase()) {
       case 'techstack':
         output = 'My Tech Stack:\n\n';
@@ -33,7 +34,7 @@ const Terminal = ({ isOpen, onClose, onCommand }) => {
           if (!categories[tech.category]) categories[tech.category] = [];
           categories[tech.category].push(tech);
         });
-        
+
         Object.keys(categories).forEach(category => {
           output += `📂 ${category}:\n`;
           categories[category].forEach(tech => {
@@ -42,45 +43,39 @@ const Terminal = ({ isOpen, onClose, onCommand }) => {
           output += '\n';
         });
         break;
-        
+
       case 'clear':
         setCommands([]);
         return;
-        
-      case 'game':
-        output = '🎮 Launching hidden game... Type "start" to begin!';
-        break;
-        
-      case 'start':
-        output = '🎯 Game started! Use commands: "left", "right", "up", "down" to move. Type "exit" to quit.';
-        break;
-        
+
       case 'help':
         output = `Available commands:
 
   home       - Navigate to Home section
-  blog       - Navigate to Blog section  
+  blog       - Navigate to Blog section
   progress   - Navigate to Progress section
   projects   - Navigate to Projects section
   techstack  - Show my technology stack
   clear      - Clear terminal
   echo [text]- Echo back the text
-  exit/close - to exit the terminal 
-  date/time  - for date and time. 
+  exit/close - to exit the terminal
+  date/time  - for date and time.
   quote      - for some quotes :)
+  theme      - Cycle through themes
   twitter/x  - Open my X/Twitter profile
-  youtube/yt    - Open my YouTube channel
+  youtube/yt - Open my YouTube channel
   github     - Open my GitHub profile
   linkedin   - Open my LinkedIn profile
+  game       - Launch the hidden click game
 
 `;
         break;
-        
+
       default:
         if (cmd.startsWith('echo ')) {
           output = cmd.slice(5);
         } else {
-          // Check if it's a navigation command
+          // Delegate to AppShell for all other commands
           const navResult = onCommand(cmd);
           if (navResult && navResult !== 'clear') {
             output = navResult;
@@ -89,11 +84,11 @@ const Terminal = ({ isOpen, onClose, onCommand }) => {
           }
         }
     }
-    
+
     if (output && output !== 'clear') {
       newCommands.push({ type: 'output', content: output });
     }
-    
+
     setCommands(newCommands);
   };
 
