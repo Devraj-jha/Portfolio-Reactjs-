@@ -1,3 +1,5 @@
+'use client';
+
 import "./ContactModal.css";
 
 const ContactModal = ({ isOpen, onClose }) => {
