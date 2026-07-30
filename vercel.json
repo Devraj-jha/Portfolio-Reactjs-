@@ -1,7 +1,4 @@
 {
   "rootDirectory": "my-react-app",
-  "framework": "nextjs",
-  "buildCommand": "npm run build",
-  "outputDirectory": ".next",
-  "installCommand": "npm install"
+  "framework": "nextjs"
 }
