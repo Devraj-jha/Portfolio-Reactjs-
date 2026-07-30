@@ -1,4 +1,5 @@
-// src/components/LoadingScreen/LoadingScreen.jsx
+'use client';
+
 import { useState, useEffect } from 'react';
 import './LoadingScreen.css';
 
