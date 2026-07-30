@@ -26,7 +26,7 @@ const ContactModal = ({ isOpen, onClose }) => {
               <span>forwork.dj100806@gmail.com</span>
             </a>
 
-            <a href="https://x.com/djjha_" className="contact-link-item" target="_blank" rel="noopener noreferrer">
+            <a href="https://x.com/djjhacodes" className="contact-link-item" target="_blank" rel="noopener noreferrer">
               <span className="contact-icon">🐦</span>
               <span>Message me on X</span>
             </a>
