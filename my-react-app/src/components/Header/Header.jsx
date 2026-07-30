@@ -1,5 +1,8 @@
-// src/components/Header/Header.jsx
+'use client';
+
 import { useState, useEffect, useRef } from 'react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import './Header.css'
 
 const Header = ({ activeSection, setActiveSection, onTerminalClick, theme, toggleTheme }) => {
@@ -115,7 +118,6 @@ const Header = ({ activeSection, setActiveSection, onTerminalClick, theme, toggl
         }}
         preload="auto"
       >
-        {/* UPDATE THIS PATH TO YOUR MUSIC FILE */}
         <source src="/music/background.mp3" type="audio/mpeg" />
         <source src="/music/background.ogg" type="audio/ogg" />
         Your browser does not support the audio element.
@@ -137,16 +139,16 @@ const Header = ({ activeSection, setActiveSection, onTerminalClick, theme, toggl
         <ul className="nav-list">
           {navItems.map((item) => (
             <li key={item.id} className="nav-item">
-              <button
+              <Link
+                href={item.id === 'home' ? '/' : `/${item.id}`}
                 className={`nav-button ${activeSection === item.id ? 'active' : ''} ${hoveredItem === item.id ? 'hovered' : ''}`}
-                onClick={() => setActiveSection(item.id)}
                 onMouseEnter={() => setHoveredItem(item.id)}
                 onMouseLeave={() => setHoveredItem(null)}
               >
                 <span className="button-text">{item.label}</span>
                 <div className="button-underline"></div>
                 <div className="button-glow"></div>
-              </button>
+              </Link>
             </li>
           ))}
         </ul>
@@ -224,16 +226,14 @@ const Header = ({ activeSection, setActiveSection, onTerminalClick, theme, toggl
         {/* Mobile Menu Overlay */}
         <div className={`mobile-menu ${mobileMenuOpen ? 'open' : ''}`}>
           {navItems.map((item) => (
-            <button
+            <Link
               key={item.id}
+              href={item.id === 'home' ? '/' : `/${item.id}`}
               className={`nav-button ${activeSection === item.id ? 'active' : ''}`}
-              onClick={() => {
-                setActiveSection(item.id)
-                setMobileMenuOpen(false)
-              }}
+              onClick={() => setMobileMenuOpen(false)}
             >
               <span className="button-text">{item.label}</span>
-            </button>
+            </Link>
           ))}
         </div>
       </header>

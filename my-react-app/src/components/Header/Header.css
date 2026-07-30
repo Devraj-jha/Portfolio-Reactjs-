@@ -150,6 +150,9 @@
   position: relative;
   overflow: hidden;
   border-radius: 8px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
 }
 
 .nav-button .button-text {
