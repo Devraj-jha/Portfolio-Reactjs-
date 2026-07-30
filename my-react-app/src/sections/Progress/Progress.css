@@ -18,6 +18,9 @@
 }
 
 .progress-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   font-size: 2rem;
   font-weight: 600;
   color: var(--text-primary);
@@ -25,40 +28,27 @@
   letter-spacing: -0.02em;
 }
 
-.progress-sub {
-  color: var(--text-secondary);
-  font-size: 0.95rem;
-  margin-bottom: 20px;
-}
-
-/* Codeforces header with logo */
-.cf-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 16px;
-}
-
-.cf-header-logo {
-  height: 20px;
+.cf-heading-logo {
+  height: 26px;
   width: auto;
 }
 
-.cf-header-title {
-  font-weight: 600;
-  font-size: 0.95rem;
-  color: var(--text-primary);
-}
-
-.cf-header-link {
+.cf-heading-link {
   margin-left: auto;
   font-size: 0.85rem;
+  font-weight: 400;
   color: var(--text-secondary);
   text-decoration: none;
 }
 
-.cf-header-link:hover {
+.cf-heading-link:hover {
   text-decoration: underline;
+}
+
+.progress-sub {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  margin-bottom: 20px;
 }
 
 /* Calendar layout — matches GitHub contribution graph style */

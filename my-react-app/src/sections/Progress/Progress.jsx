@@ -99,7 +99,22 @@ const Progress = () => {
   return (
     <section className={`progress-section ${visible ? 'visible' : ''}`} ref={ref}>
       <div className="progress-block">
-        <h2 className="progress-heading">Skills Journey</h2>
+        <h2 className="progress-heading">
+          <img
+            className="cf-heading-logo"
+            src="https://codeforces.org/s/96343/images/codeforces-sponsored-by-ton.png"
+            alt=""
+          />
+          Codeforces
+          <a
+            href={`https://codeforces.com/profile/${CF_HANDLE}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="cf-heading-link"
+          >
+            {CF_HANDLE} ↗
+          </a>
+        </h2>
 
         {cfError && <p className="progress-sub">Unable to load Codeforces data.</p>}
 
@@ -109,22 +124,6 @@ const Progress = () => {
 
         {!cfLoading && !cfError && cfData && (
           <>
-            <div className="cf-header">
-              <img
-                className="cf-header-logo"
-                src="https://codeforces.org/s/96343/images/codeforces-sponsored-by-ton.png"
-                alt="Codeforces"
-              />
-              <span className="cf-header-title">Codeforces</span>
-              <a
-                href={`https://codeforces.com/profile/${CF_HANDLE}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="cf-header-link"
-              >
-                {CF_HANDLE} ↗
-              </a>
-            </div>
             <div className="cf-calendar-wrapper">
             <div className="cf-table">
               <div className="cf-table-row">
