@@ -4,10 +4,11 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "npm run fetch-contributions && vite",
+    "build": "npm run fetch-contributions && vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "fetch-contributions": "node scripts/fetch-contributions.mjs"
   },
   "dependencies": {
     "emailjs-com": "^3.2.0",

@@ -85,7 +85,7 @@
 }
 
 .gh-month-labels {
-  display: flex;
+  display: grid;
   gap: 4px;
   padding-left: 44px;
   margin-bottom: 4px;

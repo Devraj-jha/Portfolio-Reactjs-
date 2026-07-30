@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import './GitHubContributions.css'
 
-const CONTRIBUTION_API = 'https://github-contributions-api.deno.dev'
+const LOCAL_API = '/contributions.json'
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 const DAYS = ['', 'Mon', '', 'Wed', '', 'Fri', '']
@@ -27,9 +27,9 @@ const GitHubContributions = ({ username = 'Devraj-jha' }) => {
   useEffect(() => {
     if (!visible) return
 
-    fetch(`${CONTRIBUTION_API}/${username}`)
+    fetch(LOCAL_API)
       .then(res => {
-        if (!res.ok) throw new Error('Failed to fetch')
+        if (!res.ok) throw new Error('Failed to fetch local contributions data')
         return res.json()
       })
       .then(data => {
@@ -41,7 +41,7 @@ const GitHubContributions = ({ username = 'Devraj-jha' }) => {
         setError(err.message)
         setLoading(false)
       })
-  }, [username, visible])
+  }, [visible])
 
   // Build weeks array from flat contributions
   const buildCalendar = () => {
@@ -95,6 +95,7 @@ const GitHubContributions = ({ username = 'Devraj-jha' }) => {
   const weeks = buildCalendar()
   const monthLabels = getMonthLabels()
   const totalContributions = data?.total?.lastYear || 0
+  const numWeeks = weeks.length
 
   return (
     <div className={`gh-section ${visible ? 'visible' : ''}`} ref={ref}>
@@ -139,12 +140,15 @@ const GitHubContributions = ({ username = 'Devraj-jha' }) => {
             </div>
           ) : (
             <div className="gh-calendar">
-              <div className="gh-month-labels">
+              <div
+                className="gh-month-labels"
+                style={{ gridTemplateColumns: `repeat(${numWeeks}, 16px)` }}
+              >
                 {monthLabels.map((m, i) => (
                   <span
                     key={i}
                     className="gh-month-label"
-                    style={{ gridColumn: m.index + 2 }}
+                    style={{ gridColumn: m.index + 1 }}
                   >
                     {m.label}
                   </span>
