@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import Header from './components/Header/Header'
 import SocialButtons from './components/SocialButtons/SocialButtons'
 import ContactModal from './components/ContactModal/ContactModal'
@@ -12,21 +12,30 @@ import Progress from './sections/Progress/Progress'
 import ProjectsSection from './sections/ProjectsSection/ProjectsSection'
 import './App.css'
 
+const THEMES = ['light', 'dark', 'sunset', 'ocean', 'forest', 'midnight']
+
+const getNextTheme = (current) => {
+  const idx = THEMES.indexOf(current)
+  return THEMES[(idx + 1) % THEMES.length]
+}
+
 function App() {
   const [activeSection, setActiveSection] = useState('home')
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
   const [isTerminalOpen, setIsTerminalOpen] = useState(false)
   const [isGameOpen, setIsGameOpen] = useState(false)
-  const [theme, setTheme] = useState('light')
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem('portfolio-theme') || 'light'
+  })
   const [isLoading, setIsLoading] = useState(true)
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [displaySection, setDisplaySection] = useState('home')
+  const [spreadOverlay, setSpreadOverlay] = useState(null)
+  const overlayRef = useRef(null)
 
   // Initialize theme
   useEffect(() => {
-    const savedTheme = localStorage.getItem('portfolio-theme') || 'light'
-    setTheme(savedTheme)
-    document.documentElement.setAttribute('data-theme', savedTheme)
+    document.documentElement.setAttribute('data-theme', theme)
   }, [])
 
   // Loading screen
@@ -35,12 +44,59 @@ function App() {
     return () => clearTimeout(timer)
   }, [])
 
-  const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light'
-    setTheme(newTheme)
-    localStorage.setItem('portfolio-theme', newTheme)
-    document.documentElement.setAttribute('data-theme', newTheme)
-  }
+  // Theme spread animation
+  useEffect(() => {
+    if (!spreadOverlay || !overlayRef.current) return
+
+    const el = overlayRef.current
+    const { x, y, theme: targetTheme } = spreadOverlay
+
+    // Set initial clip-path (0% circle at click point)
+    el.style.clipPath = `circle(0% at ${x}px ${y}px)`
+
+    // Force reflow then trigger transition
+    void el.offsetWidth
+    el.style.clipPath = `circle(150% at ${x}px ${y}px)`
+
+    let cleanedUp = false
+    const finish = () => {
+      if (cleanedUp) return
+      cleanedUp = true
+      setTheme(targetTheme)
+      document.documentElement.setAttribute('data-theme', targetTheme)
+      localStorage.setItem('portfolio-theme', targetTheme)
+      setSpreadOverlay(null)
+    }
+
+    const fallback = setTimeout(finish, 700)
+    el.addEventListener('transitionend', () => {
+      clearTimeout(fallback)
+      finish()
+    }, { once: true })
+
+    return () => {
+      clearTimeout(fallback)
+      cleanedUp = true
+    }
+  }, [spreadOverlay])
+
+  const toggleTheme = useCallback((e) => {
+    const nextTheme = getNextTheme(theme)
+
+    if (!e || !e.currentTarget) {
+      // Direct switch (from terminal command)
+      setTheme(nextTheme)
+      document.documentElement.setAttribute('data-theme', nextTheme)
+      localStorage.setItem('portfolio-theme', nextTheme)
+      return
+    }
+
+    // Spread animation from button center
+    const rect = e.currentTarget.getBoundingClientRect()
+    const x = rect.left + rect.width / 2
+    const y = rect.top + rect.height / 2
+    setSpreadOverlay({ theme: nextTheme, x, y })
+  }, [theme])
 
   const handleSectionChange = (section) => {
     if (section === activeSection) return
@@ -128,7 +184,7 @@ function App() {
       case 'dark mode':
       case 'light mode':
         toggleTheme()
-        return `Theme switched to ${theme === 'light' ? 'dark' : 'light'} mode`
+        return `Theme switched to ${getNextTheme(theme)} mode`
       case 'clear':
         return 'clear'
       case 'help':
@@ -139,7 +195,7 @@ function App() {
   progress   - Navigate to Progress
   projects   - Navigate to Projects
   techstack  - Show technology stack
-  theme      - Toggle light/dark mode
+  theme      - Cycle themes: light → dark → sunset → ocean → forest → midnight
   quote      - Random quote
   twitter/x  - Open X profile
   youtube/yt - Open YouTube
@@ -206,6 +262,18 @@ function App() {
         isOpen={isGameOpen}
         onClose={() => setIsGameOpen(false)}
       />
+
+      {spreadOverlay && (
+        <div
+          ref={overlayRef}
+          className="theme-spread-overlay"
+          data-theme={spreadOverlay.theme}
+          style={{
+            '--origin-x': `${spreadOverlay.x}px`,
+            '--origin-y': `${spreadOverlay.y}px`,
+          }}
+        />
+      )}
     </div>
   )
 }

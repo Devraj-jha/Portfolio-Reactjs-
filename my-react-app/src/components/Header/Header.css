@@ -11,7 +11,7 @@
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-[data-theme="dark"] .header {
+[data-theme]:not([data-theme="light"]) .header {
   background: rgba(0, 0, 0, 0.95);
 }
 
@@ -20,7 +20,7 @@
   box-shadow: 0 4px 30px var(--shadow-color);
 }
 
-[data-theme="dark"] .header.scrolled {
+[data-theme]:not([data-theme="light"]) .header.scrolled {
   background: rgba(0, 0, 0, 0.98);
 }
 
@@ -359,22 +359,13 @@
   transform: rotate(180deg);
 }
 
-.theme-toggle.light .toggle-handle {
-  animation: sunGlow 2s ease-in-out infinite;
+.theme-toggle .toggle-handle {
+  animation: themeGlow 2s ease-in-out infinite;
 }
 
-.theme-toggle.dark .toggle-handle {
-  animation: moonGlow 2s ease-in-out infinite;
-}
-
-@keyframes sunGlow {
-  0%, 100% { filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.3)); }
-  50% { filter: drop-shadow(0 0 15px rgba(0, 0, 0, 0.6)); }
-}
-
-@keyframes moonGlow {
-  0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3)); }
-  50% { filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.6)); }
+@keyframes themeGlow {
+  0%, 100% { filter: drop-shadow(0 0 5px var(--shadow-color)); }
+  50% { filter: drop-shadow(0 0 15px var(--shadow-color)); }
 }
 
 /* Hamburger Menu */

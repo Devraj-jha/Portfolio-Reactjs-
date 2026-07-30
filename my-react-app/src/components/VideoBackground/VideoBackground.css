@@ -57,7 +57,7 @@
 }
 
 /* Theme-specific adjustments */
-[data-theme="dark"] .video-overlay {
+[data-theme]:not([data-theme="light"]) .video-overlay {
   background: linear-gradient(
     135deg,
     rgba(0, 0, 0, 0.6) 0%,
