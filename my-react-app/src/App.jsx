@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Header from './components/Header/Header'
 import SocialButtons from './components/SocialButtons/SocialButtons'
 import ContactModal from './components/ContactModal/ContactModal'
@@ -14,6 +14,13 @@ import './App.css'
 
 const THEMES = ['light', 'dark', 'sunset', 'ocean', 'forest', 'midnight']
 
+// Set theme on <html> immediately to prevent flash of wrong theme
+const initialTheme = (() => {
+  const saved = localStorage.getItem('portfolio-theme') || 'light'
+  document.documentElement.setAttribute('data-theme', saved)
+  return saved
+})()
+
 const getNextTheme = (current) => {
   const idx = THEMES.indexOf(current)
   return THEMES[(idx + 1) % THEMES.length]
@@ -24,19 +31,11 @@ function App() {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
   const [isTerminalOpen, setIsTerminalOpen] = useState(false)
   const [isGameOpen, setIsGameOpen] = useState(false)
-  const [theme, setTheme] = useState(() => {
-    return localStorage.getItem('portfolio-theme') || 'light'
-  })
+  const [theme, setTheme] = useState(initialTheme)
   const [isLoading, setIsLoading] = useState(true)
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [displaySection, setDisplaySection] = useState('home')
-  const [spreadOverlay, setSpreadOverlay] = useState(null)
-  const overlayRef = useRef(null)
-
-  // Initialize theme
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme)
-  }, [])
+  const [ripple, setRipple] = useState(null)
 
   // Loading screen
   useEffect(() => {
@@ -44,58 +43,22 @@ function App() {
     return () => clearTimeout(timer)
   }, [])
 
-  // Theme spread animation
-  useEffect(() => {
-    if (!spreadOverlay || !overlayRef.current) return
-
-    const el = overlayRef.current
-    const { x, y, theme: targetTheme } = spreadOverlay
-
-    // Set initial clip-path (0% circle at click point)
-    el.style.clipPath = `circle(0% at ${x}px ${y}px)`
-
-    // Force reflow then trigger transition
-    void el.offsetWidth
-    el.style.clipPath = `circle(150% at ${x}px ${y}px)`
-
-    let cleanedUp = false
-    const finish = () => {
-      if (cleanedUp) return
-      cleanedUp = true
-      setTheme(targetTheme)
-      document.documentElement.setAttribute('data-theme', targetTheme)
-      localStorage.setItem('portfolio-theme', targetTheme)
-      setSpreadOverlay(null)
-    }
-
-    const fallback = setTimeout(finish, 700)
-    el.addEventListener('transitionend', () => {
-      clearTimeout(fallback)
-      finish()
-    }, { once: true })
-
-    return () => {
-      clearTimeout(fallback)
-      cleanedUp = true
-    }
-  }, [spreadOverlay])
-
   const toggleTheme = useCallback((e) => {
     const nextTheme = getNextTheme(theme)
 
-    if (!e || !e.currentTarget) {
-      // Direct switch (from terminal command)
-      setTheme(nextTheme)
-      document.documentElement.setAttribute('data-theme', nextTheme)
-      localStorage.setItem('portfolio-theme', nextTheme)
-      return
-    }
+    // Apply new theme immediately — CSS transitions on body handle smooth color change
+    setTheme(nextTheme)
+    document.documentElement.setAttribute('data-theme', nextTheme)
+    localStorage.setItem('portfolio-theme', nextTheme)
 
-    // Spread animation from button center
-    const rect = e.currentTarget.getBoundingClientRect()
-    const x = rect.left + rect.width / 2
-    const y = rect.top + rect.height / 2
-    setSpreadOverlay({ theme: nextTheme, x, y })
+    if (e && e.currentTarget) {
+      // Decorative ripple ring from click point
+      const rect = e.currentTarget.getBoundingClientRect()
+      const x = rect.left + rect.width / 2
+      const y = rect.top + rect.height / 2
+      setRipple({ x, y })
+      setTimeout(() => setRipple(null), 800)
+    }
   }, [theme])
 
   const handleSectionChange = (section) => {
@@ -263,15 +226,10 @@ function App() {
         onClose={() => setIsGameOpen(false)}
       />
 
-      {spreadOverlay && (
+      {ripple && (
         <div
-          ref={overlayRef}
-          className="theme-spread-overlay"
-          data-theme={spreadOverlay.theme}
-          style={{
-            '--origin-x': `${spreadOverlay.x}px`,
-            '--origin-y': `${spreadOverlay.y}px`,
-          }}
+          className="theme-ripple"
+          style={{ left: ripple.x, top: ripple.y }}
         />
       )}
     </div>

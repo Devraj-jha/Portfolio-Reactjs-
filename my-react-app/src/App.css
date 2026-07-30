@@ -5,14 +5,31 @@
   position: relative;
 }
 
-/* Theme spread overlay */
-.theme-spread-overlay {
+/* Theme ripple animation */
+.theme-ripple {
   position: fixed;
-  inset: 0;
-  z-index: 9999;
-  background: var(--bg-primary);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: 3px solid var(--accent-primary);
+  transform: translate(-50%, -50%);
   pointer-events: none;
-  transition: clip-path 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 9999;
+  animation: rippleExpand 0.7s ease-out forwards;
+  box-shadow: 0 0 20px var(--accent-primary);
+}
+
+@keyframes rippleExpand {
+  0% {
+    width: 6px;
+    height: 6px;
+    opacity: 0.8;
+  }
+  100% {
+    width: 300vw;
+    height: 300vw;
+    opacity: 0;
+  }
 }
 
 .main-content {
