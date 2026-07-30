@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
+import GitHubContributions from '../../components/GitHubContributions/GitHubContributions'
 import './Home.css'
 
 const Home = () => {
@@ -130,6 +131,9 @@ const Home = () => {
             </p>
           </div>
         </div>
+
+        {/* GitHub Contributions */}
+        <GitHubContributions username="Devraj-jha" />
 
         {/* Scroll Indicator */}
         <div className="scroll-indicator">
