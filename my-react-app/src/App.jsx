@@ -10,6 +10,7 @@ import Home from './sections/Home/Home'
 import Blog from './sections/Blog/Blog'
 import Progress from './sections/Progress/Progress'
 import ProjectsSection from './sections/ProjectsSection/ProjectsSection'
+import MinimalView from './components/MinimalView/MinimalView'
 import './App.css'
 
 const THEMES = ['light', 'dark', 'sunset', 'ocean', 'forest', 'midnight']
@@ -36,6 +37,7 @@ function App() {
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [displaySection, setDisplaySection] = useState('home')
   const [ripple, setRipple] = useState(null)
+  const [isMinimal, setIsMinimal] = useState(false)
 
   // Loading screen
   useEffect(() => {
@@ -188,6 +190,10 @@ function App() {
     return <LoadingScreen />
   }
 
+  if (isMinimal) {
+    return <MinimalView onBack={() => setIsMinimal(false)} />
+  }
+
   return (
     <div className="app" data-theme={theme}>
       <Header
@@ -232,6 +238,15 @@ function App() {
           style={{ left: ripple.x, top: ripple.y }}
         />
       )}
+
+      {/* Minimal view toggle */}
+      <button
+        className="minimal-toggle-btn"
+        onClick={() => setIsMinimal(true)}
+        title="Minimal view"
+      >
+        M
+      </button>
     </div>
   )
 }

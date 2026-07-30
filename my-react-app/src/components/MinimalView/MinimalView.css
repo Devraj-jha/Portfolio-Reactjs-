@@ -1,0 +1,201 @@
+/* src/components/MinimalView/MinimalView.css */
+
+.minimal-page {
+  min-height: 100vh;
+  background: #fff;
+  color: #000;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: 16px;
+  line-height: 1.6;
+  padding: 60px 20px 40px;
+  animation: minimalFadeIn 0.3s ease-out;
+}
+
+@keyframes minimalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.minimal-container {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+/* Header */
+.minimal-header {
+  margin-bottom: 32px;
+}
+
+.minimal-name {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: 0 0 4px;
+  letter-spacing: -0.02em;
+}
+
+.minimal-subtitle {
+  font-size: 0.85rem;
+  color: #555;
+  margin: 0 0 8px;
+}
+
+.minimal-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  font-size: 0.8rem;
+}
+
+.minimal-links a {
+  color: #000;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.minimal-links a:hover {
+  color: #666;
+}
+
+/* Sections */
+.minimal-section {
+  margin-bottom: 28px;
+}
+
+.minimal-section-heading {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #888;
+  margin: 0 0 8px;
+}
+
+.minimal-section p {
+  margin: 0 0 8px;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+/* Projects list */
+.minimal-project-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.minimal-project-item {
+  margin-bottom: 10px;
+}
+
+.minimal-project-title {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.minimal-project-desc {
+  font-size: 0.8rem;
+  color: #555;
+  margin-top: 1px;
+}
+
+.minimal-project-links {
+  font-size: 0.75rem;
+  margin-top: 2px;
+}
+
+.minimal-project-links a {
+  color: #555;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  margin-right: 12px;
+}
+
+/* Tech tags */
+.minimal-tech-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.minimal-tech-item {
+  font-size: 0.8rem;
+  color: #555;
+}
+
+.minimal-tech-item::before {
+  content: '• ';
+}
+
+.minimal-tech-item:first-child::before {
+  content: '';
+}
+
+/* Footer */
+.minimal-footer {
+  margin-top: 40px;
+  padding-top: 16px;
+  border-top: 1px solid #ddd;
+  font-size: 0.75rem;
+  color: #999;
+}
+
+.minimal-back-btn {
+  background: none;
+  border: none;
+  color: #000;
+  font-family: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  padding: 0;
+}
+
+.minimal-back-btn:hover {
+  color: #666;
+}
+
+/* Floating toggle button */
+.minimal-toggle-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 0.75rem;
+  font-family: Georgia, serif;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.minimal-toggle-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .minimal-page {
+    padding: 40px 16px 32px;
+    font-size: 15px;
+  }
+
+  .minimal-toggle-btn {
+    bottom: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+  }
+}
