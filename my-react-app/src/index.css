@@ -66,6 +66,22 @@
   --shadow-color: rgba(255, 255, 255, 0.05);
 }
 
+[data-theme="sunset"] {
+  --pure-white: #ffffff;
+  --off-white: #2a1810;
+  --light-gray: #3d2820;
+  --medium-gray: #c49a8a;
+  --dark-gray: #ffddd0;
+  --pure-black: #000000;
+  --accent-primary: #ff6b35;
+  --text-primary: #ffddd0;
+  --text-secondary: #c49a8a;
+  --bg-primary: #1c0f0a;
+  --bg-secondary: #2a1810;
+  --border-color: #3d2820;
+  --shadow-color: rgba(255, 107, 53, 0.12);
+}
+
 html {
   scroll-behavior: smooth;
 }
