@@ -1,0 +1,38 @@
+/* AppShell layout — wraps all pages */
+
+/* Minimal toggle button */
+.minimal-toggle-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  background: var(--accent-primary);
+  color: var(--pure-white);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 0.75rem;
+  font-family: Georgia, serif;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px var(--shadow-color);
+  text-decoration: none;
+}
+
+.minimal-toggle-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+@media (max-width: 480px) {
+  .minimal-toggle-btn {
+    bottom: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+  }
+}
