@@ -2,6 +2,69 @@ import { useEffect, useState, useRef } from 'react'
 import GitHubContributions from '../../components/GitHubContributions/GitHubContributions'
 import './Home.css'
 
+const BG_COUNT = 20 // scans b1 … b20 across jpg/jpeg/png
+const BG_INTERVAL = 6000 // ms between transitions
+
+const tryLoad = (src) =>
+  new Promise((resolve) => {
+    const img = new Image()
+    img.onload = () => resolve(src)
+    img.onerror = () => resolve(null)
+    img.src = src
+  })
+
+/** Scans for bg images b1.jpg/b1.jpeg/b1.png … bN, preloads, returns sorted array */
+const useHeroBackgrounds = () => {
+  const [images, setImages] = useState([])
+
+  useEffect(() => {
+    let mounted = true
+
+    ;(async () => {
+      const exts = ['jpg', 'jpeg', 'png']
+      const found = []
+
+      for (let i = 1; i <= BG_COUNT; i++) {
+        for (const ext of exts) {
+          const src = `/assets/b${i}.${ext}`
+          const result = await tryLoad(src)
+          if (result) {
+            found.push(result)
+            break // one format per index is enough
+          }
+        }
+      }
+
+      if (mounted) setImages(found)
+    })()
+
+    return () => { mounted = false }
+  }, [])
+
+  return images
+}
+
+/** Fading background slideshow — renders nothing when no images exist */
+const HeroBackground = ({ images, currentIndex }) => {
+  if (images.length === 0) return null
+
+  return (
+    <div className="hero-bg-slideshow" aria-hidden="true">
+      {images.map((src, i) => (
+        <div
+          key={src}
+          className="hero-bg-image"
+          style={{
+            backgroundImage: `url(${src})`,
+            opacity: i === currentIndex ? 1 : 0,
+          }}
+        />
+      ))}
+      <div className="hero-bg-overlay" />
+    </div>
+  )
+}
+
 const Home = () => {
   const [textIndex, setTextIndex] = useState(0)
   const [displayText, setDisplayText] = useState('')
@@ -15,6 +78,18 @@ const Home = () => {
     "Python & C++ Guy",
     "Web Developer"
   ]
+
+  const bgImages = useHeroBackgrounds()
+  const [bgIndex, setBgIndex] = useState(0)
+
+  // Cycle background
+  useEffect(() => {
+    if (bgImages.length < 2) return
+    const id = setInterval(() => {
+      setBgIndex((p) => (p + 1) % bgImages.length)
+    }, BG_INTERVAL)
+    return () => clearInterval(id)
+  }, [bgImages.length])
 
   // Typewriter effect
   useEffect(() => {
@@ -65,6 +140,7 @@ const Home = () => {
       <div className="home-container">
         {/* Hero Area */}
         <div className="hero-area">
+          <HeroBackground images={bgImages} currentIndex={bgIndex} />
           <div className="hero-content">
             <p className="hero-greeting">Hello, I'm</p>
             <h1 className="hero-name">
