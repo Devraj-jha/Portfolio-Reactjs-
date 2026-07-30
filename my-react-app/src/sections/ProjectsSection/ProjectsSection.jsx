@@ -1,3 +1,5 @@
+'use client';
+
 import Projects from '../../components/Projects/Projects'
 import './ProjectsSection.css'
 
