@@ -8,11 +8,9 @@
 .home-container {
   max-width: 1200px;
   margin: 0 auto;
-  position: relative;
-  z-index: 1;
 }
 
-/* Hero Area */
+/* Hero Area — breaks out to full viewport width, clips background at its bottom */
 .hero-area {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -22,16 +20,17 @@
   min-height: 70vh;
   position: relative;
   overflow: hidden;
+  /* Full-width breakout */
+  width: 100vw;
+  left: calc(-50vw + 50%);
+  padding-left: calc(50vw - 50%);
+  padding-right: calc(50vw - 50%);
 }
 
-/* Background slideshow — full viewport width, only renders when images exist */
+/* Background slideshow — constrained to hero-area, rendered only when images exist */
 .hero-bg-slideshow {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100vw;
+  inset: 0;
   z-index: 0;
 }
 

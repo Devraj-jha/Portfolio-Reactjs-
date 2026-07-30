@@ -81,10 +81,11 @@ const Home = ({ theme }) => {
 
   const bgImages = useHeroBackgrounds()
 
-  // Pick image based on theme — wraps around if more themes than images
-  const themeIndex = THEME_ORDER.indexOf(theme)
+  // Map themes to GIFs when available (GIFs load after static images)
+  const themeIdx = Math.max(0, THEME_ORDER.indexOf(theme))
+  const firstGifIdx = bgImages.findIndex(src => src.endsWith('.gif'))
   const bgIndex = bgImages.length > 0
-    ? (themeIndex >= 0 ? themeIndex % bgImages.length : 0)
+    ? (firstGifIdx >= 0 ? (firstGifIdx + themeIdx) % bgImages.length : themeIdx % bgImages.length)
     : 0
 
   // Typewriter effect
@@ -133,11 +134,10 @@ const Home = ({ theme }) => {
 
   return (
     <section className="home-section">
-      <HeroBackground images={bgImages} currentIndex={bgIndex} />
-
       <div className="home-container">
         {/* Hero Area */}
         <div className="hero-area">
+          <HeroBackground images={bgImages} currentIndex={bgIndex} />
           <div className="hero-content">
             <p className="hero-greeting">Hello, I'm</p>
             <h1 className="hero-name">
