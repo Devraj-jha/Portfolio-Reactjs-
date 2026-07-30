@@ -52,9 +52,12 @@ const renderMarkdown = (content) => {
   return html
 }
 
+const TOP_PROJECTS_COUNT = 3
+
 const MinimalView = ({ onBack }) => {
   const [blogPosts, setBlogPosts] = useState([])
-  const [openBlogId, setOpenBlogId] = useState(null)
+  const [showAllProjects, setShowAllProjects] = useState(false)
+  const [selectedBlogPost, setSelectedBlogPost] = useState(null)
   const [blogLoading, setBlogLoading] = useState(true)
 
   useEffect(() => {
@@ -68,6 +71,33 @@ const MinimalView = ({ onBack }) => {
       })
       .catch(() => setBlogLoading(false))
   }, [])
+
+  if (selectedBlogPost) {
+    return (
+      <div className="minimal-page">
+        <div className="minimal-container">
+          <button className="minimal-back-btn" onClick={() => setSelectedBlogPost(null)}>
+            &larr; back to blog
+          </button>
+          <article className="minimal-blog-article">
+            <h1 className="minimal-blog-article-title">{selectedBlogPost.title}</h1>
+            <div className="minimal-blog-meta">
+              {selectedBlogPost.date} · {selectedBlogPost.readTime}
+            </div>
+            <div
+              className="minimal-blog-content"
+              dangerouslySetInnerHTML={{ __html: renderMarkdown(selectedBlogPost.content) }}
+            />
+          </article>
+          <footer className="minimal-footer">
+            <button className="minimal-back-btn" onClick={() => setSelectedBlogPost(null)}>
+              &larr; back to blog
+            </button>
+          </footer>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="minimal-page">
@@ -100,7 +130,7 @@ const MinimalView = ({ onBack }) => {
         <section className="minimal-section">
           <h2 className="minimal-section-heading">Projects</h2>
           <ul className="minimal-project-list">
-            {projects.map((p, i) => (
+            {projects.slice(0, showAllProjects ? projects.length : TOP_PROJECTS_COUNT).map((p, i) => (
               <li key={i} className="minimal-project-item">
                 <a href={p.url} target="_blank" rel="noopener noreferrer" className="minimal-project-title-link">
                   {p.title} ↗
@@ -110,6 +140,16 @@ const MinimalView = ({ onBack }) => {
               </li>
             ))}
           </ul>
+          {!showAllProjects && projects.length > TOP_PROJECTS_COUNT && (
+            <button className="minimal-expand-btn" onClick={() => setShowAllProjects(true)}>
+              Show all {projects.length} projects ↓
+            </button>
+          )}
+          {showAllProjects && projects.length > TOP_PROJECTS_COUNT && (
+            <button className="minimal-expand-btn" onClick={() => setShowAllProjects(false)}>
+              Show less ↑
+            </button>
+          )}
         </section>
 
         {/* Blog */}
@@ -125,7 +165,7 @@ const MinimalView = ({ onBack }) => {
                 <li key={post.id} className="minimal-blog-item">
                   <button
                     className="minimal-blog-title-btn"
-                    onClick={() => setOpenBlogId(openBlogId === post.id ? null : post.id)}
+                    onClick={() => setSelectedBlogPost(post)}
                   >
                     {post.title}
                   </button>
@@ -134,12 +174,6 @@ const MinimalView = ({ onBack }) => {
                   </div>
                   {post.excerpt && (
                     <div className="minimal-blog-excerpt">{post.excerpt}</div>
-                  )}
-                  {openBlogId === post.id && (
-                    <div
-                      className="minimal-blog-content"
-                      dangerouslySetInnerHTML={{ __html: renderMarkdown(post.content) }}
-                    />
                   )}
                 </li>
               ))}
