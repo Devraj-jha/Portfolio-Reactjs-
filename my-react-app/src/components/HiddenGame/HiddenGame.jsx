@@ -1,4 +1,5 @@
-// src/components/HiddenGame/HiddenGame.jsx
+'use client';
+
 import { useState, useEffect, useRef } from 'react';
 import './HiddenGame.css';
 
