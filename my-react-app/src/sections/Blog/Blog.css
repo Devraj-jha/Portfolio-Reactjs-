@@ -28,9 +28,12 @@
 }
 
 .post-card {
+  display: block;
   padding: 20px 0;
   border-bottom: 1px solid var(--border-color, #333);
   cursor: pointer;
+  text-decoration: none;
+  color: inherit;
 }
 
 .post-card:last-child {
