@@ -140,39 +140,44 @@ const GitHubContributions = ({ username = 'Devraj-jha' }) => {
             </div>
           ) : (
             <div className="gh-calendar">
-              <div
-                className="gh-month-labels"
-                style={{ gridTemplateColumns: `repeat(${numWeeks}, 16px)` }}
-              >
-                {monthLabels.map((m, i) => (
-                  <span
-                    key={i}
-                    className="gh-month-label"
-                    style={{ gridColumn: m.index + 1 }}
+              <div className="gh-table">
+                <div className="gh-table-row">
+                  <div className="gh-labels-col" />
+                  <div
+                    className="gh-month-labels"
+                    style={{ gridTemplateColumns: `repeat(${numWeeks}, 13px)` }}
                   >
-                    {m.label}
-                  </span>
-                ))}
-              </div>
-              <div className="gh-grid">
-                <div className="gh-day-labels">
-                  {DAYS.map((day, i) => (
-                    <span key={i} className="gh-day-label">{day}</span>
-                  ))}
+                    {monthLabels.map((m, i) => (
+                      <span
+                        key={i}
+                        className="gh-month-label"
+                        style={{ gridColumn: m.index + 1 }}
+                      >
+                        {m.label}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-                <div className="gh-cells">
-                  {weeks.map((week, weekIdx) => (
-                    <div key={weekIdx} className="gh-week">
-                      {week.map((day, dayIdx) => (
-                        <div
-                          key={dayIdx}
-                          className="gh-cell"
-                          data-level={day.level ?? 0}
-                          title={day.date ? `${day.count} contributions on ${day.date}` : ''}
-                        />
-                      ))}
-                    </div>
-                  ))}
+                <div className="gh-table-row">
+                  <div className="gh-day-labels">
+                    {DAYS.map((day, i) => (
+                      <span key={i} className="gh-day-label">{day}</span>
+                    ))}
+                  </div>
+                  <div className="gh-cells">
+                    {weeks.map((week, weekIdx) => (
+                      <div key={weekIdx} className="gh-week">
+                        {week.map((day, dayIdx) => (
+                          <div
+                            key={dayIdx}
+                            className="gh-cell"
+                            data-level={day.level ?? 0}
+                            title={day.date ? `${day.count} contributions on ${day.date}` : ''}
+                          />
+                        ))}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
               <div className="gh-footer">

@@ -84,12 +84,29 @@
   min-width: 700px;
 }
 
+.gh-table {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.gh-table-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.gh-labels-col {
+  width: 34px;
+  flex-shrink: 0;
+}
+
 .gh-month-labels {
   display: grid;
-  gap: 4px;
-  padding-left: 44px;
+  gap: 3px;
   margin-bottom: 4px;
   height: 18px;
+  flex: 1;
 }
 
 .gh-month-label {
@@ -108,8 +125,9 @@
   display: flex;
   flex-direction: column;
   gap: 3px;
-  padding-right: 6px;
   padding-top: 2px;
+  width: 34px;
+  flex-shrink: 0;
 }
 
 .gh-day-label {
