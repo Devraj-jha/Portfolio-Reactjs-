@@ -396,27 +396,50 @@
   color: #999;
 }
 
-/* Tech tags */
-.minimal-tech-list {
+/* GitHub Streak */
+.gh-streak-stats {
   display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  list-style: none;
-  padding: 0;
-  margin: 0;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 8px;
 }
 
-.minimal-tech-item {
-  font-size: 0.8em;
-  color: #555;
+.gh-streak-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.minimal-tech-item::before {
-  content: '• ';
+.gh-streak-num {
+  font-size: 1.6em;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #000;
 }
 
-.minimal-tech-item:first-child::before {
-  content: '';
+.gh-streak-label {
+  font-size: 0.65em;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.gh-streak-divider {
+  width: 1px;
+  height: 32px;
+  background: #ddd;
+}
+
+.minimal-bw .gh-streak-num {
+  color: #fff;
+}
+
+.minimal-bw .gh-streak-label {
+  color: #aaa;
+}
+
+.minimal-bw .gh-streak-divider {
+  background: #444;
 }
 
 /* Footer */

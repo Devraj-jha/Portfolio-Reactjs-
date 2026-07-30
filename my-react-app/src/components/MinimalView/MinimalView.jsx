@@ -61,6 +61,46 @@ const MinimalView = ({ onBack }) => {
   const [blogLoading, setBlogLoading] = useState(true)
   const [isBW, setIsBW] = useState(false)
   const [fontSize, setFontSize] = useState(16)
+  const [ghData, setGhData] = useState(null)
+  const [ghLoading, setGhLoading] = useState(true)
+
+  useEffect(() => {
+    fetch('/contributions.json')
+      .then(res => res.ok ? res.json() : null)
+      .then(data => {
+        if (data?.contributions) {
+          const days = data.contributions
+
+          // Current streak: count consecutive days with contributions from today backwards
+          let currentStreak = 0
+          for (let i = days.length - 1; i >= 0; i--) {
+            if (days[i].count > 0) currentStreak++
+            else break
+          }
+
+          // Longest streak
+          let longestStreak = 0
+          let temp = 0
+          for (const day of days) {
+            if (day.count > 0) {
+              temp++
+              longestStreak = Math.max(longestStreak, temp)
+            } else {
+              temp = 0
+            }
+          }
+
+          setGhData({
+            total: data.total?.lastYear || 0,
+            currentStreak,
+            longestStreak,
+            contributions: days,
+          })
+        }
+        setGhLoading(false)
+      })
+      .catch(() => setGhLoading(false))
+  }, [])
 
   useEffect(() => {
     fetch('/content/blog/my-first-blog.md')
@@ -197,19 +237,38 @@ const MinimalView = ({ onBack }) => {
           )}
         </section>
 
-        {/* Tech */}
+        {/* GitHub Streak */}
         <section className="minimal-section">
-          <h2 className="minimal-section-heading">Technologies</h2>
-          <ul className="minimal-tech-list">
-            <li className="minimal-tech-item">Python</li>
-            <li className="minimal-tech-item">C++</li>
-            <li className="minimal-tech-item">JavaScript</li>
-            <li className="minimal-tech-item">Go</li>
-            <li className="minimal-tech-item">React</li>
-            <li className="minimal-tech-item">Node.js</li>
-            <li className="minimal-tech-item">HTML/CSS</li>
-            <li className="minimal-tech-item">Git</li>
-          </ul>
+          <h2 className="minimal-section-heading">GitHub Streak</h2>
+          {ghLoading ? (
+            <p className="minimal-muted">Loading streak...</p>
+          ) : ghData ? (
+            <>
+              <div className="gh-streak-stats">
+                <div className="gh-streak-stat">
+                  <span className="gh-streak-num">{ghData.currentStreak}</span>
+                  <span className="gh-streak-label">day streak</span>
+                </div>
+                <div className="gh-streak-divider" />
+                <div className="gh-streak-stat">
+                  <span className="gh-streak-num">{ghData.longestStreak}</span>
+                  <span className="gh-streak-label">longest</span>
+                </div>
+                <div className="gh-streak-divider" />
+                <div className="gh-streak-stat">
+                  <span className="gh-streak-num">{ghData.total.toLocaleString()}</span>
+                  <span className="gh-streak-label">contributions</span>
+                </div>
+              </div>
+              {/*
+                <a href="https://github.com/Devraj-jha" target="_blank" rel="noopener noreferrer" className="minimal-project-title-link">
+                  View GitHub profile ↗
+                </a>
+              */}
+            </>
+          ) : (
+            <p className="minimal-muted">Couldn't load contribution data.</p>
+          )}
         </section>
 
         {/* Contact */}
