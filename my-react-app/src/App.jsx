@@ -19,8 +19,6 @@ function App() {
   const [isGameOpen, setIsGameOpen] = useState(false)
   const [theme, setTheme] = useState('light')
   const [isLoading, setIsLoading] = useState(true)
-  const [isTransitioning, setIsTransitioning] = useState(false)
-  const [displaySection, setDisplaySection] = useState('home')
 
   // Initialize theme
   useEffect(() => {
@@ -44,29 +42,39 @@ function App() {
 
   const handleSectionChange = (section) => {
     if (section === activeSection) return
-    setIsTransitioning(true)
-    setTimeout(() => {
-      setDisplaySection(section)
-      setActiveSection(section)
-      setIsTransitioning(false)
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    }, 300)
+    setActiveSection(section)
+    const el = document.getElementById(`section-${section}`)
+    if (el) el.scrollIntoView({ behavior: 'smooth' })
   }
 
-  const renderSection = () => {
-    switch (displaySection) {
-      case 'home':
-        return <Home />
-      case 'blog':
-        return <Blog />
-      case 'progress':
-        return <Progress />
-      case 'projects':
-        return <ProjectsSection />
-      default:
-        return <Home />
-    }
-  }
+  // Track active section via scroll for nav highlighting
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = entry.target.dataset.section
+            if (id) setActiveSection(id)
+          }
+        })
+      },
+      { threshold: 0.5 }
+    )
+
+    const sections = document.querySelectorAll('[data-section]')
+    sections.forEach((el) => observer.observe(el))
+    return () => observer.disconnect()
+  }, [])
+
+  const renderSections = () => (
+    <>
+      <div className="snap-section" id="section-home" data-section="home"><Home /></div>
+      <div className="snap-section" id="section-blog" data-section="blog"><Blog /></div>
+      <div className="snap-section" id="section-progress" data-section="progress"><Progress /></div>
+      <div className="snap-section" id="section-projects" data-section="projects"><ProjectsSection /></div>
+      <Footer />
+    </>
+  )
 
   const handleTerminalCommand = (command) => {
     const cmd = command.toLowerCase().trim()
@@ -149,7 +157,7 @@ function App() {
   clear      - Clear terminal
   exit/close - Close terminal
   game       - Launch hidden game
-  echo [text]- Echo text`
+  echo [text]   - Echo text`
       case 'techstack':
         return `My Tech Stack:
 
@@ -183,13 +191,9 @@ function App() {
         onContactClick={() => setIsContactModalOpen(true)}
       />
 
-      <main className="main-content">
-        <div className={`page-transition ${isTransitioning ? 'transitioning' : ''}`}>
-          {renderSection()}
-        </div>
+      <main className="main-content snap-container">
+        {renderSections()}
       </main>
-
-      <Footer />
 
       <ContactModal
         isOpen={isContactModalOpen}

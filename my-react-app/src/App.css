@@ -1,38 +1,40 @@
 /* src/App.css */
+
+/* ── Root container: contains the fixed header + scrollable area ── */
 .app {
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
   background: var(--bg-primary);
   position: relative;
   transition: background-color 0.5s ease;
 }
 
+/* ── Scroll-snap container ── */
 .main-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 100px 40px 40px;
   position: relative;
   z-index: 1;
 }
 
-.main-content > * {
+.snap-container {
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y proximity;
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px; /* fixed header height */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── Each section is a snap target ── */
+.snap-section {
+  min-height: 100vh;
+  scroll-snap-align: start;
   position: relative;
-  z-index: 2;
 }
 
-/* Page Transitions */
-.page-transition {
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.page-transition.transitioning {
-  opacity: 0;
-  transform: translateY(10px);
-}
+/* ── Page transitions (no longer used — kept for any future need) ── */
 
 @media (max-width: 768px) {
   .main-content {
-    padding: 90px 20px 20px;
+    /* main-content now controls its own padding through its children */
   }
 }
