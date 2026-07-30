@@ -16,7 +16,7 @@
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
   border-radius: 16px;
-  padding: 24px;
+  padding: 20px;
   transition: background 0.5s ease, border-color 0.5s ease;
 }
 
@@ -24,25 +24,25 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .gh-header-left {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .gh-icon {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   color: var(--text-primary);
   flex-shrink: 0;
   transition: color 0.5s ease;
 }
 
 .gh-title {
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   font-weight: 600;
   color: var(--text-primary);
   transition: color 0.5s ease;
@@ -51,13 +51,13 @@
 .gh-profile-link {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 0.85rem;
+  gap: 4px;
+  font-size: 0.7rem;
   font-weight: 500;
   color: var(--text-secondary);
   text-decoration: none;
-  padding: 6px 14px;
-  border-radius: 8px;
+  padding: 3px 8px;
+  border-radius: 6px;
   border: 1px solid var(--border-color);
   transition: all 0.3s ease;
 }
@@ -69,8 +69,8 @@
 }
 
 .gh-external-icon {
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
 }
 
 /* ── Calendar ── */
@@ -166,6 +166,12 @@
   position: relative;
 }
 
+/* Future dates — invisible but preserve column height */
+.gh-cell--future {
+  visibility: hidden;
+  pointer-events: none;
+}
+
 /* Theme-aware contribution levels using accent color */
 [data-theme="light"] .gh-cell[data-level="1"] { background: #9be9a8; }
 [data-theme="light"] .gh-cell[data-level="2"] { background: #40c463; }
@@ -255,9 +261,9 @@
 .gh-footer {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
   gap: 6px;
-  margin-top: 8px;
+  margin-top: 12px;
 }
 
 .gh-legend-label {
@@ -313,13 +319,13 @@
 
 @media (max-width: 768px) {
   .gh-container {
-    padding: 16px;
+    padding: 12px;
   }
 
   .gh-header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 12px;
+    gap: 10px;
   }
 
   .gh-cell {

@@ -54,7 +54,7 @@ const GitHubContributions = ({ username = 'Devraj-jha' }) => {
 
     for (const day of data.contributions) {
       const dayDate = new Date(day.date + 'T23:59:59')
-      if (dayDate > today) break // stop at today
+      if (dayDate > today) break
 
       currentWeek.push(day)
       if (currentWeek.length === 7) {
@@ -63,15 +63,19 @@ const GitHubContributions = ({ username = 'Devraj-jha' }) => {
       }
     }
 
-    // Pad incomplete last week with real future dates (level 0)
+    // Pad incomplete last week — future cells are invisible spacers
     if (currentWeek.length > 0) {
       const lastDate = currentWeek.length > 0
         ? new Date(currentWeek[currentWeek.length - 1].date + 'T00:00:00')
         : new Date()
       while (currentWeek.length < 7) {
         lastDate.setDate(lastDate.getDate() + 1)
-        const dateStr = lastDate.toISOString().split('T')[0]
-        currentWeek.push({ date: dateStr, count: 0, level: 0 })
+        currentWeek.push({
+          date: lastDate.toISOString().split('T')[0],
+          count: 0,
+          level: 0,
+          isFuture: true,
+        })
       }
       weeks.push(currentWeek)
     }
@@ -79,7 +83,7 @@ const GitHubContributions = ({ username = 'Devraj-jha' }) => {
     return weeks
   }
 
-  // Get month labels — skip the first if data starts mid-month
+  // Get month labels — each spans across all the weeks for that month
   const getMonthLabels = () => {
     const weeks = buildCalendar()
     if (!weeks.length) return []
@@ -87,26 +91,27 @@ const GitHubContributions = ({ username = 'Devraj-jha' }) => {
     const labels = []
     let lastMonth = -1
 
-    // Check if the graph starts on the 1st of a month
-    const firstRealDay = data?.contributions?.[0]
-    const startsMidMonth = firstRealDay && new Date(firstRealDay.date).getDate() !== 1
-
     weeks.forEach((week, weekIdx) => {
       for (const day of week) {
         if (day.date) {
           const month = new Date(day.date).getMonth()
           if (month !== lastMonth) {
-            // Skip the first month label if data starts mid-month
-            // (e.g. Jul 27 → don't show "Jul", start from "Aug")
-            if (!(labels.length === 0 && startsMidMonth)) {
-              labels.push({ index: weekIdx, label: MONTHS[month] })
+            // Close previous month's span
+            if (labels.length > 0) {
+              labels[labels.length - 1].span = weekIdx - labels[labels.length - 1].index
             }
+            labels.push({ index: weekIdx, label: MONTHS[month], span: 1 })
             lastMonth = month
           }
           break
         }
       }
     })
+
+    // Last month spans to the end
+    if (labels.length > 0) {
+      labels[labels.length - 1].span = weeks.length - labels[labels.length - 1].index
+    }
 
     return labels
   }
@@ -170,7 +175,7 @@ const GitHubContributions = ({ username = 'Devraj-jha' }) => {
                       <span
                         key={i}
                         className="gh-month-label"
-                        style={{ gridColumn: m.index + 1 }}
+                        style={{ gridColumn: `${m.index + 1} / span ${m.span}` }}
                       >
                         {m.label}
                       </span>
@@ -189,9 +194,9 @@ const GitHubContributions = ({ username = 'Devraj-jha' }) => {
                         {week.map((day, dayIdx) => (
                           <div
                             key={dayIdx}
-                            className="gh-cell"
-                            data-level={day.level ?? 0}
-                            title={day.date ? `${day.count} contributions on ${day.date}` : ''}
+                            className={`gh-cell${day.isFuture ? ' gh-cell--future' : ''}`}
+                            data-level={!day.isFuture ? (day.level ?? 0) : 0}
+                            title={!day.isFuture && day.date ? `${day.count} contributions on ${day.date}` : ''}
                           />
                         ))}
                       </div>
