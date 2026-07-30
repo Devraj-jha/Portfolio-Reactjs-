@@ -21,7 +21,7 @@ const useHeroBackgrounds = () => {
     let mounted = true
 
     ;(async () => {
-      const exts = ['jpg', 'jpeg', 'png']
+      const exts = ['jpg', 'jpeg', 'png', 'gif']
       const found = []
 
       for (let i = 1; i <= BG_COUNT; i++) {
