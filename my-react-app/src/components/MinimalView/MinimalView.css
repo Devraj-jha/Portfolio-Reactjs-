@@ -16,17 +16,17 @@
   to { opacity: 1; }
 }
 
-/* Black & White theme override */
+/* Black & White theme override — dark mode */
 .minimal-bw {
-  background: #fff;
-  color: #000;
+  background: #000;
+  color: #fff;
   font-family: 'Courier New', Courier, monospace;
   font-size: 15px;
   line-height: 1.7;
 }
 
 .minimal-bw .minimal-section-heading {
-  color: #000;
+  color: #fff;
   font-family: 'Courier New', Courier, monospace;
   letter-spacing: 0;
 }
@@ -38,62 +38,75 @@
 .minimal-bw .minimal-blog-excerpt,
 .minimal-bw .minimal-section p,
 .minimal-bw .minimal-muted {
-  color: #000;
+  color: #fff;
 }
 
 .minimal-bw .minimal-links a,
 .minimal-bw .minimal-project-title-link,
 .minimal-bw .minimal-blog-title-btn {
-  color: #000;
+  color: #fff;
   text-decoration: underline;
 }
 
 .minimal-bw .minimal-links a:hover,
 .minimal-bw .minimal-project-title-link:hover,
 .minimal-bw .minimal-blog-title-btn:hover {
-  color: #666;
+  color: #888;
 }
 
 .minimal-bw .minimal-blog-content {
-  background: #fff;
-  border: 1px solid #000;
-  color: #000;
+  background: #111;
+  border: 1px solid #fff;
+  color: #fff;
 }
 
 .minimal-bw .minimal-blog-content p,
 .minimal-bw .minimal-blog-content h1,
 .minimal-bw .minimal-blog-content h2,
 .minimal-bw .minimal-blog-content h3 {
-  color: #000;
-}
-
-.minimal-bw .minimal-blog-content code {
-  background: #eee;
-  color: #000;
-}
-
-.minimal-bw .minimal-blog-content pre {
-  background: #f5f5f5;
-  border: 1px solid #000;
-}
-
-.minimal-bw .minimal-project-item {
-  border-bottom-color: #000;
-}
-
-.minimal-bw .minimal-expand-btn {
-  border-color: #000;
-  color: #000;
-}
-
-.minimal-bw .minimal-expand-btn:hover {
-  background: #000;
   color: #fff;
 }
 
-.minimal-bw .minimal-footer {
-  border-top-color: #000;
+.minimal-bw .minimal-blog-content code {
+  background: #222;
+  color: #fff;
+}
+
+.minimal-bw .minimal-blog-content pre {
+  background: #111;
+  border: 1px solid #fff;
+}
+
+.minimal-bw .minimal-blog-content a {
+  color: #fff;
+}
+
+.minimal-bw .minimal-project-item {
+  border-bottom-color: #333;
+}
+
+.minimal-bw .minimal-expand-btn {
+  border-color: #fff;
+  color: #fff;
+  background: transparent;
+}
+
+.minimal-bw .minimal-expand-btn:hover {
+  background: #fff;
   color: #000;
+}
+
+.minimal-bw .minimal-footer {
+  border-top-color: #333;
+  color: #888;
+}
+
+.minimal-bw .minimal-back-btn {
+  color: #fff;
+}
+
+.minimal-bw .minimal-back-btn:hover {
+  color: #888;
 }
 
 /* Theme toggle for minimal view */
