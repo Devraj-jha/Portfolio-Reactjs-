@@ -5,7 +5,7 @@ import GitHubContributions from '../../components/GitHubContributions/GitHubCont
 import { useTheme } from '../../contexts/ThemeContext'
 import './Home.css'
 
-const BG_COUNT = 20 // scans b1 … b20 across jpg/jpeg/png
+const BG_COUNT = 14 // b1 … b14 exist (we stop there for speed)
 const THEME_ORDER = ['light', 'dark', 'sunset', 'ocean', 'forest', 'midnight']
 
 const tryLoad = (src) =>
@@ -16,30 +16,35 @@ const tryLoad = (src) =>
     img.src = src
   })
 
-/** Scans for bg images b1.jpg/b1.jpeg/b1.png … bN, preloads, returns sorted array */
+/** Scans for bg images b1-b14 across jpg/jpeg/png/gif — ALL in parallel */
 const useHeroBackgrounds = () => {
   const [images, setImages] = useState([])
 
   useEffect(() => {
     let mounted = true
+    const exts = ['jpg', 'jpeg', 'png', 'gif']
 
-    ;(async () => {
-      const exts = ['jpg', 'jpeg', 'png', 'gif']
-      const found = []
-
-      for (let i = 1; i <= BG_COUNT; i++) {
-        for (const ext of exts) {
-          const src = `/assets/b${i}.${ext}`
-          const result = await tryLoad(src)
-          if (result) {
-            found.push(result)
-            break // one format per index is enough
-          }
-        }
+    // Generate every candidate path upfront and fire them all at once
+    const candidates = []
+    for (let i = 1; i <= BG_COUNT; i++) {
+      for (const ext of exts) {
+        candidates.push(`/assets/b${i}.${ext}`)
       }
+    }
 
-      if (mounted) setImages(found)
-    })()
+    Promise.all(candidates.map(tryLoad)).then((results) => {
+      if (mounted) {
+        setImages(
+          results
+            .filter(Boolean)
+            .sort((a, b) => {
+              const na = parseInt(a.match(/b(\d+)/)?.[1] || '0')
+              const nb = parseInt(b.match(/b(\d+)/)?.[1] || '0')
+              return na - nb
+            })
+        )
+      }
+    })
 
     return () => { mounted = false }
   }, [])
