@@ -59,6 +59,7 @@ const MinimalView = ({ onBack }) => {
   const [showAllProjects, setShowAllProjects] = useState(false)
   const [selectedBlogPost, setSelectedBlogPost] = useState(null)
   const [blogLoading, setBlogLoading] = useState(true)
+  const [isBW, setIsBW] = useState(false)
 
   useEffect(() => {
     fetch('/content/blog/my-first-blog.md')
@@ -74,7 +75,7 @@ const MinimalView = ({ onBack }) => {
 
   if (selectedBlogPost) {
     return (
-      <div className="minimal-page">
+      <div className={`minimal-page${isBW ? ' minimal-bw' : ''}`}>
         <div className="minimal-container">
           <button className="minimal-back-btn" onClick={() => setSelectedBlogPost(null)}>
             &larr; back to blog
@@ -100,8 +101,18 @@ const MinimalView = ({ onBack }) => {
   }
 
   return (
-    <div className="minimal-page">
+    <div className={`minimal-page${isBW ? ' minimal-bw' : ''}`}>
       <div className="minimal-container">
+        {/* Theme toggle for minimal view */}
+        <div className="minimal-theme-toggle">
+          <button
+            className={`minimal-theme-btn${isBW ? ' active' : ''}`}
+            onClick={() => setIsBW(!isBW)}
+            title={isBW ? 'Switch to serif theme' : 'Switch to black & white theme'}
+          >
+            {isBW ? 'Aa' : 'BW'}
+          </button>
+        </div>
         {/* Header */}
         <header className="minimal-header">
           <h1 className="minimal-name">Devraj Jha</h1>

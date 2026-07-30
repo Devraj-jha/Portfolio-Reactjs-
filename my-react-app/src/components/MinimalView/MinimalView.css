@@ -16,6 +16,115 @@
   to { opacity: 1; }
 }
 
+/* Black & White theme override */
+.minimal-bw {
+  background: #fff;
+  color: #000;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.minimal-bw .minimal-section-heading {
+  color: #000;
+  font-family: 'Courier New', Courier, monospace;
+  letter-spacing: 0;
+}
+
+.minimal-bw .minimal-subtitle,
+.minimal-bw .minimal-project-desc,
+.minimal-bw .minimal-tech-item,
+.minimal-bw .minimal-blog-meta,
+.minimal-bw .minimal-blog-excerpt,
+.minimal-bw .minimal-section p,
+.minimal-bw .minimal-muted {
+  color: #000;
+}
+
+.minimal-bw .minimal-links a,
+.minimal-bw .minimal-project-title-link,
+.minimal-bw .minimal-blog-title-btn {
+  color: #000;
+  text-decoration: underline;
+}
+
+.minimal-bw .minimal-links a:hover,
+.minimal-bw .minimal-project-title-link:hover,
+.minimal-bw .minimal-blog-title-btn:hover {
+  color: #666;
+}
+
+.minimal-bw .minimal-blog-content {
+  background: #fff;
+  border: 1px solid #000;
+  color: #000;
+}
+
+.minimal-bw .minimal-blog-content p,
+.minimal-bw .minimal-blog-content h1,
+.minimal-bw .minimal-blog-content h2,
+.minimal-bw .minimal-blog-content h3 {
+  color: #000;
+}
+
+.minimal-bw .minimal-blog-content code {
+  background: #eee;
+  color: #000;
+}
+
+.minimal-bw .minimal-blog-content pre {
+  background: #f5f5f5;
+  border: 1px solid #000;
+}
+
+.minimal-bw .minimal-project-item {
+  border-bottom-color: #000;
+}
+
+.minimal-bw .minimal-expand-btn {
+  border-color: #000;
+  color: #000;
+}
+
+.minimal-bw .minimal-expand-btn:hover {
+  background: #000;
+  color: #fff;
+}
+
+.minimal-bw .minimal-footer {
+  border-top-color: #000;
+  color: #000;
+}
+
+/* Theme toggle for minimal view */
+.minimal-theme-toggle {
+  text-align: right;
+  margin-bottom: 8px;
+}
+
+.minimal-theme-btn {
+  background: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 0.7rem;
+  cursor: pointer;
+  padding: 2px 8px;
+  color: #888;
+  transition: all 0.15s ease;
+}
+
+.minimal-theme-btn:hover {
+  border-color: #000;
+  color: #000;
+}
+
+.minimal-theme-btn.active {
+  border-color: #000;
+  color: #000;
+  background: #f5f5f5;
+}
+
 .minimal-container {
   max-width: 640px;
   margin: 0 auto;
