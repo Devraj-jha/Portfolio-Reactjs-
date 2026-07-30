@@ -82,6 +82,22 @@
   --shadow-color: rgba(255, 107, 53, 0.12);
 }
 
+[data-theme="ocean"] {
+  --pure-white: #ffffff;
+  --off-white: #0f1a2e;
+  --light-gray: #1a2a40;
+  --medium-gray: #7a9bb5;
+  --dark-gray: #c8dce8;
+  --pure-black: #000000;
+  --accent-primary: #00b4d8;
+  --text-primary: #c8dce8;
+  --text-secondary: #7a9bb5;
+  --bg-primary: #0a0f1a;
+  --bg-secondary: #0f1a2e;
+  --border-color: #1a2a40;
+  --shadow-color: rgba(0, 180, 216, 0.15);
+}
+
 html {
   scroll-behavior: smooth;
 }
